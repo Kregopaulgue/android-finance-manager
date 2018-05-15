@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -86,6 +87,13 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
 
         //и отображаем его:
         alertDialog.show();
+
+    }
+
+    public void clarifyEntry(View view) {
+
+        Intent intent = new Intent(this, ClarifyEntry.class);
+        startActivity(intent);
 
     }
 

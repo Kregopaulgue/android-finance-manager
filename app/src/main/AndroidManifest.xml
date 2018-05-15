@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".FinanceManagerActivity"
-            android:label="@string/app_name"
+            android:label="Financial Manager"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddEntryActivity"
-            android:label="@string/about_title">
+            android:label="Add Entry">
+        </activity>
+        <activity android:name=".ClarifyEntry"
+            android:label="Clarify Entry">
+        </activity>
+        <activity android:name=".AddAccountActivity"
+            android:label="Create Account">
         </activity>
     </application>
 
