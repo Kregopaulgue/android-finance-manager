@@ -1,8 +1,11 @@
 package com.example.master.android_finance_manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -77,13 +80,18 @@ public class FinanceManagerActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Fragment fragment = null;
+        Class fragmentClass = null;
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(FinanceManagerActivity.this, AddEntryActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -93,6 +101,11 @@ public class FinanceManagerActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
+
+        // Выделяем выбранный пункт меню в шторке
+        item.setChecked(true);
+        // Выводим выбранный пункт в заголовке
+        setTitle(item.getTitle());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
