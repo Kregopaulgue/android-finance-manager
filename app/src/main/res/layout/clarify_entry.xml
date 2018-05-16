@@ -147,6 +147,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="368dp"
         android:layout_height="179dp"
         android:layout_marginBottom="8dp"
@@ -171,10 +172,39 @@
         <EditText
             android:id="@+id/editText8"
             android:layout_width="match_parent"
-            android:layout_height="167dp"
+            android:layout_height="115dp"
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/clarifyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="saveClarifying"
+            android:text="Save" />
     </LinearLayout>
+
+    <com.cunoraz.tagview.TagView xmlns:tagview="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/currentTags"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        tagview:layout_constraintBottom_toBottomOf="parent"
+        tagview:layout_constraintEnd_toEndOf="parent"
+        tagview:layout_constraintHorizontal_bias="0.0"
+        tagview:layout_constraintStart_toStartOf="parent"
+        tagview:layout_constraintTop_toTopOf="parent"
+        tagview:layout_constraintVertical_bias="0.632"
+        tagview:lineMargin="5dp"
+        tagview:tagMargin="5dp"
+        tagview:textPaddingBottom="5dp"
+        tagview:textPaddingLeft="8dp"
+        tagview:textPaddingRight="8dp"
+        tagview:textPaddingTop="5dp" />
 
 </android.support.constraint.ConstraintLayout>

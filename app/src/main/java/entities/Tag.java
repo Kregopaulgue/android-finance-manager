@@ -19,6 +19,12 @@ public class Tag implements DatabaseHelperFunctions{
 
     }
 
+    public Tag(String tagTitle, String isMadeByUser, Category parentCategory) {
+        this.tagTitle = tagTitle;
+        this.isMadeByUser = isMadeByUser;
+        this.parentCategory = parentCategory;
+    }
+
     public Tag(int tagId, String tagTitle, String isMadeByUser, Category parentCategory) {
         this.tagId = tagId;
         this.tagTitle = tagTitle;

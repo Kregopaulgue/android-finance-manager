@@ -15,6 +15,11 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
 
     public EntryTagBinder() {}
 
+    public EntryTagBinder(Tag parentTag, FinancialEntry parentEntry) {
+        this.parentTag = parentTag;
+        this.parentEntry = parentEntry;
+    }
+
     public EntryTagBinder(int bindId, Tag parentTag, FinancialEntry parentEntry) {
         this.bindId = bindId;
         this.parentTag = parentTag;

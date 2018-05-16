@@ -15,9 +15,20 @@ public class Expense extends FinancialEntry {
     public Expense() {
     }
 
+    public Expense(String title, String entryDate, Double moneySpent) {
+        super(title, entryDate);
+        this.moneySpent = moneySpent;
+    }
+
+    public Expense(String entryDate, String comment, String entryType,
+                   Account parentAccount, String title, Double moneySpent) {
+        super(entryDate, comment, entryType, parentAccount, title);
+        this.moneySpent = moneySpent;
+    }
+
     public Expense(int entryId, String entryDate, String comment, String entryType,
-                   Account parentAccount, Double moneySpent) {
-        super(entryId, entryDate, comment, entryType, parentAccount);
+                   Account parentAccount, String title, Double moneySpent) {
+        super(entryId, entryDate, comment, entryType, parentAccount, title);
         this.moneySpent = moneySpent;
     }
 

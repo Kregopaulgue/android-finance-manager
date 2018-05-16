@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,16 +21,22 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import data.FinancialManagerDbHelper;
+import entities.Account;
+import entities.Expense;
+import entities.FinancialEntry;
+
 public class AddEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    public Double moneySpent=0.0;
-    public String titleEntered="";
-    public String dateToSave=Calendar.getInstance().toString();
+    public int parentAccountId;
+    public Expense mExpense;
+    private FinancialManagerDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        parentAccountId = getIntent().getIntExtra("currentAccountId", 0);
+        mExpense = new Expense();
         setContentView(R.layout.add_entry_manager);
     }
 
@@ -47,7 +54,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
 
     private void setDate(final Calendar calendar) {
         final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        dateToSave = dateFormat.format(calendar.getTime());
+        mExpense.setEntryDate(dateFormat.format(calendar.getTime()));
 
     }
 
@@ -72,7 +79,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 //Вводим текст и отображаем в строке ввода на основном экране:
-                                titleEntered = userInput.getText().toString();
+                                mExpense.setTitle(userInput.getText().toString());
                             }
                         })
                 .setNegativeButton("Отмена",
@@ -94,6 +101,32 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
 
         Intent intent = new Intent(this, ClarifyEntry.class);
         startActivity(intent);
+
+    }
+
+    public void onNumberClick(View view) {
+        Button button = (Button) view;
+        EditText number = findViewById(R.id.editNumber);
+        number.setText(number.getText().toString() + button.getText().toString());
+    }
+
+    public void add(View view) {
+    }
+
+    public void minus(View view) {
+    }
+
+    public void multiply(View view) {
+    }
+
+    public void divide(View view) {
+    }
+
+    public void saveEntry(View view) {
+
+        EditText number = findViewById(R.id.editNumber);
+        this.mExpense.setMoneySpent(Double.parseDouble(number.getText().toString()));
+        this.mExpense.writeToDatabase(dbHelper);
 
     }
 

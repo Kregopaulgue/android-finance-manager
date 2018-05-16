@@ -21,6 +21,16 @@ public class Constraint implements DatabaseHelperFunctions {
 
     public Constraint() {}
 
+    public Constraint(Double moneyLimit, String dateOfBegin, String dateOfEnd,
+                      Double warningMoneyBorder, int isCritical, Account parentAccount) {
+        this.moneyLimit = moneyLimit;
+        this.dateOfBegin = dateOfBegin;
+        this.dateOfEnd = dateOfEnd;
+        this.warningMoneyBorder = warningMoneyBorder;
+        this.isCritical = isCritical;
+        this.parentAccount = parentAccount;
+    }
+
     public Constraint(int constraintId, Double moneyLimit, String dateOfBegin,
                       String dateOfEnd, Double warningMoneyBorder, int isCritical, Account parentAccount) {
         this.constraintId = constraintId;

@@ -16,9 +16,16 @@ public class Accrual extends FinancialEntry {
     public Accrual() {
     }
 
+    public Accrual(String entryDate, String comment, String entryType, Account parentAccount,
+                   String title, String source, Double moneyGained) {
+        super(entryDate, comment, entryType, parentAccount, title);
+        this.source = source;
+        this.moneyGained = moneyGained;
+    }
+
     public Accrual(int entryId, String entryDate, String comment, String entryType,
-                   Account parentAccount, String source, Double moneyGained) {
-        super(entryId, entryDate, comment, entryType, parentAccount);
+                   Account parentAccount, String title, String source, Double moneyGained) {
+        super(entryId, entryDate, comment, entryType, parentAccount, title);
         this.source = source;
         this.moneyGained = moneyGained;
     }

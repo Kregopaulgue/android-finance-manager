@@ -15,9 +15,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import data.FinancialManager;
+import data.FinancialManagerDbHelper;
+import entities.Account;
 
 public class FinanceManagerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FinancialManagerDbHelper mDbHelper;
+    public Account mCurrentAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +43,8 @@ public class FinanceManagerActivity extends AppCompatActivity
             }
         });
 
+        mDbHelper = new FinancialManagerDbHelper(this);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -43,6 +53,10 @@ public class FinanceManagerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mDbHelper = new FinancialManagerDbHelper(this);
+        mCurrentAccount = new Account();
+        //mCurrentAccount.readFromDatabase(mDbHelper, 1);
     }
 
     @Override
@@ -87,13 +101,15 @@ public class FinanceManagerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-
+            Intent intent = new Intent(FinanceManagerActivity.this, AddAccountActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(FinanceManagerActivity.this, AddEntryActivity.class);
+            Intent intent = new Intent(FinanceManagerActivity.this, EntriesHistoryActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
-
+            Intent intent = new Intent(FinanceManagerActivity.this, AddEntryActivity.class);
+            intent.putExtra("currentAccountId", this.mCurrentAccount.getAccountId());
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

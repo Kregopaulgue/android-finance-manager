@@ -17,6 +17,12 @@ public class Account implements DatabaseHelperFunctions{
 
     public Account() {}
 
+    public Account(String accountTitle, String accountType, Double amountOfMoney) {
+        this.accountTitle = accountTitle;
+        this.accountType = accountType;
+        this.amountOfMoney = amountOfMoney;
+    }
+
     public Account(int accountId, String accountTitle, String accountType, Double amountOfMoney) {
         this.accountId = accountId;
         this.accountTitle = accountTitle;
@@ -45,20 +51,23 @@ public class Account implements DatabaseHelperFunctions{
 
     @Override
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int accountId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT account_id AS _id, * FROM accounts WHERE account_id=?",
                 new String[]{String.valueOf(accountId)});
 
-        int idIndex = cursor.getColumnIndex(FinancialManager.Account._ID);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Account.COLUMN_ACCOUNT_ID);
         int titleIndex = cursor.getColumnIndex(FinancialManager.Account.COLUMN_TITLE);
         int typeIndex = cursor.getColumnIndex(FinancialManager.Account.COLUMN_ACCOUNT_TYPE);
         int moneyIndex = cursor.getColumnIndex(FinancialManager.Account.COLUMN_AMOUNT_OF_MONEY);
 
-        this.accountTitle = cursor.getString(titleIndex);
-        this.accountType = cursor.getString(typeIndex);
-        this.amountOfMoney = cursor.getDouble(moneyIndex);
-        this.accountId = cursor.getInt(idIndex);
+        while(cursor.moveToNext()) {
+            this.accountTitle = cursor.getString(titleIndex);
+            this.accountType = cursor.getString(typeIndex);
+            this.amountOfMoney = cursor.getDouble(moneyIndex);
+            this.accountId = cursor.getInt(idIndex);
+        }
+
 
         cursor.close();
     }

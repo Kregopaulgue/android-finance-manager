@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.File;
+
 public class FinancialManagerDbHelper extends SQLiteOpenHelper {
 
     public static final String LOG_TAG = FinancialManagerDbHelper.class.getSimpleName();

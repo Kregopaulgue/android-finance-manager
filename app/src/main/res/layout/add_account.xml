@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="377dp"
-        android:layout_height="297dp"
+        android:layout_width="356dp"
+        android:layout_height="295dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -17,10 +17,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.031">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -31,6 +31,7 @@
                 android:layout_height="140dp">
 
                 <RadioGroup
+                    android:id="@+id/accountTypeRadioGroup"
                     android:layout_width="match_parent"
                     android:layout_height="53dp"
                     android:layout_marginTop="50dp"
@@ -52,32 +53,47 @@
                 </RadioGroup>
 
                 <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/amountOfMoneyEditText"
+                    android:layout_width="344dp"
+                    android:layout_height="46dp"
                     android:layout_marginTop="30dp"
                     android:hint="Amount Of Money" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/titleEditText"
+                android:layout_width="344dp"
+                android:layout_height="47dp"
                 android:layout_marginTop="50dp"
                 android:hint="Title" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/createAccountButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="createAccount"
         android:text="CREATE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/titleDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

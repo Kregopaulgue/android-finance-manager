@@ -27,6 +27,9 @@
         <activity android:name=".AddAccountActivity"
             android:label="Create Account">
         </activity>
+        <activity android:name=".EntriesHistoryActivity"
+            android:label="Entries History">
+        </activity>
     </application>
 
 </manifest>

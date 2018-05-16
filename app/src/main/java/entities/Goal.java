@@ -20,6 +20,14 @@ public class Goal implements DatabaseHelperFunctions{
     public Goal() {
     }
 
+    public Goal(Double sumToReach, Double currentSum, String targetDescription, String isReached, Account parentAccount) {
+        this.sumToReach = sumToReach;
+        this.currentSum = currentSum;
+        this.targetDescription = targetDescription;
+        this.isReached = isReached;
+        this.parentAccount = parentAccount;
+    }
+
     public Goal(int goalId, Double sumToReach, Double currentSum, String targetDescription,
                 String isReached, Account parentAccount) {
         this.goalId = goalId;

@@ -15,6 +15,10 @@ public class Category implements DatabaseHelperFunctions{
 
     public Category() {}
 
+    public Category(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
+    }
+
     public Category(int categoryId, String categoryTitle) {
         this.categoryId = categoryId;
         this.categoryTitle = categoryTitle;

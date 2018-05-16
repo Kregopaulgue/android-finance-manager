@@ -22,7 +22,8 @@ public class FinancialManager {
         public static final String TABLE_NAME = "finance_expenses";
 
         public static final String _ID = BaseColumns._ID;
-        public final static String COLUMN_ENTRY_ID= "entry_id";
+        public final static String COLUMN_TITLE = "title";
+        public final static String COLUMN_ENTRY_ID = "entry_id";
         public final static String COLUMN_DATE_TIME = "date_time";
         public final static String COLUMN_ENTRY_TYPE = "entry_type";
         public final static String COLUMN_COMMENT = "comment";

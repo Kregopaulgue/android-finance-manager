@@ -19,6 +19,13 @@ public class BillReminder implements DatabaseHelperFunctions{
 
     public BillReminder() {}
 
+    public BillReminder(Double sumToPay, String billDescription, String dateTimeToPay, Account parentAccount) {
+        this.sumToPay = sumToPay;
+        this.billDescription = billDescription;
+        this.dateTimeToPay = dateTimeToPay;
+        this.parentAccount = parentAccount;
+    }
+
     public BillReminder(int billReminderId, Double sumToPay, String billDescription,
                         String dateTimeToPay, Account parentAccount) {
         this.billReminderId = billReminderId;
