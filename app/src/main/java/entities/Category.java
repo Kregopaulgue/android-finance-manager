@@ -72,6 +72,7 @@ public class Category implements DatabaseHelperFunctions{
         int idIndex = cursor.getColumnIndex(FinancialManager.Category._ID);
         int titleIndex = cursor.getColumnIndex(FinancialManager.Category.COLUMN_TITLE);
 
+        cursor.moveToNext();
         this.categoryTitle = cursor.getString(titleIndex);
         this.categoryId = cursor.getInt(idIndex);
 

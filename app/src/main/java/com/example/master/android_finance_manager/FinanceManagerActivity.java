@@ -1,11 +1,14 @@
 package com.example.master.android_finance_manager;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,11 +23,15 @@ import android.widget.TextView;
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.Expense;
 
 public class FinanceManagerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FinancialManagerDbHelper mDbHelper;
+    private CardView mLatestEntryCard;
+    private CardView mLatestGoalCard;
+    private CardView mLatestAccrualCard;
     public Account mCurrentAccount;
 
     @Override
@@ -56,6 +63,13 @@ public class FinanceManagerActivity extends AppCompatActivity
 
         mDbHelper = new FinancialManagerDbHelper(this);
         mCurrentAccount = new Account();
+        this.mLatestAccrualCard = findViewById(R.id.latestAccrual);
+        this.mLatestEntryCard = findViewById(R.id.latestEntryCard);
+        this.mLatestGoalCard = findViewById(R.id.latestGoal);
+
+        Expense expense = new Expense();
+        expense.readFromDatabase(mDbHelper, 1);
+        //test.setText(expense.getTitle() + " " + expense.getMoneySpent().toString());
         //mCurrentAccount.readFromDatabase(mDbHelper, 1);
     }
 

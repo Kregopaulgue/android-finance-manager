@@ -58,7 +58,8 @@ public class FinancialEntry implements DatabaseHelperFunctions{
         values.put(FinancialManager.FinancialEntry.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
         values.put(FinancialManager.FinancialEntry.COLUMN_ENTRY_TYPE, this.entryType);
 
-        long newRowId = db.insert(FinancialManager.FinancialEntry.TABLE_NAME, null, values);
+        this.entryId = (int) db.insert(FinancialManager.FinancialEntry.TABLE_NAME, null, values);
+
 
     }
 
@@ -71,7 +72,8 @@ public class FinancialEntry implements DatabaseHelperFunctions{
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM financial_entries;", null);
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE entry_id=?",
+                new String[]{Integer.toString(entryId)});
 
         int titleIndex = cursor.getColumnIndex(FinancialManager.FinancialEntry.COLUMN_TITLE);
         int idIndex = cursor.getColumnIndex(FinancialManager.FinancialEntry._ID);
@@ -80,6 +82,7 @@ public class FinancialEntry implements DatabaseHelperFunctions{
         int accountIdIndex = cursor.getColumnIndex(FinancialManager.FinancialEntry.COLUMN_ACCOUNT_ID);
         int entryTypeIndex = cursor.getColumnIndex(FinancialManager.FinancialEntry.COLUMN_ENTRY_TYPE);
 
+        cursor.moveToNext();
         this.title = cursor.getString(titleIndex);
         this.entryDate = cursor.getString(dateIndex);
         this.comment = cursor.getString(commentIndex);

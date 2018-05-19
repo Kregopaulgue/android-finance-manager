@@ -100,6 +100,7 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
             //write code for some kind of exception
         }
 
+        cursor.moveToNext();
         this.bindId = cursor.getInt(bindIdIndex);
 
         cursor.close();

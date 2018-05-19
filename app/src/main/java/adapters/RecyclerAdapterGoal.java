@@ -27,7 +27,7 @@ public class RecyclerAdapterGoal extends RecyclerView.Adapter<RecyclerAdapterGoa
     public void onBindViewHolder(@NonNull RecyclerAdapterGoal.GoalViewHolder holder, int position) {
 
         Goal goal = goals.get(position);
-        holder.targetTitle.setText(goal.getTargetDescription());
+        holder.targetTitle.setText(goal.getTargetTitle());
         holder.targetSumOfMoney.setText(goal.getSumToReach().toString());
         //holder.targetDate.setText(goal.?);
 

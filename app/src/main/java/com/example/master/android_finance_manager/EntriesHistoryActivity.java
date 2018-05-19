@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import java.util.ArrayList;
+
 import adapters.RecyclerAdapterExpense;
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
@@ -40,13 +42,17 @@ public class EntriesHistoryActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.entriesRecyclerView);
         recyclerView.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         linearLayoutManager = new LinearLayoutManager(this);
 
-        adapter = new RecyclerAdapterExpense(Expense.readAllFromDatabase(mFinancialManagerDbHelper));
+        ArrayList<Expense> expenses = Expense.readAllFromDatabase(mFinancialManagerDbHelper);
+
+        adapter = new RecyclerAdapterExpense(expenses);
         recyclerView.setAdapter(adapter);
         // Populate the ListView here...
 

@@ -96,6 +96,7 @@ public class Goal implements DatabaseHelperFunctions{
         int sumToReachIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_SUM_TO_REACH);
         int goalIdIndex = cursor.getColumnIndex(FinancialManager.Goal._ID);
 
+        cursor.moveToNext();
         this.currentSum = cursor.getDouble(currentSumIndex);
         this.targetTitle = cursor.getString(targetTitleIndex);
         this.sumToReach = cursor.getDouble(sumToReachIndex);

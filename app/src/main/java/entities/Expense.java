@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 
+
 public class Expense extends FinancialEntry {
 
     private Double moneySpent;
@@ -86,11 +87,13 @@ public class Expense extends FinancialEntry {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM expenses;", null);
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM expenses WHERE entry_id=?",
+                new String[] {Integer.toString(entryId)});
 
         int moneySpentIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_MONEY_SPENT);
         int importanceIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_IMPORTANCE);
 
+        cursor.moveToNext();
         this.moneySpent = cursor.getDouble(moneySpentIndex);
         this.importance = importanceIndex;
 

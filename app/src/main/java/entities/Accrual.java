@@ -80,6 +80,7 @@ public class Accrual extends FinancialEntry {
         int moneyGainedIndex = cursor.getColumnIndex(FinancialManager.Accrual.COLUMN_MONEY_GAINED);
         int sourceIndex = cursor.getColumnIndex(FinancialManager.Accrual.COLUMN_SOURCE);
 
+        cursor.moveToNext();
         this.moneyGained = cursor.getDouble(moneyGainedIndex);
         this.source = cursor.getString(sourceIndex);
 
@@ -98,6 +99,7 @@ public class Accrual extends FinancialEntry {
         int moneyGainedIndex = cursor.getColumnIndex(FinancialManager.Accrual.COLUMN_MONEY_GAINED);
         int sourceIndex = cursor.getColumnIndex(FinancialManager.Accrual.COLUMN_SOURCE);
 
+        cursor.moveToNext();
         this.moneyGained = cursor.getDouble(moneyGainedIndex);
         this.source = cursor.getString(sourceIndex);
 

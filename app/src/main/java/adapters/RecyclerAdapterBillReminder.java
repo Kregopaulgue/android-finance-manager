@@ -25,7 +25,7 @@ public class RecyclerAdapterBillReminder extends RecyclerView.Adapter<RecyclerAd
     public void onBindViewHolder(@NonNull RecyclerAdapterBillReminder.BillReminderViewHolder holder, int position) {
 
         BillReminder billReminderId = billReminders.get(position);
-        holder.billTitle.setText(billReminderId.getBillDescription());
+        holder.billTitle.setText(billReminderId.getBillTitle());
         holder.sumOfMoneyToPay.setText(billReminderId.getSumToPay().toString());
         holder.dateToPay.setText(billReminderId.getDateTimeToPay());
 

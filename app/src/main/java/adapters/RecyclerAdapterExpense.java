@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.master.android_finance_manager.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import entities.Expense;
@@ -51,10 +53,19 @@ public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapter
         TextView title;
         TextView sumOfMoney;
         TextView date;
-
+        TextView labelTitle;
+        TextView labelSumOfMoney;
+        TextView labelDate;
 
         public ExpenseViewHolder(View itemView) {
+
             super(itemView);
+            labelTitle = itemView.findViewById(R.id.titleEntryView);
+            labelSumOfMoney = itemView.findViewById(R.id.moneyEntryView);
+            labelDate = itemView.findViewById(R.id.dateEntryView);
+            title = itemView.findViewById(R.id.showingTitleView);
+            sumOfMoney = itemView.findViewById(R.id.showingSumOfMoneyView);
+            date = itemView.findViewById(R.id.showingDateView);
 
         }
     }

@@ -101,6 +101,7 @@ public class Constraint implements DatabaseHelperFunctions {
         int accountIdIndex = cursor.getColumnIndex(FinancialManager.Constraint.COLUMN_ACCOUNT_ID);
         int constraintIdIndex = cursor.getColumnIndex(FinancialManager.Constraint._ID);
 
+        cursor.moveToNext();
         this.moneyLimit = cursor.getDouble(moneyLimitIndex);
         this.dateOfBegin = cursor.getString(dateOfBeginIndex);
         this.dateOfEnd = cursor.getString(dateOfEndIndex);

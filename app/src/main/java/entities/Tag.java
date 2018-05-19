@@ -84,6 +84,7 @@ public class Tag implements DatabaseHelperFunctions{
         int typeIndex = cursor.getColumnIndex(FinancialManager.Tag.COLUMN_TAG_TYPE);
         int categoryIdIndex = cursor.getColumnIndex(FinancialManager.Tag.COLUMN_CATEGORY_ID);
 
+        cursor.moveToNext();
         this.tagTitle = cursor.getString(titleIndex);
         this.isMadeByUser = cursor.getString(typeIndex);
         this.tagId = cursor.getInt(idIndex);

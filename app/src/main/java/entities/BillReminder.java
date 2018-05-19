@@ -72,6 +72,7 @@ public class BillReminder implements DatabaseHelperFunctions{
         int accountIdIndex = cursor.getColumnIndex(FinancialManager.BillReminder.COLUMN_ACCOUNT_ID);
         int billTitleIdIndex = cursor.getColumnIndex(FinancialManager.BillReminder._ID);
 
+        cursor.moveToNext();
         this.sumToPay = cursor.getDouble(sumToPayIndex);
         this.billTitle = cursor.getString(billTitleIndex);
         this.dateTimeToPay = cursor.getString(dateTimeToPayIndex);

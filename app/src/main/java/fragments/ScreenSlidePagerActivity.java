@@ -33,7 +33,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         setContentView(R.layout.entries_history_page);
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
+        //mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
     }
