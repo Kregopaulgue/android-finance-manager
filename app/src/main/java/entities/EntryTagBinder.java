@@ -35,8 +35,8 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
 
         values.put(FinancialManager.EntryTagBinder.COLUMN_TAG_ID, this.parentTag.getTagId());
         values.put(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID, this.parentEntry.getEntryId());
-        values.put(FinancialManager.EntryTagBinder.COLUMN_CATEGORY_ID, this.parentTag.getParentCategory().getCategoryId());
-        values.put(FinancialManager.EntryTagBinder.COLUMN_ACCOUNT_ID, this.parentEntry.getParentAccount().getAccountId());
+        //values.put(FinancialManager.EntryTagBinder.COLUMN_CATEGORY_ID, this.parentTag.getParentCategory().getCategoryId());
+        //values.put(FinancialManager.EntryTagBinder.COLUMN_ACCOUNT_ID, this.parentEntry.getParentAccount().getAccountId());
 
         long newRowId = db.insert(FinancialManager.EntryTagBinder.TABLE_NAME, null, values);
 

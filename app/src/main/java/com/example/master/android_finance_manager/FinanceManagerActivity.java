@@ -108,7 +108,7 @@ public class FinanceManagerActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(FinanceManagerActivity.this, AddEntryActivity.class);
-            intent.putExtra("currentAccountId", this.mCurrentAccount.getAccountId());
+            intent.putExtra("currentAccountId", 1);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
 

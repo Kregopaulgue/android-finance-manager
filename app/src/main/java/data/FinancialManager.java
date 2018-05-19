@@ -19,7 +19,7 @@ public class FinancialManager {
 
     public static final class FinancialEntry implements BaseColumns {
 
-        public static final String TABLE_NAME = "finance_expenses";
+        public static final String TABLE_NAME = "finance_entries";
 
         public static final String _ID = BaseColumns._ID;
         public final static String COLUMN_TITLE = "title";
@@ -65,6 +65,7 @@ public class FinancialManager {
         public final static String TABLE_NAME = "expenses";
 
         public final static String _ID = BaseColumns._ID;
+        public final static String COLUMN_IMPORTANCE = "importance";
         public final static String COLUMN_MONEY_SPENT = "money_spent";
         public final static String COLUMN_ENTRY_ID = "entry_id";
     }
@@ -76,9 +77,7 @@ public class FinancialManager {
         public final static String _ID = BaseColumns._ID;
         public final static String COLUMN_BIND_ID = "bind_id";
         public final static String COLUMN_ENTRY_ID = "entry_id";
-        public final static String COLUMN_ACCOUNT_ID = "account_id";
         public final static String COLUMN_TAG_ID = "tag_id";
-        public final static String COLUMN_CATEGORY_ID = "category_id";
     }
 
     public final static class BillReminder implements BaseColumns {

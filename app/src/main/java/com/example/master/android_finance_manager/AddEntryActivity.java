@@ -37,6 +37,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         parentAccountId = getIntent().getIntExtra("currentAccountId", 0);
         mExpense = new Expense();
+        dbHelper = new FinancialManagerDbHelper(this);
         setContentView(R.layout.add_entry_manager);
     }
 
@@ -125,8 +126,12 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     public void saveEntry(View view) {
 
         EditText number = findViewById(R.id.editNumber);
+        this.mExpense.setEntryType("EXPENSE");
         this.mExpense.setMoneySpent(Double.parseDouble(number.getText().toString()));
+        this.mExpense.setParentAccount(new Account());
+        this.mExpense.getParentAccount().readFromDatabase(dbHelper, 1);
         this.mExpense.writeToDatabase(dbHelper);
+        finish();
 
     }
 

@@ -9,19 +9,37 @@
     tools:context=".FinanceManagerActivity"
     tools:showIn="@layout/app_bar_finance_manager">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="500dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:onClick="showLastTitle"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleDisplay" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/latestEntryCard"
+            android:layout_width="386dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="5dp" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/latestAccrual"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/latestGoal"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="15dp" />
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

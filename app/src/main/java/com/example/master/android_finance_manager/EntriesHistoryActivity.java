@@ -3,13 +3,18 @@ package com.example.master.android_finance_manager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.ListView;
+
+import adapters.RecyclerAdapterExpense;
 
 public class EntriesHistoryActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private ListView lv;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerAdapterExpense adapter;
 
 
     @Override
@@ -18,7 +23,6 @@ public class EntriesHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.entries_history_page);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        lv = (ListView) findViewById(R.id.lv);
         setSupportActionBar(toolbar);
 
         final ActionBar actionBar = getSupportActionBar();
@@ -28,6 +32,14 @@ public class EntriesHistoryActivity extends AppCompatActivity {
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        recyclerView = findViewById(R.id.recyclerView);
+
+        linearLayoutManager = new LinearLayoutManager(this);
+
+
+        adapter = new RecyclerAdapterExpense();
+        recyclerView.setAdapter(adapter);
         // Populate the ListView here...
 
     }

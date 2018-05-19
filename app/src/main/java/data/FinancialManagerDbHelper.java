@@ -24,7 +24,18 @@ public class FinancialManagerDbHelper extends SQLiteOpenHelper {
     //is called during opening database
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SqlQueries.SQL_CREATE_TABLES);
+
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_ACCOUNTS);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_CATEGORY);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_TAGS);
+        db.execSQL(SqlQueries.SQL_CREATE_FINANCE_ENTRIES);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_ACCRUALS);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_EXPENSES);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLES_ENTRY_TAG_BINDERS);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_BILL_REMINDERS);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_GOALS);
+        db.execSQL(SqlQueries.SQL_CREATE_TABLE_CONSTRAINTS);
+
     }
 
     //is called during updating database

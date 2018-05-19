@@ -11,25 +11,31 @@ import data.FinancialManagerDbHelper;
 public class Expense extends FinancialEntry {
 
     private Double moneySpent;
+    private int importance;
 
     public Expense() {
     }
 
     public Expense(String title, String entryDate, Double moneySpent) {
         super(title, entryDate);
+        this.entryType = "EXPENSE";
         this.moneySpent = moneySpent;
     }
 
-    public Expense(String entryDate, String comment, String entryType,
+    public Expense(String entryDate, String comment, String entryType, int importance,
                    Account parentAccount, String title, Double moneySpent) {
         super(entryDate, comment, entryType, parentAccount, title);
         this.moneySpent = moneySpent;
+        this.importance = importance;
+        this.entryType = "EXPENSE";
     }
 
-    public Expense(int entryId, String entryDate, String comment, String entryType,
+    public Expense(int entryId, String entryDate, String comment, String entryType, int importance,
                    Account parentAccount, String title, Double moneySpent) {
         super(entryId, entryDate, comment, entryType, parentAccount, title);
         this.moneySpent = moneySpent;
+        this.importance = importance;
+        this.entryType = "EXPENSE";
     }
 
     @Override
@@ -40,6 +46,7 @@ public class Expense extends FinancialEntry {
 
         ContentValues values = new ContentValues();
 
+        values.put(FinancialManager.Expense.COLUMN_IMPORTANCE, this.importance);
         values.put(FinancialManager.Expense.COLUMN_MONEY_SPENT, this.moneySpent);
         values.put(FinancialManager.Expense.COLUMN_ENTRY_ID, this.entryId);
 
@@ -62,8 +69,10 @@ public class Expense extends FinancialEntry {
                 new String[]{String.valueOf(entryId)});
 
         int moneySpentIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_MONEY_SPENT);
+        int importanceIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_IMPORTANCE);
 
         this.moneySpent = cursor.getDouble(moneySpentIndex);
+        this.importance = importanceIndex;
 
         cursor.close();
     }
@@ -74,5 +83,13 @@ public class Expense extends FinancialEntry {
 
     public void setMoneySpent(Double moneySpent) {
         this.moneySpent = moneySpent;
+    }
+
+    public int getImportance() {
+        return importance;
+    }
+
+    public void setImportance(int importance) {
+        this.importance = importance;
     }
 }
