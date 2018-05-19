@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -36,9 +38,28 @@ public class Category implements DatabaseHelperFunctions{
 
     }
 
+
     @Override
     public void updateFromDatabase(FinancialManagerDbHelper dbHelper) {
         readFromDatabase(dbHelper, this.categoryId);
+    }
+
+    public static ArrayList<Category> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT category_id AS _id FROM categories;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Category._ID);
+
+        ArrayList<Category> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            Category categoryToRead = new Category();
+            categoryToRead.readFromDatabase(dbHelper, billId);
+            result.add(categoryToRead);
+        }
+
+        return result;
     }
 
     @Override

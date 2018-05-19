@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -58,6 +60,25 @@ public class Goal implements DatabaseHelperFunctions{
     @Override
     public void updateFromDatabase(FinancialManagerDbHelper dbHelper) {
         readFromDatabase(dbHelper, this.goalId);
+    }
+
+    
+    public static ArrayList<Goal> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT goal_id AS _id FROM goals;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Goal._ID);
+
+        ArrayList<Goal> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            Goal goalToRead = new Goal();
+            goalToRead.readFromDatabase(dbHelper, billId);
+            result.add(goalToRead);
+        }
+
+        return result;
     }
 
     @Override

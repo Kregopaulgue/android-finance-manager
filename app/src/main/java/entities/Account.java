@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -42,6 +44,26 @@ public class Account implements DatabaseHelperFunctions{
 
         long newRowId = db.insert(FinancialManager.Account.TABLE_NAME, null, values);
 
+    }
+
+    public static ArrayList<Account> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT account_id AS _id FROM accounts;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Account._ID);
+
+        ArrayList<Account> result = new ArrayList<>();
+
+        while(cursor.moveToNext()) {
+            Account accountToRead = new Account();
+            int accountId = cursor.getInt(idIndex);
+            accountToRead.readFromDatabase(dbHelper, accountId);
+            result.add(accountToRead);
+        }
+
+        cursor.close();
+        return result;
     }
 
     @Override

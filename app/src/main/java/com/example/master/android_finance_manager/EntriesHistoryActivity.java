@@ -1,5 +1,6 @@
 package com.example.master.android_finance_manager;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import adapters.RecyclerAdapterExpense;
+import data.FinancialManager;
+import data.FinancialManagerDbHelper;
+import entities.Expense;
 
 public class EntriesHistoryActivity extends AppCompatActivity {
 
@@ -15,12 +19,15 @@ public class EntriesHistoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerAdapterExpense adapter;
+    FinancialManagerDbHelper mFinancialManagerDbHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entries_history_page);
+
+        mFinancialManagerDbHelper = new FinancialManagerDbHelper(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -34,11 +41,12 @@ public class EntriesHistoryActivity extends AppCompatActivity {
         }
 
         recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         linearLayoutManager = new LinearLayoutManager(this);
 
-
-        adapter = new RecyclerAdapterExpense();
+        adapter = new RecyclerAdapterExpense(Expense.readAllFromDatabase(mFinancialManagerDbHelper));
         recyclerView.setAdapter(adapter);
         // Populate the ListView here...
 

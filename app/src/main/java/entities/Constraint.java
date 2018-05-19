@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -63,6 +65,24 @@ public class Constraint implements DatabaseHelperFunctions {
     @Override
     public void updateFromDatabase(FinancialManagerDbHelper dbHelper) {
         readFromDatabase(dbHelper, this.constraintId);
+    }
+
+    public static ArrayList<Constraint> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Constraint._ID);
+
+        ArrayList<Constraint> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            Constraint constraintToRead = new Constraint();
+            constraintToRead.readFromDatabase(dbHelper, billId);
+            result.add(constraintToRead);
+        }
+
+        return result;
     }
 
     @Override

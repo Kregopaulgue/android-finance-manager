@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -47,13 +49,31 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
         readFromDatabase(dbHelper, this.bindId);
     }
 
+    
+    public static ArrayList<EntryTagBinder> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder._ID);
+
+        ArrayList<EntryTagBinder> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            EntryTagBinder entryTagBinderToRead = new EntryTagBinder();
+            entryTagBinderToRead.readFromDatabase(dbHelper, billId);
+            result.add(entryTagBinderToRead);
+        }
+
+        return result;
+    }
+
     @Override
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT bind_id AS _id, * FROM entry_tag_binders " +
-                "WHERE bind_id=?", new String[]{String.valueOf(entryId)});
+        Cursor cursor = db.rawQuery("SELECT bind_id AS _id, * FROM entry_tag_binders;", null);
 
         int tagIdIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder.COLUMN_TAG_ID);
         int entryIdIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID);
@@ -62,7 +82,7 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
         this.parentTag = new Tag();
         this.parentTag.readFromDatabase(dbHelper, cursor.getInt(tagIdIndex));
 
-        //check how to change for accrual or expense
+        //check how to change for accrual or entryTagBinder
 
         this.parentEntry = new FinancialEntry();
         this.parentEntry.readFromDatabase(dbHelper, cursor.getInt(entryIdIndex));

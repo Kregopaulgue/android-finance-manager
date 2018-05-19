@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -80,6 +82,24 @@ public class BillReminder implements DatabaseHelperFunctions{
         this.billReminderId = cursor.getInt(billTitleIdIndex);
 
         cursor.close();
+    }
+
+    public static ArrayList<BillReminder> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.BillReminder._ID);
+
+        ArrayList<BillReminder> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            BillReminder billReminderToRead = new BillReminder();
+            billReminderToRead.readFromDatabase(dbHelper, billId);
+            result.add(billReminderToRead);
+        }
+
+        return result;
     }
 
     public int getBillReminderId() {

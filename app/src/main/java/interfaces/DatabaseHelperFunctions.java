@@ -7,7 +7,7 @@ import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import entities.Account;
 
-public interface DatabaseHelperFunctions {
+public interface DatabaseHelperFunctions{
 
     void writeToDatabase(FinancialManagerDbHelper dbHelper);
     void updateFromDatabase(FinancialManagerDbHelper dbHelper);

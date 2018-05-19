@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 
@@ -59,14 +61,32 @@ public class Expense extends FinancialEntry {
         readFromDatabase(dbHelper, this.entryId);
     }
 
+    
+    public static ArrayList<Expense> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Expense._ID);
+
+        ArrayList<Expense> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            Expense expenseToRead = new Expense();
+            expenseToRead.readFromDatabase(dbHelper, billId);
+            result.add(expenseToRead);
+        }
+
+        return result;
+    }
+    
     @Override
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
         super.readFromDatabase(dbHelper, entryId);
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM expenses WHERE entry_id=?",
-                new String[]{String.valueOf(entryId)});
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM expenses;", null);
 
         int moneySpentIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_MONEY_SPENT);
         int importanceIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_IMPORTANCE);

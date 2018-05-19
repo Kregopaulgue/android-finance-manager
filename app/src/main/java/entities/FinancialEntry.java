@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
@@ -70,8 +71,7 @@ public class FinancialEntry implements DatabaseHelperFunctions{
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM financial_entries WHERE entry_id=?",
-                new String[]{String.valueOf(entryId)});
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM financial_entries;", null);
 
         int titleIndex = cursor.getColumnIndex(FinancialManager.FinancialEntry.COLUMN_TITLE);
         int idIndex = cursor.getColumnIndex(FinancialManager.FinancialEntry._ID);

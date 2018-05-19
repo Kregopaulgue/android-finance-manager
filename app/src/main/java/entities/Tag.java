@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -51,6 +53,25 @@ public class Tag implements DatabaseHelperFunctions{
         readFromDatabase(dbHelper, this.tagId);
     }
 
+    
+    public static ArrayList<Tag> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT tag_id AS _id FROM tags;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Tag._ID);
+
+        ArrayList<Tag> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            Tag billReminderToRead = new Tag();
+            billReminderToRead.readFromDatabase(dbHelper, billId);
+            result.add(billReminderToRead);
+        }
+
+        return result;
+    }
+    
     @Override
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
