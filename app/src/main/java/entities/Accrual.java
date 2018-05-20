@@ -44,7 +44,7 @@ public class Accrual extends FinancialEntry implements Serializable{
         values.put(FinancialManager.Accrual.COLUMN_MONEY_GAINED, this.moneyGained);
         values.put(FinancialManager.Accrual.COLUMN_ENTRY_ID, this.entryId);
 
-        long newRowId = db.insert(FinancialManager.Accrual.TABLE_NAME, null, values);
+        this.entryId = (int) db.insert(FinancialManager.Accrual.TABLE_NAME, null, values);
 
     }
 
@@ -86,6 +86,22 @@ public class Accrual extends FinancialEntry implements Serializable{
         this.source = cursor.getString(sourceIndex);
 
         cursor.close();
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        super.updateToDatabase(dbHelper, rowId);
+        super.updateToDatabase(dbHelper, rowId);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Accrual.COLUMN_MONEY_GAINED, this.moneyGained);
+        values.put(FinancialManager.Accrual.COLUMN_ENTRY_ID, this.entryId);
+
+        int amountOfUpdated = db.update(FinancialManager.Accrual.TABLE_NAME, values, "entry_id=?",
+                new String[] {Integer.toString(rowId)});
     }
 
     @Override

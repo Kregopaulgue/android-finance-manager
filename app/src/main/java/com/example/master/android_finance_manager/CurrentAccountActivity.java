@@ -38,6 +38,12 @@ public class CurrentAccountActivity extends AppCompatActivity {
         setContentView(R.layout.current_account);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        updateInfo();
+    }
+
 
     public void addAccount(View view) {
 
@@ -64,8 +70,8 @@ public class CurrentAccountActivity extends AppCompatActivity {
         }
         else if(requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                int currentAccountId = 1;
-                mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, currentAccountId);
+                Integer currentAccountId;
+                currentAccountId = mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 1);
                 mCurrentAccount.readFromDatabase(mFinancialManagerDbHelper, currentAccountId);
                 updateInfo();
             }

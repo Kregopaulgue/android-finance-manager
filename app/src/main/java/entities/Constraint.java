@@ -58,8 +58,25 @@ public class Constraint implements DatabaseHelperFunctions {
         values.put(FinancialManager.Constraint.COLUMN_IS_CRITICAL, this.isCritical);
         values.put(FinancialManager.Constraint.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
-        long newRowId = db.insert(FinancialManager.Constraint.TABLE_NAME, null, values);
+        this.constraintId = (int) db.insert(FinancialManager.Constraint.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Constraint.COLUMN_MONEY_LIMIT, this.moneyLimit);
+        values.put(FinancialManager.Constraint.COLUMN_DATE_OF_BEGIN, this.dateOfBegin);
+        values.put(FinancialManager.Constraint.COLUMN_DATE_OF_END, this.dateOfEnd);
+        values.put(FinancialManager.Constraint.COLUMN_WARNING_MONEY_BORDER, this.warningMoneyBorder);
+        values.put(FinancialManager.Constraint.COLUMN_IS_CRITICAL, this.isCritical);
+        values.put(FinancialManager.Constraint.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
+
+        long amountOfUpdated = db.update(FinancialManager.Constraint.TABLE_NAME, values, "constraint_id=?",
+                new String[] {Integer.toString(rowId)});
     }
 
     @Override

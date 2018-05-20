@@ -1,6 +1,7 @@
 package com.example.master.android_finance_manager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ public class FinanceManagerActivity extends AppCompatActivity
     private CardView mLatestGoalCard;
     private CardView mLatestAccrualCard;
     public Account mCurrentAccount;
+    private SharedPreferences mSharedPreferences;
+    public final static String CURRENT_ACCOUNT_ID = "current_account_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +69,9 @@ public class FinanceManagerActivity extends AppCompatActivity
         this.mLatestAccrualCard = findViewById(R.id.latestAccrual);
         this.mLatestEntryCard = findViewById(R.id.latestEntryCard);
         this.mLatestGoalCard = findViewById(R.id.latestGoal);
+        this.mSharedPreferences = this.getSharedPreferences("com.example.app", MODE_PRIVATE);
 
-        //test.setText(expense.getTitle() + " " + expense.getMoneySpent().toString());
-        //mCurrentAccount.readFromDatabase(mDbHelper, 1);
+        mCurrentAccount.readFromDatabase(mDbHelper, mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 1));
     }
 
     @Override

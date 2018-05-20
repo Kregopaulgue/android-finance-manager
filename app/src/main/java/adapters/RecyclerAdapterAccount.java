@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.master.android_finance_manager.ChooseAccountActivity;
+import com.example.master.android_finance_manager.EditAccountActivity;
 import com.example.master.android_finance_manager.R;
 
 import java.util.ArrayList;
@@ -76,9 +78,10 @@ public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapter
 
         @Override
         public void onClick(View view) {
-            SharedPreferences sPref = view.getContext().getSharedPreferences( "com.example.app", MODE_PRIVATE);
-            sPref.edit().putInt(CURRENT_ACCOUNT_ID, this.selectedAccountId);
-            sPref.edit().commit();
+            SharedPreferences preferences = view.getContext().getSharedPreferences("com.example.app", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt(CURRENT_ACCOUNT_ID, this.selectedAccountId);
+            editor.commit();
             Activity actToFinish = (Activity) view.getContext();
             Intent intent = new Intent();
             actToFinish.setResult(Activity.RESULT_OK, intent);
@@ -91,7 +94,7 @@ public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapter
             return true;
         }
 
-        private void showPopupMenu(View view) {
+        private void showPopupMenu(final View view) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.inflate(R.menu.crud_popup_menu);
 
@@ -103,7 +106,9 @@ public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapter
                             switch (item.getItemId()) {
 
                                 case R.id.editMenuItem:
-
+                                    Intent intent = new Intent(view.getContext(), EditAccountActivity.class);
+                                    intent.putExtra("account_id", selectedAccountId);
+                                    ((Activity)view.getContext()).startActivityForResult(intent, 0);
                                     return true;
                                 case R.id.deleteMenuItem:
 

@@ -59,6 +59,22 @@ public class Expense extends FinancialEntry implements Serializable{
     }
 
     @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        super.updateToDatabase(dbHelper, rowId);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Expense.COLUMN_IMPORTANCE, this.importance);
+        values.put(FinancialManager.Expense.COLUMN_MONEY_SPENT, this.moneySpent);
+        values.put(FinancialManager.Expense.COLUMN_ENTRY_ID, this.entryId);
+
+        int amountOfUpdated = (int) db.update(FinancialManager.Expense.TABLE_NAME, values, "entry_id=?",
+                new String[] {Integer.toString(rowId)});
+    }
+
+    @Override
     public void updateFromDatabase(FinancialManagerDbHelper dbHelper) {
         readFromDatabase(dbHelper, this.entryId);
     }

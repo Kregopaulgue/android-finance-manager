@@ -70,6 +70,22 @@ public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
     }
 
     @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.FinancialEntry.COLUMN_TITLE, this.title);
+        values.put(FinancialManager.FinancialEntry.COLUMN_DATE_TIME, this.entryDate);
+        values.put(FinancialManager.FinancialEntry.COLUMN_COMMENT, this.comment);
+        values.put(FinancialManager.FinancialEntry.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
+        values.put(FinancialManager.FinancialEntry.COLUMN_ENTRY_TYPE, this.entryType);
+
+        int amountOfUpdated = db.update(FinancialManager.FinancialEntry.TABLE_NAME, values, "entry_id=?",
+                new String[] {Integer.toString(rowId)});
+    }
+
+    @Override
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

@@ -42,8 +42,22 @@ public class Account implements DatabaseHelperFunctions{
         values.put(FinancialManager.Account.COLUMN_ACCOUNT_TYPE, this.accountType);
         values.put(FinancialManager.Account.COLUMN_AMOUNT_OF_MONEY, this.amountOfMoney);
 
-        long newRowId = db.insert(FinancialManager.Account.TABLE_NAME, null, values);
+        this.accountId = (int) db.insert(FinancialManager.Account.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Account.COLUMN_TITLE, this.accountTitle);
+        values.put(FinancialManager.Account.COLUMN_ACCOUNT_TYPE, this.accountType);
+        values.put(FinancialManager.Account.COLUMN_AMOUNT_OF_MONEY, this.amountOfMoney);
+
+        int amountOfUpdated = db.update(FinancialManager.Account.TABLE_NAME, values, "account_id=?",
+                new String[] { Integer.toString(rowId) });
     }
 
     public static ArrayList<Account> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {

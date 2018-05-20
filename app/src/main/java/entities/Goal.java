@@ -53,8 +53,24 @@ public class Goal implements DatabaseHelperFunctions{
         values.put(FinancialManager.Goal.COLUMN_IS_REACHED, this.isReached);
         values.put(FinancialManager.Goal.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
-        long newRowId = db.insert(FinancialManager.Goal.TABLE_NAME, null, values);
+        this.goalId = (int)db.insert(FinancialManager.Goal.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Goal.COLUMN_SUM_TO_REACH, this.sumToReach);
+        values.put(FinancialManager.Goal.COLUMN_CURRENT_SUM, this.currentSum);
+        values.put(FinancialManager.Goal.COLUMN_TARGET_DESCRIPTION, this.targetTitle);
+        values.put(FinancialManager.Goal.COLUMN_IS_REACHED, this.isReached);
+        values.put(FinancialManager.Goal.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
+
+        long amountOfUpdated = db.update(FinancialManager.Goal.TABLE_NAME, values, "goal_id=?",
+                new String[] {Integer.toString(rowId)});
     }
 
     @Override

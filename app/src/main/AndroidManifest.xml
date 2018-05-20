@@ -36,6 +36,9 @@
         <activity android:name=".CurrentAccountActivity"
             android:label="Entries History">
         </activity>
+        <activity android:name=".EditAccountActivity"
+            android:label="Entries History">
+        </activity>
     </application>
 
 </manifest>

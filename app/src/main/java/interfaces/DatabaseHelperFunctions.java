@@ -11,5 +11,6 @@ public interface DatabaseHelperFunctions{
 
     void writeToDatabase(FinancialManagerDbHelper dbHelper);
     void updateFromDatabase(FinancialManagerDbHelper dbHelper);
+    void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId);
     void readFromDatabase(FinancialManagerDbHelper dbHelper, int rowId);
 }

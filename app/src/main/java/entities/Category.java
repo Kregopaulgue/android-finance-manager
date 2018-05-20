@@ -35,10 +35,21 @@ public class Category implements DatabaseHelperFunctions, Serializable{
 
         values.put(FinancialManager.Category.COLUMN_TITLE, this.categoryTitle);
 
-        long newRowId = db.insert(FinancialManager.Category.TABLE_NAME, null, values);
+        this.categoryId = (int) db.insert(FinancialManager.Category.TABLE_NAME, null, values);
 
     }
 
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Category.COLUMN_TITLE, this.categoryTitle);
+
+        long amountOfUpdated = db.update(FinancialManager.Category.TABLE_NAME, values, "category_id=?",
+                new String[] {});
+    }
 
     @Override
     public void updateFromDatabase(FinancialManagerDbHelper dbHelper) {

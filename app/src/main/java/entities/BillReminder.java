@@ -49,8 +49,23 @@ public class BillReminder implements DatabaseHelperFunctions{
         values.put(FinancialManager.BillReminder.COLUMN_DATE_TIME_TO_PAY, this.dateTimeToPay);
         values.put(FinancialManager.BillReminder.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
-        long newRowId = db.insert(FinancialManager.BillReminder.TABLE_NAME, null, values);
+        this.billReminderId = (int) db.insert(FinancialManager.BillReminder.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.BillReminder.COLUMN_SUM_TO_PAY, this.sumToPay);
+        values.put(FinancialManager.BillReminder.COLUMN_BILL_DESCRIPTION, this.billTitle);
+        values.put(FinancialManager.BillReminder.COLUMN_DATE_TIME_TO_PAY, this.dateTimeToPay);
+        values.put(FinancialManager.BillReminder.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
+
+        long amountOfUpdates = db.update(FinancialManager.BillReminder.TABLE_NAME, values, "bill_reminder_id=?",
+                new String[] {Integer.toString(rowId)});
     }
 
     @Override

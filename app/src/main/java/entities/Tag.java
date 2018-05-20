@@ -45,8 +45,22 @@ public class Tag implements DatabaseHelperFunctions, Serializable{
         values.put(FinancialManager.Tag.COLUMN_TAG_TYPE, this.isMadeByUser);
         values.put(FinancialManager.Tag.COLUMN_CATEGORY_ID, this.parentCategory.getCategoryId());
 
-        long newRowId = db.insert(FinancialManager.Tag.TABLE_NAME, null, values);
+        this.tagId = (int)db.insert(FinancialManager.Tag.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Tag.COLUMN_TITLE, this.tagTitle);
+        values.put(FinancialManager.Tag.COLUMN_TAG_TYPE, this.isMadeByUser);
+        values.put(FinancialManager.Tag.COLUMN_CATEGORY_ID, this.parentCategory.getCategoryId());
+
+        long amountOfUpdated = db.update(FinancialManager.Tag.TABLE_NAME, values, "tag_id=?",
+                new String[]{Integer.toString(rowId)});
     }
 
     @Override

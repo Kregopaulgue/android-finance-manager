@@ -40,8 +40,21 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
         //values.put(FinancialManager.EntryTagBinder.COLUMN_CATEGORY_ID, this.parentTag.getParentCategory().getCategoryId());
         //values.put(FinancialManager.EntryTagBinder.COLUMN_ACCOUNT_ID, this.parentEntry.getParentAccount().getAccountId());
 
-        long newRowId = db.insert(FinancialManager.EntryTagBinder.TABLE_NAME, null, values);
+        this.bindId = (int)db.insert(FinancialManager.EntryTagBinder.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.EntryTagBinder.COLUMN_TAG_ID, this.parentTag.getTagId());
+        values.put(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID, this.parentEntry.getEntryId());
+
+        long amountOfUpdated = db.update(FinancialManager.EntryTagBinder.TABLE_NAME, values, "bind_id=?",
+                new String[] {Integer.toString(rowId)});
     }
 
     @Override
