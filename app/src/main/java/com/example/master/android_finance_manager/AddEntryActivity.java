@@ -18,19 +18,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.EntryTagBinder;
 import entities.Expense;
 import entities.FinancialEntry;
+import entities.Tag;
 
 public class AddEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     public int parentAccountId;
     public Expense mExpense;
     private FinancialManagerDbHelper dbHelper;
+    private ArrayList<Tag> selectedTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +105,23 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     public void clarifyEntry(View view) {
 
         Intent intent = new Intent(this, ClarifyEntry.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+
+                this.mExpense.setImportance(data.getIntExtra("importance", 1));
+                this.mExpense.setEntryType(data.getStringExtra("date"));
+                this.mExpense.setComment(data.getStringExtra("comment"));
+                this.selectedTags = data.getParcelableExtra("tags");
+            }
+        }
     }
 
     public void onNumberClick(View view) {
@@ -131,6 +150,14 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
         this.mExpense.setParentAccount(new Account());
         this.mExpense.getParentAccount().readFromDatabase(dbHelper, 1);
         this.mExpense.writeToDatabase(dbHelper);
+
+        if(selectedTags != null) {
+            for(Tag tempTag : selectedTags) {
+                EntryTagBinder binder = new EntryTagBinder(tempTag, mExpense);
+                binder.writeToDatabase(dbHelper);
+            }
+        }
+
         finish();
 
     }

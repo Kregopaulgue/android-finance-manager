@@ -4,13 +4,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
 
-public class Category implements DatabaseHelperFunctions{
+public class Category implements DatabaseHelperFunctions, Serializable{
 
     private int categoryId;
     private String categoryTitle;

@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.File;
+import java.util.ArrayList;
+
+import entities.Category;
 
 public class FinancialManagerDbHelper extends SQLiteOpenHelper {
 
@@ -36,6 +39,11 @@ public class FinancialManagerDbHelper extends SQLiteOpenHelper {
         db.execSQL(SqlQueries.SQL_CREATE_TABLE_GOALS);
         db.execSQL(SqlQueries.SQL_CREATE_TABLE_CONSTRAINTS);
 
+        db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_FOOD);
+        db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_SERVICE);
+        db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_APPLIANCE);
+        db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_CLOTH);
+        db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_OTHER);
     }
 
     //is called during updating database

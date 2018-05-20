@@ -5,12 +5,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 
-public class Accrual extends FinancialEntry {
+public class Accrual extends FinancialEntry implements Serializable{
 
     private String source;
     private Double moneyGained;

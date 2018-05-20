@@ -1,5 +1,8 @@
 package adapters;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -11,75 +14,75 @@ import android.widget.TextView;
 
 import com.example.master.android_finance_manager.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-import entities.Expense;
+import entities.Account;
 
-public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapterExpense.ExpenseViewHolder>
-{
+import static android.content.Context.MODE_PRIVATE;
 
-    private ArrayList<Expense> expenses;
+public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapterAccount.AccountViewHolder>{
 
-    public RecyclerAdapterExpense(ArrayList<Expense> expenses) {
-        this.expenses = expenses;
+    private ArrayList<Account> accounts;
+
+    public final static String CURRENT_ACCOUNT_ID = "current_account_id";
+
+    public RecyclerAdapterAccount(ArrayList<Account> accounts){
+
+        this.accounts = accounts;
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerAdapterAccount.AccountViewHolder holder, int position) {
 
-        Expense expenseId = expenses.get(position);
-        holder.title.setText(expenseId.getTitle());
-        holder.sumOfMoney.setText(expenseId.getMoneySpent().toString());
-        holder.date.setText(expenseId.getEntryDate());
+        Account account = accounts.get(position);
+        holder.title.setText(account.getAccountTitle());
+        holder.sumOfMoney.setText(account.getAmountOfMoney().toString());
+        holder.selectedAccountId = account.getAccountId();
 
     }
 
     @NonNull
     @Override
-    public ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerAdapterAccount.AccountViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_layout, parent, false);
-        ExpenseViewHolder expenseViewHolder = new ExpenseViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_layout, parent, false);
+        RecyclerAdapterAccount.AccountViewHolder accountViewHolder = new RecyclerAdapterAccount.AccountViewHolder(view);
 
-        return expenseViewHolder;
+        return accountViewHolder;
     }
 
     @Override
     public int getItemCount() {
-        return expenses.size();
+        return accounts.size();
     }
 
-    public static class ExpenseViewHolder extends RecyclerView.ViewHolder
+    public static class AccountViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener
     {
+        int selectedAccountId;
         TextView title;
         TextView sumOfMoney;
-        TextView date;
-        TextView labelTitle;
-        TextView labelSumOfMoney;
-        TextView labelDate;
 
-        public ExpenseViewHolder(View itemView) {
 
+        public AccountViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
-            labelTitle = itemView.findViewById(R.id.titleEntryView);
-            labelSumOfMoney = itemView.findViewById(R.id.moneyEntryView);
-            labelDate = itemView.findViewById(R.id.dateEntryView);
-            title = itemView.findViewById(R.id.showingTitleView);
-            sumOfMoney = itemView.findViewById(R.id.showingSumOfMoneyView);
-            date = itemView.findViewById(R.id.showingDateView);
-
+            title = itemView.findViewById(R.id.chooseAccountTitleView);
+            sumOfMoney = itemView.findViewById(R.id.chooseAccountSumOfMoneyView);
         }
 
         @Override
         public void onClick(View view) {
-            // Context context = view.getContext();
-            // article.getName()
+            SharedPreferences sPref = view.getContext().getSharedPreferences( "com.example.app", MODE_PRIVATE);
+            sPref.edit().putInt(CURRENT_ACCOUNT_ID, this.selectedAccountId);
+            sPref.edit().commit();
+            Activity actToFinish = (Activity) view.getContext();
+            Intent intent = new Intent();
+            actToFinish.setResult(Activity.RESULT_OK, intent);
+            actToFinish.finish();
         }
 
         @Override
@@ -97,9 +100,6 @@ public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapter
 
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            // Toast.makeText(PopupMenuDemoActivity.this,
-                            // item.toString(), Toast.LENGTH_LONG).show();
-                            // return true;
                             switch (item.getItemId()) {
 
                                 case R.id.editMenuItem:

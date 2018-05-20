@@ -4,13 +4,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
 
-public class Tag implements DatabaseHelperFunctions{
+public class Tag implements DatabaseHelperFunctions, Serializable{
 
     private int tagId;
     private String tagTitle;
@@ -44,7 +45,7 @@ public class Tag implements DatabaseHelperFunctions{
         values.put(FinancialManager.Tag.COLUMN_TAG_TYPE, this.isMadeByUser);
         values.put(FinancialManager.Tag.COLUMN_CATEGORY_ID, this.parentCategory.getCategoryId());
 
-        long newRowId = db.insert(FinancialManager.Category.TABLE_NAME, null, values);
+        long newRowId = db.insert(FinancialManager.Tag.TABLE_NAME, null, values);
 
     }
 
@@ -58,6 +59,26 @@ public class Tag implements DatabaseHelperFunctions{
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT tag_id AS _id FROM tags;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.Tag._ID);
+
+        ArrayList<Tag> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            Tag billReminderToRead = new Tag();
+            billReminderToRead.readFromDatabase(dbHelper, billId);
+            result.add(billReminderToRead);
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Tag> readAllFromDatabaseWhereCategory(FinancialManagerDbHelper dbHelper,
+                                                                  int categoryId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT tag_id AS _id FROM tags WHERE category_id=?",
+                new String[] {Integer.toString(categoryId)});
         int idIndex = cursor.getColumnIndex(FinancialManager.Tag._ID);
 
         ArrayList<Tag> result = new ArrayList<>();

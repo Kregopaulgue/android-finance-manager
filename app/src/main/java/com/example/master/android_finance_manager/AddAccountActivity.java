@@ -1,6 +1,7 @@
 package com.example.master.android_finance_manager;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -54,13 +55,12 @@ public class AddAccountActivity extends AppCompatActivity {
         values.put(FinancialManager.Account.COLUMN_ACCOUNT_TYPE, mAccountType);
         values.put(FinancialManager.Account.COLUMN_AMOUNT_OF_MONEY, mAmountOfMoney);
 
-        long newRowId = db.insert(FinancialManager.Account.TABLE_NAME, null, values);
-        Account newAccount = new Account();
-        newAccount.readFromDatabase(mFinancialManagerDbHelper, 1);
+        int newRowId = (int) db.insert(FinancialManager.Account.TABLE_NAME, null, values);
+        Intent answerIntent = new Intent();
 
-        TextView txView = findViewById(R.id.titleDisplay);
-        txView.setText(newAccount.getAccountTitle());
-        //finish();
+        answerIntent.putExtra("new_account_id", newRowId);
+        setResult(RESULT_OK, answerIntent);
+        finish();
 
     }
 }

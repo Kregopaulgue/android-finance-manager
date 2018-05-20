@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
 
-public class FinancialEntry implements DatabaseHelperFunctions{
+public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
 
     protected int entryId;
     protected String title;

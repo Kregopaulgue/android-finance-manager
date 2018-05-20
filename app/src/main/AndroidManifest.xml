@@ -30,6 +30,12 @@
         <activity android:name=".EntriesHistoryActivity"
             android:label="Entries History">
         </activity>
+        <activity android:name=".ChooseAccountActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".CurrentAccountActivity"
+            android:label="Entries History">
+        </activity>
     </application>
 
 </manifest>

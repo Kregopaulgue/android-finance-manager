@@ -67,8 +67,6 @@ public class FinanceManagerActivity extends AppCompatActivity
         this.mLatestEntryCard = findViewById(R.id.latestEntryCard);
         this.mLatestGoalCard = findViewById(R.id.latestGoal);
 
-        Expense expense = new Expense();
-        expense.readFromDatabase(mDbHelper, 1);
         //test.setText(expense.getTitle() + " " + expense.getMoneySpent().toString());
         //mCurrentAccount.readFromDatabase(mDbHelper, 1);
     }
@@ -115,7 +113,7 @@ public class FinanceManagerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            Intent intent = new Intent(FinanceManagerActivity.this, AddAccountActivity.class);
+            Intent intent = new Intent(FinanceManagerActivity.this, CurrentAccountActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(FinanceManagerActivity.this, EntriesHistoryActivity.class);

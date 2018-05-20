@@ -5,13 +5,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 
 
-public class Expense extends FinancialEntry {
+public class Expense extends FinancialEntry implements Serializable{
 
     private Double moneySpent;
     private int importance;
@@ -53,7 +54,7 @@ public class Expense extends FinancialEntry {
         values.put(FinancialManager.Expense.COLUMN_MONEY_SPENT, this.moneySpent);
         values.put(FinancialManager.Expense.COLUMN_ENTRY_ID, this.entryId);
 
-        long newRowId = db.insert(FinancialManager.Expense.TABLE_NAME, null, values);
+        this.entryId = (int) db.insert(FinancialManager.Expense.TABLE_NAME, null, values);
 
     }
 
