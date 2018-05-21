@@ -17,30 +17,30 @@ public class Constraint implements DatabaseHelperFunctions {
     private String dateOfBegin;
     private String dateOfEnd;
     private Double warningMoneyBorder;
-    private int isCritical;
+    private String isFinished;
 
     private Account parentAccount;
 
     public Constraint() {}
 
     public Constraint(Double moneyLimit, String dateOfBegin, String dateOfEnd,
-                      Double warningMoneyBorder, int isCritical, Account parentAccount) {
+                      Double warningMoneyBorder, String isFinished, Account parentAccount) {
         this.moneyLimit = moneyLimit;
         this.dateOfBegin = dateOfBegin;
         this.dateOfEnd = dateOfEnd;
         this.warningMoneyBorder = warningMoneyBorder;
-        this.isCritical = isCritical;
+        this.isFinished = isFinished;
         this.parentAccount = parentAccount;
     }
 
     public Constraint(int constraintId, Double moneyLimit, String dateOfBegin,
-                      String dateOfEnd, Double warningMoneyBorder, int isCritical, Account parentAccount) {
+                      String dateOfEnd, Double warningMoneyBorder, String isFinished, Account parentAccount) {
         this.constraintId = constraintId;
         this.moneyLimit = moneyLimit;
         this.dateOfBegin = dateOfBegin;
         this.dateOfEnd = dateOfEnd;
         this.warningMoneyBorder = warningMoneyBorder;
-        this.isCritical = isCritical;
+        this.isFinished = isFinished;
         this.parentAccount = parentAccount;
     }
 
@@ -55,7 +55,7 @@ public class Constraint implements DatabaseHelperFunctions {
         values.put(FinancialManager.Constraint.COLUMN_DATE_OF_BEGIN, this.dateOfBegin);
         values.put(FinancialManager.Constraint.COLUMN_DATE_OF_END, this.dateOfEnd);
         values.put(FinancialManager.Constraint.COLUMN_WARNING_MONEY_BORDER, this.warningMoneyBorder);
-        values.put(FinancialManager.Constraint.COLUMN_IS_CRITICAL, this.isCritical);
+        values.put(FinancialManager.Constraint.COLUMN_IS_FINISHED, this.isFinished);
         values.put(FinancialManager.Constraint.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
         this.constraintId = (int) db.insert(FinancialManager.Constraint.TABLE_NAME, null, values);
@@ -72,7 +72,7 @@ public class Constraint implements DatabaseHelperFunctions {
         values.put(FinancialManager.Constraint.COLUMN_DATE_OF_BEGIN, this.dateOfBegin);
         values.put(FinancialManager.Constraint.COLUMN_DATE_OF_END, this.dateOfEnd);
         values.put(FinancialManager.Constraint.COLUMN_WARNING_MONEY_BORDER, this.warningMoneyBorder);
-        values.put(FinancialManager.Constraint.COLUMN_IS_CRITICAL, this.isCritical);
+        values.put(FinancialManager.Constraint.COLUMN_IS_FINISHED, this.isFinished);
         values.put(FinancialManager.Constraint.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
         long amountOfUpdated = db.update(FinancialManager.Constraint.TABLE_NAME, values, "constraint_id=?",
@@ -114,7 +114,7 @@ public class Constraint implements DatabaseHelperFunctions {
         int dateOfBeginIndex = cursor.getColumnIndex(FinancialManager.Constraint.COLUMN_DATE_OF_BEGIN);
         int dateOfEndIndex = cursor.getColumnIndex(FinancialManager.Constraint.COLUMN_DATE_OF_END);
         int warningBorderIndex = cursor.getColumnIndex(FinancialManager.Constraint.COLUMN_WARNING_MONEY_BORDER);
-        int isCriticalIndex = cursor.getColumnIndex(FinancialManager.Constraint.COLUMN_IS_CRITICAL);
+        int isFinishedIndex = cursor.getColumnIndex(FinancialManager.Constraint.COLUMN_IS_FINISHED);
         int accountIdIndex = cursor.getColumnIndex(FinancialManager.Constraint.COLUMN_ACCOUNT_ID);
         int constraintIdIndex = cursor.getColumnIndex(FinancialManager.Constraint._ID);
 
@@ -123,7 +123,7 @@ public class Constraint implements DatabaseHelperFunctions {
         this.dateOfBegin = cursor.getString(dateOfBeginIndex);
         this.dateOfEnd = cursor.getString(dateOfEndIndex);
         this.warningMoneyBorder = cursor.getDouble(warningBorderIndex);
-        this.isCritical = cursor.getInt(isCriticalIndex);
+        this.isFinished = cursor.getString(isFinishedIndex);
 
         this.parentAccount = new Account();
         this.parentAccount.readFromDatabase(dbHelper, cursor.getInt(accountIdIndex));
@@ -173,12 +173,12 @@ public class Constraint implements DatabaseHelperFunctions {
         this.warningMoneyBorder = warningMoneyBorder;
     }
 
-    public int getIsCritical() {
-        return isCritical;
+    public String getIsFinished() {
+        return isFinished;
     }
 
-    public void setIsCritical(int isCritical) {
-        this.isCritical = isCritical;
+    public void setIsFinished(String isFinished) {
+        this.isFinished = isFinished;
     }
 
     public Account getParentAccount() {

@@ -49,28 +49,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Set Importance:"
+                android:text="SET SOURCE:"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
-            <com.xw.repo.BubbleSeekBar
-                android:id="@+id/importanceSeekBar"
+            <EditText
+                android:id="@+id/enterSource"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:labelFor="@+id/importanceLabel"
-                app:bsb_bubble_color="@color/colorAccent"
-                app:bsb_bubble_text_color="@color/colorPrimaryDark"
-                app:bsb_max="50.0"
-                app:bsb_progress="0"
-                app:bsb_second_track_color="@color/colorPrimary"
-                app:bsb_section_count="5"
-                app:bsb_section_text_position="bottom_sides"
-                app:bsb_show_progress_in_float="true"
-                app:bsb_show_section_mark="true"
-                app:bsb_show_section_text="true"
-                app:bsb_show_thumb_text="true"
-                app:bsb_track_color="@color/colorPrimaryDark" />
+                android:layout_alignEnd="@+id/tags_layout"
+                android:layout_alignLeft="@+id/tags_layout"
+                android:layout_alignRight="@+id/tags_layout"
+                android:layout_alignStart="@+id/tags_layout"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp" />
 
         </LinearLayout>
 
@@ -172,7 +168,7 @@
             tools:layout_editor_absoluteY="323dp" />
 
         <EditText
-            android:id="@+id/commentClarifyInput"
+            android:id="@+id/editText8"
             android:layout_width="match_parent"
             android:layout_height="115dp"
             android:layout_weight="1"

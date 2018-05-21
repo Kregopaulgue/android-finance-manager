@@ -89,6 +89,7 @@ public class FinancialManager {
         public final static String COLUMN_SUM_TO_PAY = "sum_to_pay";
         public final static String COLUMN_BILL_DESCRIPTION = "bill_description";
         public final static String COLUMN_DATE_TIME_TO_PAY = "date_time_to_pay";
+        public final static String COLUMN_IS_PAID = "is_paid";
         public final static String COLUMN_ACCOUNT_ID = "account_id";
     }
 
@@ -102,7 +103,7 @@ public class FinancialManager {
         public final static String COLUMN_DATE_OF_BEGIN = "date_of_begin";
         public final static String COLUMN_DATE_OF_END = "date_of_end";
         public final static String COLUMN_WARNING_MONEY_BORDER = "warning_money_border";
-        public final static String COLUMN_IS_CRITICAL = "is_critical";
+        public final static String COLUMN_IS_FINISHED = "is_finished";
         public final static String COLUMN_ACCOUNT_ID = "account_id";
     }
 

@@ -1,8 +1,6 @@
-package com.example.master.android_finance_manager;
+package com.example.master.android_finance_manager.EntriesActivities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -12,20 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cunoraz.tagview.TagView;
+import com.example.master.android_finance_manager.R;
 import com.xw.repo.BubbleSeekBar;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import data.FinancialManagerDbHelper;
 import entities.Category;
-import entities.EntryTagBinder;
-import entities.FinancialEntry;
 import entities.Tag;
 
-public class ClarifyEntry extends AppCompatActivity{
+public class ClarifyEntryActivity extends AppCompatActivity{
 
     private FinancialManagerDbHelper dbHelper;
 
@@ -126,8 +120,10 @@ public class ClarifyEntry extends AppCompatActivity{
     public void saveClarifying(View view) {
 
         BubbleSeekBar currentBar = findViewById(R.id.importanceSeekBar);
+        EditText commentInput = findViewById(R.id.commentClarifyInput);
 
         this.importance = currentBar.getProgress();
+        this.comment = commentInput.getText().toString();
 
         Intent answerIntent = new Intent();
 
@@ -138,9 +134,6 @@ public class ClarifyEntry extends AppCompatActivity{
 
         setResult(RESULT_OK, answerIntent);
         finish();
-
-
-        //add binding with tags
 
     }
 

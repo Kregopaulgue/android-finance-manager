@@ -1,4 +1,4 @@
-package com.example.master.android_finance_manager;
+package com.example.master.android_finance_manager.AccountsActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import com.example.master.android_finance_manager.R;
 
 import java.util.ArrayList;
 

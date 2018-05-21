@@ -37,7 +37,7 @@ public class RecyclerAdapterAccrual extends RecyclerView.Adapter<RecyclerAdapter
     @Override
     public RecyclerAdapterAccrual.AccrualViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.goal_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.accrual_layout, parent, false);
         RecyclerAdapterAccrual.AccrualViewHolder accrualViewHolder = new RecyclerAdapterAccrual.AccrualViewHolder(view);
 
         return accrualViewHolder;

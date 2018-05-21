@@ -18,25 +18,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddEntryActivity"
+        <activity android:name=".EntriesActivities.AddEntryActivity"
             android:label="Add Entry">
         </activity>
-        <activity android:name=".ClarifyEntry"
+        <activity android:name=".EntriesActivities.ClarifyEntryActivity"
             android:label="Clarify Entry">
         </activity>
-        <activity android:name=".AddAccountActivity"
+        <activity android:name=".AccountsActivities.AddAccountActivity"
             android:label="Create Account">
         </activity>
-        <activity android:name=".EntriesHistoryActivity"
+        <activity android:name=".EntriesActivities.EntriesHistoryActivity"
             android:label="Entries History">
         </activity>
-        <activity android:name=".ChooseAccountActivity"
+        <activity android:name=".AccountsActivities.ChooseAccountActivity"
             android:label="Entries History">
         </activity>
-        <activity android:name=".CurrentAccountActivity"
+        <activity android:name=".AccountsActivities.CurrentAccountActivity"
             android:label="Entries History">
         </activity>
-        <activity android:name=".EditAccountActivity"
+        <activity android:name=".AccountsActivities.EditAccountActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".EntriesActivities.ClarifyAccrualActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AdditionalEntriesActivities.EditBillReminderActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AdditionalEntriesActivities.EditGoalActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AdditionalEntriesActivities.EditConstraintActivity"
             android:label="Entries History">
         </activity>
     </application>

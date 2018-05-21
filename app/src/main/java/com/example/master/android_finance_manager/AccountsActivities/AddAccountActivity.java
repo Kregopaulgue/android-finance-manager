@@ -1,4 +1,4 @@
-package com.example.master.android_finance_manager;
+package com.example.master.android_finance_manager.AccountsActivities;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.example.master.android_finance_manager.R;
 
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;

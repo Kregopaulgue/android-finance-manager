@@ -72,6 +72,7 @@ public class SqlQueries {
             "    sum_to_pay real,\n" +
             "    bill_title text,\n" +
             "    date_time_to_pay text,\n" +
+            "    is_paid text,\n" +
             "    account_id integer not null,\n" +
             "    foreign key(account_id) references accounts(account_id)\n" +
             "    on delete cascade\n" +
@@ -84,7 +85,7 @@ public class SqlQueries {
             "    date_of_begin text,\n" +
             "    date_of_end text,\n" +
             "    warning_money_border real,\n" +
-            "    is_critical boolean,\n" +
+            "    is_finished text,\n" +
             "    account_id integer not null,\n" +
             "    foreign key(account_id) references accounts(account_id)\n" +
             "    on delete cascade\n" +
@@ -93,10 +94,10 @@ public class SqlQueries {
             "create table goals\n" +
             "(\n" +
             "    goal_id integer primary key autoincrement,\n" +
-            "    sum_to_reach real,\n" +
-            "    current_sum real,\n" +
+            "    sum_to_reach real not null,\n" +
+            "    current_sum real not null,\n" +
             "    target_title text,\n" +
-            "    is_reached boolean,\n" +
+            "    is_reached text,\n" +
             "    account_id integer not null,\n" +
             "    foreign key(account_id) references accounts(account_id)\n" +
             "    on delete cascade\n" +

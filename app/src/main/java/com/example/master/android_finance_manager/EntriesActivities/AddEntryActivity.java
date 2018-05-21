@@ -1,10 +1,10 @@
-package com.example.master.android_finance_manager;
+package com.example.master.android_finance_manager.EntriesActivities;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -15,7 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.master.android_finance_manager.R;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.GregorianCalendar;
 
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.Accrual;
 import entities.EntryTagBinder;
 import entities.Expense;
 import entities.FinancialEntry;
@@ -32,15 +34,24 @@ import entities.Tag;
 public class AddEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     public int parentAccountId;
-    public Expense mExpense;
+    public FinancialEntry mEntry;
     private FinancialManagerDbHelper dbHelper;
     private ArrayList<Tag> selectedTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parentAccountId = getIntent().getIntExtra("currentAccountId", 0);
-        mExpense = new Expense();
+        mEntry = new FinancialEntry();
+        parentAccountId = getIntent().getIntExtra("currentAccountId", 1);
+        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+        String entryType = getIntent().getStringExtra("ENTRY_TYPE");
+        if(entryType.equals("ACCRUAL")) {
+            mEntry = new Accrual();
+        }
+        else {
+            mEntry = new Expense();
+        }
+        mEntry.setEntryType(entryType);
         dbHelper = new FinancialManagerDbHelper(this);
         setContentView(R.layout.add_entry_manager);
     }
@@ -59,7 +70,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
 
     private void setDate(final Calendar calendar) {
         final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        mExpense.setEntryDate(dateFormat.format(calendar.getTime()));
+        mEntry.setEntryDate(dateFormat.format(calendar.getTime()));
 
     }
 
@@ -84,7 +95,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 //Вводим текст и отображаем в строке ввода на основном экране:
-                                mExpense.setTitle(userInput.getText().toString());
+                                mEntry.setTitle(userInput.getText().toString());
                             }
                         })
                 .setNegativeButton("Отмена",
@@ -104,7 +115,12 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
 
     public void clarifyEntry(View view) {
 
-        Intent intent = new Intent(this, ClarifyEntry.class);
+        Intent intent;
+        if(mEntry.getEntryType().equals("EXPENSE")) {
+            intent = new Intent(this, ClarifyEntryActivity.class);
+        } else {
+            intent = new Intent(this, ClarifyAccrualActivity.class);
+        }
         startActivityForResult(intent, 0);
 
     }
@@ -115,11 +131,17 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-
-                this.mExpense.setImportance(data.getIntExtra("importance", 1));
-                this.mExpense.setEntryType(data.getStringExtra("date"));
-                this.mExpense.setComment(data.getStringExtra("comment"));
+                if(data.getStringExtra("date") != null) {
+                    this.mEntry.setEntryDate(data.getStringExtra("date"));
+                }
+                this.mEntry.setComment(data.getStringExtra("comment"));
                 this.selectedTags = data.getParcelableExtra("tags");
+
+                if(mEntry.getClass().equals(Expense.class)) {
+                    ((Expense)this.mEntry).setImportance(data.getIntExtra("importance", 1));
+                } else {
+                    ((Accrual)this.mEntry).setSource(data.getStringExtra("source"));
+                }
             }
         }
     }
@@ -145,15 +167,19 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     public void saveEntry(View view) {
 
         EditText number = findViewById(R.id.editNumber);
-        this.mExpense.setEntryType("EXPENSE");
-        this.mExpense.setMoneySpent(Double.parseDouble(number.getText().toString()));
-        this.mExpense.setParentAccount(new Account());
-        this.mExpense.getParentAccount().readFromDatabase(dbHelper, 1);
-        this.mExpense.writeToDatabase(dbHelper);
+        this.mEntry.setParentAccount(new Account());
+        this.mEntry.getParentAccount().readFromDatabase(dbHelper, 1);
+        if(mEntry.getClass().equals(Expense.class)) {
+            ((Expense)this.mEntry).setMoneySpent(Double.parseDouble(number.getText().toString()));
+        } else {
+            ((Accrual)this.mEntry).setMoneyGained(Double.parseDouble(number.getText().toString()));
+        }
+
+        this.mEntry.writeToDatabase(dbHelper);
 
         if(selectedTags != null) {
             for(Tag tempTag : selectedTags) {
-                EntryTagBinder binder = new EntryTagBinder(tempTag, mExpense);
+                EntryTagBinder binder = new EntryTagBinder(tempTag, mEntry);
                 binder.writeToDatabase(dbHelper);
             }
         }

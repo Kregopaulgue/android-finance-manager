@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="367dp"
-        android:layout_height="139dp"
-        android:orientation="horizontal"
         tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="8dp"
+        android:layout_width="362dp"
+        android:layout_height="190dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="147dp"
@@ -17,31 +16,41 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/titleGoalView"
+                android:id="@+id/constraintLimitView"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:gravity="center"
-                android:text="TARGET TITLE:"
+                android:text="LIMIT:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/targetSumEntryView"
+                android:id="@+id/firstBorderWarningView"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:gravity="center"
-                android:text="TARGET SUM:"
+                android:text="FIRST BORDER:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/currentSumEntryView"
+                android:id="@+id/dateBeginView"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
+                android:layout_height="47dp"
                 android:gravity="center"
-                android:text="CURRENT SUM:"
+                android:text="DATE BEGIN:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/dateEndView"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:gravity="center"
+                android:text="DATE END:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="18dp" />
+
 
         </LinearLayout>
 
@@ -51,26 +60,32 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/showingTargetTitleView"
+                android:id="@+id/showingLimitView"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/showingFirstBorderView"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/showingBeginDateView"
                 android:layout_width="match_parent"
                 android:layout_height="47dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/showingTargetSumOfMoneyView"
+                android:id="@+id/showingEndDateView"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/showingCurrentSumOfMoneyView"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="47dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textSize="12dp" />
         </LinearLayout>
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>

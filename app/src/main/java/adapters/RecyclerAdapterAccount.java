@@ -12,8 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.master.android_finance_manager.ChooseAccountActivity;
-import com.example.master.android_finance_manager.EditAccountActivity;
+import com.example.master.android_finance_manager.AccountsActivities.EditAccountActivity;
 import com.example.master.android_finance_manager.R;
 
 import java.util.ArrayList;

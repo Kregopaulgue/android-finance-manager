@@ -1,6 +1,5 @@
-package com.example.master.android_finance_manager;
+package com.example.master.android_finance_manager.EntriesActivities;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,16 +7,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import com.example.master.android_finance_manager.R;
+
 import java.util.ArrayList;
 
 import adapters.RecyclerAdapterExpense;
-import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import entities.Expense;
 
 public class EntriesHistoryActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerAdapterExpense adapter;
@@ -31,17 +30,6 @@ public class EntriesHistoryActivity extends AppCompatActivity {
 
         mFinancialManagerDbHelper = new FinancialManagerDbHelper(this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        final ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_manage);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         recyclerView = findViewById(R.id.entriesRecyclerView);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -54,7 +42,6 @@ public class EntriesHistoryActivity extends AppCompatActivity {
 
         adapter = new RecyclerAdapterExpense(expenses);
         recyclerView.setAdapter(adapter);
-        // Populate the ListView here...
 
     }
 

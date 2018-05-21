@@ -1,21 +1,16 @@
-package com.example.master.android_finance_manager;
+package com.example.master.android_finance_manager.AccountsActivities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.master.android_finance_manager.R;
 
-import adapters.RecyclerAdapterAccount;
-import adapters.RecyclerAdapterExpense;
 import data.FinancialManagerDbHelper;
 import entities.Account;
-import entities.Expense;
 
 public class CurrentAccountActivity extends AppCompatActivity {
 
@@ -31,19 +26,15 @@ public class CurrentAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mFinancialManagerDbHelper = new FinancialManagerDbHelper(this);
         mSharedPreferences = getSharedPreferences("com.example.app", MODE_PRIVATE);
-        int currentAccountId = 1;
-        mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, currentAccountId);
+        int currentAccountId = mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 1);
         mCurrentAccount = new Account();
-        this.mCurrentAccount.readFromDatabase(mFinancialManagerDbHelper, currentAccountId);
+        try {
+            this.mCurrentAccount.readFromDatabase(mFinancialManagerDbHelper, currentAccountId);
+        } catch (Exception e) {
+
+        }
         setContentView(R.layout.current_account);
     }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        updateInfo();
-    }
-
 
     public void addAccount(View view) {
 

@@ -18,14 +18,16 @@ public class BillReminder implements DatabaseHelperFunctions{
     private String billTitle;
     private String dateTimeToPay;
     private Account parentAccount;
+    private String isPaid;
 
     public BillReminder() {}
 
-    public BillReminder(Double sumToPay, String billTitle, String dateTimeToPay, Account parentAccount) {
+    public BillReminder(Double sumToPay, String billTitle, String dateTimeToPay, Account parentAccount, String isPaid) {
         this.sumToPay = sumToPay;
         this.billTitle = billTitle;
         this.dateTimeToPay = dateTimeToPay;
         this.parentAccount = parentAccount;
+        this.isPaid = isPaid;
     }
 
     public BillReminder(int billReminderId, Double sumToPay, String billTitle,
@@ -35,6 +37,7 @@ public class BillReminder implements DatabaseHelperFunctions{
         this.billTitle = billTitle;
         this.dateTimeToPay = dateTimeToPay;
         this.parentAccount = parentAccount;
+        this.isPaid = isPaid;
     }
 
     @Override
@@ -48,6 +51,7 @@ public class BillReminder implements DatabaseHelperFunctions{
         values.put(FinancialManager.BillReminder.COLUMN_BILL_DESCRIPTION, this.billTitle);
         values.put(FinancialManager.BillReminder.COLUMN_DATE_TIME_TO_PAY, this.dateTimeToPay);
         values.put(FinancialManager.BillReminder.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
+        values.put(FinancialManager.BillReminder.COLUMN_IS_PAID, this.parentAccount.getAccountId());
 
         this.billReminderId = (int) db.insert(FinancialManager.BillReminder.TABLE_NAME, null, values);
 
@@ -116,6 +120,14 @@ public class BillReminder implements DatabaseHelperFunctions{
         }
 
         return result;
+    }
+
+    public String getIsPaid() {
+        return isPaid;
+    }
+
+    public void setIsPaid(String isPaid) {
+        this.isPaid = isPaid;
     }
 
     public int getBillReminderId() {

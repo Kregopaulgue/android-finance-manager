@@ -5,33 +5,37 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_accounts"
             android:icon="@drawable/ic_menu_camera"
             android:title="Accounts" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_expenses"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="History" />
+            android:title="Expenses" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_accruals"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Additional Entries" />
+            android:title="Accruals" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_statistics"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Statistics" />
     </group>
 
-    <item android:title="Settings">
+    <item android:title="Additional Entries">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_goals"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Profile Settings" />
+                android:title="Goals" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_reminders"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Exit" />
+                android:title="Bill Reminders" />
+            <item
+                android:id="@+id/nav_constraints"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Constraints" />
         </menu>
     </item>
 
