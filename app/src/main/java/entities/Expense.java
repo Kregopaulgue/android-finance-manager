@@ -80,10 +80,12 @@ public class Expense extends FinancialEntry implements Serializable{
     }
 
     
-    public static ArrayList<Expense> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+    public static ArrayList<Expense> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries;", null);
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM expenses WHERE entry_id IN" +
+                        "(SELECT entry_id FROM finance_entries WHERE account_id=?)",
+                new String[]{Integer.toString(accId)});
         int idIndex = cursor.getColumnIndex(FinancialManager.Expense._ID);
 
         ArrayList<Expense> result = new ArrayList<>();
@@ -110,9 +112,10 @@ public class Expense extends FinancialEntry implements Serializable{
         int moneySpentIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_MONEY_SPENT);
         int importanceIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_IMPORTANCE);
 
-        cursor.moveToNext();
-        this.moneySpent = cursor.getDouble(moneySpentIndex);
-        this.importance = importanceIndex;
+        while(cursor.moveToNext()) {
+            this.moneySpent = cursor.getDouble(moneySpentIndex);
+            this.importance = cursor.getInt(importanceIndex);
+        }
 
         cursor.close();
     }

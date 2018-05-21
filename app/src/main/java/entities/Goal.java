@@ -24,7 +24,11 @@ public class Goal implements DatabaseHelperFunctions{
 
     public Goal(Double sumToReach, Double currentSum, String targetTitle, String isReached, Account parentAccount) {
         this.sumToReach = sumToReach;
-        this.currentSum = currentSum;
+        if(currentSum == null) {
+            this.currentSum = 0.0;
+        } else {
+            this.currentSum = currentSum;
+        }
         this.targetTitle = targetTitle;
         this.isReached = isReached;
         this.parentAccount = parentAccount;
@@ -34,7 +38,11 @@ public class Goal implements DatabaseHelperFunctions{
                 String isReached, Account parentAccount) {
         this.goalId = goalId;
         this.sumToReach = sumToReach;
-        this.currentSum = currentSum;
+        if(currentSum == null) {
+            this.currentSum = 0.0;
+        } else {
+            this.currentSum = currentSum;
+        }
         this.targetTitle = targetTitle;
         this.isReached = isReached;
         this.parentAccount = parentAccount;
@@ -49,7 +57,7 @@ public class Goal implements DatabaseHelperFunctions{
 
         values.put(FinancialManager.Goal.COLUMN_SUM_TO_REACH, this.sumToReach);
         values.put(FinancialManager.Goal.COLUMN_CURRENT_SUM, this.currentSum);
-        values.put(FinancialManager.Goal.COLUMN_TARGET_DESCRIPTION, this.targetTitle);
+        values.put(FinancialManager.Goal.COLUMN_TARGET_TITLE, this.targetTitle);
         values.put(FinancialManager.Goal.COLUMN_IS_REACHED, this.isReached);
         values.put(FinancialManager.Goal.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
@@ -65,7 +73,7 @@ public class Goal implements DatabaseHelperFunctions{
 
         values.put(FinancialManager.Goal.COLUMN_SUM_TO_REACH, this.sumToReach);
         values.put(FinancialManager.Goal.COLUMN_CURRENT_SUM, this.currentSum);
-        values.put(FinancialManager.Goal.COLUMN_TARGET_DESCRIPTION, this.targetTitle);
+        values.put(FinancialManager.Goal.COLUMN_TARGET_TITLE, this.targetTitle);
         values.put(FinancialManager.Goal.COLUMN_IS_REACHED, this.isReached);
         values.put(FinancialManager.Goal.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
@@ -79,10 +87,11 @@ public class Goal implements DatabaseHelperFunctions{
     }
 
     
-    public static ArrayList<Goal> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+    public static ArrayList<Goal> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT goal_id AS _id FROM goals;", null);
+        Cursor cursor = db.rawQuery("SELECT goal_id AS _id FROM goals WHERE account_id=?",
+                new String[] {Integer.toString(accId)});
         int idIndex = cursor.getColumnIndex(FinancialManager.Goal._ID);
 
         ArrayList<Goal> result = new ArrayList<>();
@@ -106,7 +115,7 @@ public class Goal implements DatabaseHelperFunctions{
                 " WHERE goal_id = ?", new String[]{String.valueOf(entryId)});
 
         int currentSumIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_CURRENT_SUM);
-        int targetTitleIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_TARGET_DESCRIPTION);
+        int targetTitleIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_TARGET_TITLE);
         int isReachedIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_IS_REACHED);
         int accountIdIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_ACCOUNT_ID);
         int sumToReachIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_SUM_TO_REACH);

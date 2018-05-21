@@ -48,7 +48,7 @@ public class BillReminder implements DatabaseHelperFunctions{
         ContentValues values = new ContentValues();
 
         values.put(FinancialManager.BillReminder.COLUMN_SUM_TO_PAY, this.sumToPay);
-        values.put(FinancialManager.BillReminder.COLUMN_BILL_DESCRIPTION, this.billTitle);
+        values.put(FinancialManager.BillReminder.COLUMN_BILL_TITLE, this.billTitle);
         values.put(FinancialManager.BillReminder.COLUMN_DATE_TIME_TO_PAY, this.dateTimeToPay);
         values.put(FinancialManager.BillReminder.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
         values.put(FinancialManager.BillReminder.COLUMN_IS_PAID, this.parentAccount.getAccountId());
@@ -64,11 +64,11 @@ public class BillReminder implements DatabaseHelperFunctions{
         ContentValues values = new ContentValues();
 
         values.put(FinancialManager.BillReminder.COLUMN_SUM_TO_PAY, this.sumToPay);
-        values.put(FinancialManager.BillReminder.COLUMN_BILL_DESCRIPTION, this.billTitle);
+        values.put(FinancialManager.BillReminder.COLUMN_BILL_TITLE, this.billTitle);
         values.put(FinancialManager.BillReminder.COLUMN_DATE_TIME_TO_PAY, this.dateTimeToPay);
         values.put(FinancialManager.BillReminder.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
-        long amountOfUpdates = db.update(FinancialManager.BillReminder.TABLE_NAME, values, "bill_reminder_id=?",
+        long amountOfUpdates = db.update(FinancialManager.BillReminder.TABLE_NAME, values, "bill_id=?",
                 new String[] {Integer.toString(rowId)});
     }
 
@@ -82,11 +82,11 @@ public class BillReminder implements DatabaseHelperFunctions{
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders " +
-                "WHERE bill_reminder_id=?", new String[]{String.valueOf(entryId)});
+        Cursor cursor = db.rawQuery("SELECT bill_id AS _id, * FROM bill_reminders " +
+                "WHERE bill_id=?", new String[]{String.valueOf(entryId)});
 
         int sumToPayIndex = cursor.getColumnIndex(FinancialManager.BillReminder.COLUMN_SUM_TO_PAY);
-        int billTitleIndex = cursor.getColumnIndex(FinancialManager.BillReminder.COLUMN_BILL_DESCRIPTION);
+        int billTitleIndex = cursor.getColumnIndex(FinancialManager.BillReminder.COLUMN_BILL_TITLE);
         int dateTimeToPayIndex = cursor.getColumnIndex(FinancialManager.BillReminder.COLUMN_DATE_TIME_TO_PAY);
         int accountIdIndex = cursor.getColumnIndex(FinancialManager.BillReminder.COLUMN_ACCOUNT_ID);
         int billTitleIdIndex = cursor.getColumnIndex(FinancialManager.BillReminder._ID);
@@ -104,10 +104,11 @@ public class BillReminder implements DatabaseHelperFunctions{
         cursor.close();
     }
 
-    public static ArrayList<BillReminder> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+    public static ArrayList<BillReminder> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders;", null);
+        Cursor cursor = db.rawQuery("SELECT bill_id AS _id, * FROM bill_reminders WHERE account_id=?",
+                new String[] {Integer.toString(accId)});
         int idIndex = cursor.getColumnIndex(FinancialManager.BillReminder._ID);
 
         ArrayList<BillReminder> result = new ArrayList<>();

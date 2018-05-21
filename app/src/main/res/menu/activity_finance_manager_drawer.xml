@@ -30,7 +30,7 @@
                 android:title="Goals" />
             <item
                 android:id="@+id/nav_reminders"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_menu_slideshow"
                 android:title="Bill Reminders" />
             <item
                 android:id="@+id/nav_constraints"

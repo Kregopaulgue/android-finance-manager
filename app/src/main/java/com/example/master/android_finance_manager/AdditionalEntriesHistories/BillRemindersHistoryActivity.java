@@ -1,5 +1,6 @@
 package com.example.master.android_finance_manager.AdditionalEntriesHistories;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,9 @@ import adapters.RecyclerAdapterExpense;
 import data.FinancialManagerDbHelper;
 import entities.BillReminder;
 import entities.Expense;
+
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_APP;
 
 public class BillRemindersHistoryActivity extends AppCompatActivity {
 
@@ -38,7 +42,9 @@ public class BillRemindersHistoryActivity extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(this);
 
-        ArrayList<BillReminder> billReminders = BillReminder.readAllFromDatabase(mFinancialManagerDbHelper);
+        SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
+        ArrayList<BillReminder> billReminders =
+                BillReminder.readAllFromDatabase(mFinancialManagerDbHelper, preferences.getInt(CURRENT_ACCOUNT_ID, 1));
 
         adapter = new RecyclerAdapterBillReminder(billReminders);
         recyclerView.setAdapter(adapter);

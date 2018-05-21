@@ -51,6 +51,18 @@
         <activity android:name=".AdditionalEntriesActivities.EditConstraintActivity"
             android:label="Entries History">
         </activity>
+        <activity android:name=".AdditionalEntriesHistories.GoalsHistoryActivity"
+            android:label="Goals">
+        </activity>
+        <activity android:name=".AdditionalEntriesHistories.BillRemindersHistoryActivity"
+            android:label="Bills">
+        </activity>
+        <activity android:name=".AdditionalEntriesHistories.ContraintsHistoryActivity"
+            android:label="Constraints">
+        </activity>
+        <activity android:name=".EntriesActivities.EditEntryActivity"
+            android:label="Edit Entry">
+        </activity>
     </application>
 
 </manifest>

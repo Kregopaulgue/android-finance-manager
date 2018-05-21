@@ -31,6 +31,9 @@ import entities.Expense;
 import entities.FinancialEntry;
 import entities.Tag;
 
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_APP;
+
 public class AddEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     public int parentAccountId;
@@ -42,8 +45,9 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEntry = new FinancialEntry();
-        parentAccountId = getIntent().getIntExtra("currentAccountId", 1);
-        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
+        parentAccountId = preferences.getInt(CURRENT_ACCOUNT_ID, 1);
+        SharedPreferences sPref = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
         String entryType = getIntent().getStringExtra("ENTRY_TYPE");
         if(entryType.equals("ACCRUAL")) {
             mEntry = new Accrual();
@@ -75,20 +79,15 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     }
 
     public void enterTitle(View view) {
-        //Получаем вид с файла prompt.xml, который применим для диалогового окна:
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.enter_title, null);
 
-        //Создаем AlertDialog
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
 
-        //Настраиваем prompt.xml для нашего AlertDialog:
         mDialogBuilder.setView(promptsView);
 
-        //Настраиваем отображение поля для ввода текста в открытом диалоге:
         final EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);
 
-        //Настраиваем сообщение в диалоговом окне:
         mDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("OK",
@@ -105,10 +104,8 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
                             }
                         });
 
-        //Создаем AlertDialog:
         AlertDialog alertDialog = mDialogBuilder.create();
 
-        //и отображаем его:
         alertDialog.show();
 
     }

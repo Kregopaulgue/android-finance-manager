@@ -84,10 +84,11 @@ public class Constraint implements DatabaseHelperFunctions {
         readFromDatabase(dbHelper, this.constraintId);
     }
 
-    public static ArrayList<Constraint> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+    public static ArrayList<Constraint> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders;", null);
+        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders WHERE account_id=?",
+                new String[] {Integer.toString(accId)});
         int idIndex = cursor.getColumnIndex(FinancialManager.Constraint._ID);
 
         ArrayList<Constraint> result = new ArrayList<>();

@@ -56,10 +56,10 @@ public class Category implements DatabaseHelperFunctions, Serializable{
         readFromDatabase(dbHelper, this.categoryId);
     }
 
-    public static ArrayList<Category> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+    public static ArrayList<Category> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT category_id AS _id FROM categories;", null);
+        Cursor cursor = db.rawQuery("SELECT category_id AS _id FROM categories", null);
         int idIndex = cursor.getColumnIndex(FinancialManager.Category._ID);
 
         ArrayList<Category> result = new ArrayList<>();

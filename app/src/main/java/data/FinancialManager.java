@@ -87,7 +87,7 @@ public class FinancialManager {
         public final static String _ID = BaseColumns._ID;
         public final static String COLUMN_BILL_ID = "bill_id";
         public final static String COLUMN_SUM_TO_PAY = "sum_to_pay";
-        public final static String COLUMN_BILL_DESCRIPTION = "bill_description";
+        public final static String COLUMN_BILL_TITLE = "bill_title";
         public final static String COLUMN_DATE_TIME_TO_PAY = "date_time_to_pay";
         public final static String COLUMN_IS_PAID = "is_paid";
         public final static String COLUMN_ACCOUNT_ID = "account_id";
@@ -115,7 +115,7 @@ public class FinancialManager {
         public final static String COLUMN_GOAL_ID = "goal_id";
         public final static String COLUMN_SUM_TO_REACH = "sum_to_reach";
         public final static String COLUMN_CURRENT_SUM = "current_sum";
-        public final static String COLUMN_TARGET_DESCRIPTION = "target_description";
+        public final static String COLUMN_TARGET_TITLE = "target_title";
         public final static String COLUMN_IS_REACHED = "is_reached";
         public final static String COLUMN_ACCOUNT_ID = "account_id";
     }

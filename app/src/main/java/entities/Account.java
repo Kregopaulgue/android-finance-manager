@@ -64,7 +64,7 @@ public class Account implements DatabaseHelperFunctions{
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT account_id AS _id FROM accounts;", null);
+        Cursor cursor = db.rawQuery("SELECT account_id AS _id FROM accounts", null);
         int idIndex = cursor.getColumnIndex(FinancialManager.Account._ID);
 
         ArrayList<Account> result = new ArrayList<>();

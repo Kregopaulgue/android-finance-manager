@@ -1,5 +1,6 @@
 package adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.master.android_finance_manager.EntriesActivities.EditEntryActivity;
 import com.example.master.android_finance_manager.R;
 
 import org.w3c.dom.Text;
@@ -29,10 +31,11 @@ public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapter
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
 
-        Expense expenseId = expenses.get(position);
-        holder.title.setText(expenseId.getTitle());
-        holder.sumOfMoney.setText(expenseId.getMoneySpent().toString());
-        holder.date.setText(expenseId.getEntryDate());
+        Expense expense = expenses.get(position);
+        holder.expenseId = expense.getEntryId();
+        holder.title.setText(expense.getTitle());
+        holder.sumOfMoney.setText(expense.getMoneySpent().toString());
+        holder.date.setText(expense.getEntryDate());
 
     }
 
@@ -54,6 +57,7 @@ public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapter
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener
     {
+        int expenseId;
         TextView title;
         TextView sumOfMoney;
         TextView date;
@@ -88,7 +92,7 @@ public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapter
             return true;
         }
 
-        private void showPopupMenu(View view) {
+        private void showPopupMenu(final View view) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.inflate(R.menu.crud_popup_menu);
 
@@ -103,7 +107,10 @@ public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapter
                             switch (item.getItemId()) {
 
                                 case R.id.editMenuItem:
-
+                                    Intent intent = new Intent(view.getContext(), EditEntryActivity.class);
+                                    intent.putExtra("ENTRY_TYPE", "EXPENSE");
+                                    intent.putExtra("ENTRY_ID", expenseId);
+                                    view.getContext().startActivity(intent);
                                     return true;
                                 case R.id.deleteMenuItem:
 

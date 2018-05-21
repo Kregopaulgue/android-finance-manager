@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import entities.Account;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_APP;
 
 public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapterAccount.AccountViewHolder>{
 
@@ -77,10 +78,10 @@ public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapter
 
         @Override
         public void onClick(View view) {
-            SharedPreferences preferences = view.getContext().getSharedPreferences("com.example.app", MODE_PRIVATE);
+            SharedPreferences preferences = view.getContext().getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt(CURRENT_ACCOUNT_ID, this.selectedAccountId);
-            editor.commit();
+            editor.apply();
             Activity actToFinish = (Activity) view.getContext();
             Intent intent = new Intent();
             actToFinish.setResult(Activity.RESULT_OK, intent);

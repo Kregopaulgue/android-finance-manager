@@ -1,12 +1,20 @@
 package adapters;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.master.android_finance_manager.R;
@@ -14,9 +22,16 @@ import com.example.master.android_finance_manager.R;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import data.FinancialManagerDbHelper;
+import entities.Account;
 import entities.BillReminder;
 import entities.Constraint;
+import entities.Goal;
+
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_APP;
 
 public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdapterConstraint.ConstraintViewHolder>{
 
@@ -29,11 +44,12 @@ public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdap
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterConstraint.ConstraintViewHolder holder, int position) {
 
-        Constraint constraintId = constraints.get(position);
-        holder.showingConstraintLimit.setText(constraintId.getMoneyLimit().toString());
-        holder.showingFirstBorderWarning.setText(constraintId.getWarningMoneyBorder().toString());
-        holder.showingDateBegin.setText(constraintId.getDateOfBegin());
-        holder.showingDateEnd.setText(constraintId.getDateOfEnd());
+        Constraint constraint = constraints.get(position);
+        holder.constraintId = constraint.getConstraintId();
+        holder.showingConstraintLimit.setText(constraint.getMoneyLimit().toString());
+        holder.showingFirstBorderWarning.setText(constraint.getWarningMoneyBorder().toString());
+        holder.showingDateBegin.setText(constraint.getDateOfBegin());
+        holder.showingDateEnd.setText(constraint.getDateOfEnd());
 
     }
 
@@ -55,6 +71,7 @@ public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdap
     public static class ConstraintViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener
     {
+        int constraintId;
         TextView constraintLimit;
         TextView firstBorderWarning;
         TextView dateBegin;
@@ -96,7 +113,7 @@ public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdap
             return true;
         }
 
-        private void showPopupMenu(View view) {
+        private void showPopupMenu(final View view) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.inflate(R.menu.crud_popup_menu);
 
@@ -108,7 +125,7 @@ public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdap
                             switch (item.getItemId()) {
 
                                 case R.id.editMenuItem:
-
+                                    addConstraintDialog(view);
                                     return true;
                                 case R.id.deleteMenuItem:
 
@@ -127,6 +144,106 @@ public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdap
                 }
             });
             popupMenu.show();
+        }
+
+        private void addConstraintDialog(final View view) {
+
+            LayoutInflater li = LayoutInflater.from(view.getContext());
+            View promptsView = li.inflate(R.layout.add_constraint, null);
+
+            AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(view.getContext());
+
+            mDialogBuilder.setView(promptsView);
+
+            final EditText constraintMoneyLimit = view.findViewById(R.id.sumConstraintInput);
+            final EditText firstBorder = view.findViewById(R.id.firstBorderInput);
+            final Button selectDateBegin = view.findViewById(R.id.selectBeginDateConstraint);
+            final Button selectDateEnd = view.findViewById(R.id.selectEndDateConstraint);
+
+            selectDateBegin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Calendar now = Calendar.getInstance();
+                    final Calendar c = Calendar.getInstance();
+
+                    DatePickerDialog dpd = new DatePickerDialog(v.getContext(),
+                            new DatePickerDialog.OnDateSetListener() {
+
+                                @Override
+                                public void onDateSet(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth) {
+                                    selectDateBegin.setText(dayOfMonth + "-"
+                                            + (monthOfYear + 1) + "-" + year);
+
+                                }
+                            }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));
+                    dpd.show();
+
+
+                }
+            });
+
+            selectDateEnd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Calendar c = Calendar.getInstance();
+
+                    DatePickerDialog dpd = new DatePickerDialog(v.getContext(),
+                            new DatePickerDialog.OnDateSetListener() {
+
+                                @Override
+                                public void onDateSet(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth) {
+                                    selectDateEnd.setText(dayOfMonth + "-"
+                                            + (monthOfYear + 1) + "-" + year);
+
+                                }
+                            }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));
+                    dpd.show();
+
+
+                }
+            });
+
+            mDialogBuilder
+                    .setCancelable(true)
+                    .setPositiveButton("ADD CONSTRAINT",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+
+                                    showingConstraintLimit.setText(constraintMoneyLimit.getText().toString());
+                                    showingFirstBorderWarning.setText(showingFirstBorderWarning.getText().toString());
+                                    showingDateBegin.setText(showingDateBegin.getText().toString());
+                                    showingDateEnd.setText(showingDateEnd.getText().toString());
+
+                                    Constraint constraint = new Constraint();
+
+                                    FinancialManagerDbHelper dbHelper = new FinancialManagerDbHelper(view.getContext());
+                                    Account mParentAccount = new Account();
+
+                                    SharedPreferences sharedPreferences = view.getContext().getSharedPreferences(CURRENT_APP, Context.MODE_PRIVATE);
+                                    int parentAccountId = sharedPreferences.getInt(CURRENT_ACCOUNT_ID, 1);
+                                    mParentAccount.readFromDatabase(dbHelper, parentAccountId);
+
+                                    constraint.setMoneyLimit(Double.parseDouble(constraintMoneyLimit.getText().toString()));
+                                    constraint.setWarningMoneyBorder(Double.parseDouble(firstBorder.getText().toString()));
+                                    constraint.setDateOfBegin(selectDateBegin.getText().toString());
+                                    constraint.setDateOfEnd(selectDateEnd.getText().toString());
+                                    constraint.setIsFinished("false");
+                                    constraint.setConstraintId(constraintId);
+                                    constraint.setParentAccount(mParentAccount);
+                                    constraint.updateToDatabase(dbHelper, constraintId);
+                                }
+                            })
+                    .setNegativeButton("Отмена",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alertDialog = mDialogBuilder.create();
+            alertDialog.show();
+
         }
     }
 

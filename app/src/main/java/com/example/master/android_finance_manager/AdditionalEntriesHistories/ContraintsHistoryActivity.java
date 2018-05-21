@@ -1,5 +1,6 @@
 package com.example.master.android_finance_manager.AdditionalEntriesHistories;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +11,11 @@ import com.example.master.android_finance_manager.R;
 import java.util.ArrayList;
 
 import adapters.RecyclerAdapterConstraint;
-import adapters.RecyclerAdapterGoal;
 import data.FinancialManagerDbHelper;
 import entities.Constraint;
-import entities.Goal;
+
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_APP;
 
 public class ContraintsHistoryActivity extends AppCompatActivity {
 
@@ -38,7 +40,9 @@ public class ContraintsHistoryActivity extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(this);
 
-        ArrayList<Constraint> constraints = Constraint.readAllFromDatabase(mFinancialManagerDbHelper);
+        SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
+        ArrayList<Constraint> constraints =
+                Constraint.readAllFromDatabase(mFinancialManagerDbHelper, preferences.getInt(CURRENT_ACCOUNT_ID, 1));
 
         adapter = new RecyclerAdapterConstraint(constraints);
         recyclerView.setAdapter(adapter);

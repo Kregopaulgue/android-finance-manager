@@ -1,5 +1,6 @@
 package com.example.master.android_finance_manager.AdditionalEntriesHistories;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import adapters.RecyclerAdapterGoal;
 import data.FinancialManagerDbHelper;
 import entities.Goal;
+
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
+import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_APP;
 
 public class GoalsHistoryActivity extends AppCompatActivity {
 
@@ -37,7 +41,9 @@ public class GoalsHistoryActivity extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(this);
 
-        ArrayList<Goal> goals = Goal.readAllFromDatabase(mFinancialManagerDbHelper);
+        SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
+        ArrayList<Goal> goals =
+                Goal.readAllFromDatabase(mFinancialManagerDbHelper, preferences.getInt(CURRENT_ACCOUNT_ID, 1));
 
         adapter = new RecyclerAdapterGoal(goals);
         recyclerView.setAdapter(adapter);

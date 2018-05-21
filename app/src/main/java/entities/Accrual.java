@@ -48,11 +48,13 @@ public class Accrual extends FinancialEntry implements Serializable{
 
     }
 
-    public static ArrayList<Accrual> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+    public static ArrayList<Accrual> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id FROM accruals;", null);
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id FROM accruals WHERE entry_id IN " +
+                        "(SELECT entry_id FROM finance_entries WHERE account_id=?)",
+                new String[] {Integer.toString(accId)});
 
         int accrualIdIndex = cursor.getColumnIndex(FinancialManager.Accrual._ID);
 
@@ -90,7 +92,6 @@ public class Accrual extends FinancialEntry implements Serializable{
 
     @Override
     public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
-        super.updateToDatabase(dbHelper, rowId);
         super.updateToDatabase(dbHelper, rowId);
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();

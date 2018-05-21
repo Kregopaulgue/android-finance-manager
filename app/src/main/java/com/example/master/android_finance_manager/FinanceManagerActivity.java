@@ -24,6 +24,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.example.master.android_finance_manager.AdditionalEntriesHistories.BillRemindersHistoryActivity;
+import com.example.master.android_finance_manager.AdditionalEntriesHistories.ContraintsHistoryActivity;
+import com.example.master.android_finance_manager.AdditionalEntriesHistories.GoalsHistoryActivity;
 import com.example.master.android_finance_manager.EntriesActivities.AddEntryActivity;
 import com.example.master.android_finance_manager.AccountsActivities.CurrentAccountActivity;
 import com.example.master.android_finance_manager.EntriesActivities.EntriesHistoryActivity;
@@ -40,20 +43,17 @@ import entities.Goal;
 public class FinanceManagerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Accrual accrual;
     private Goal goal;
     private BillReminder billReminder;
     private Constraint constraint;
 
     private FinancialManagerDbHelper mDbHelper;
-    private CardView mLatestEntryCard;
-    private CardView mLatestGoalCard;
-    private CardView mLatestAccrualCard;
 
     public Account mCurrentAccount;
 
     private SharedPreferences mSharedPreferences;
     public final static String CURRENT_ACCOUNT_ID = "current_account_id";
+    public final static String CURRENT_APP = "com.example.app";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +88,6 @@ public class FinanceManagerActivity extends AppCompatActivity
 
         mDbHelper = new FinancialManagerDbHelper(this);
         mCurrentAccount = new Account();
-        this.mLatestAccrualCard = findViewById(R.id.latestAccrual);
-        this.mLatestEntryCard = findViewById(R.id.latestEntryCard);
-        this.mLatestGoalCard = findViewById(R.id.latestGoal);
         this.mSharedPreferences = this.getSharedPreferences("com.example.app", MODE_PRIVATE);
 
         mCurrentAccount.readFromDatabase(mDbHelper, mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 1));
@@ -108,19 +105,17 @@ public class FinanceManagerActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.finance_manager, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.actionAddGoal) {
             addGoalDialog();
             return true;
@@ -146,7 +141,7 @@ public class FinanceManagerActivity extends AppCompatActivity
         Fragment fragment = null;
         Class fragmentClass = null;
 
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_accounts) {
@@ -154,22 +149,26 @@ public class FinanceManagerActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_expenses) {
             Intent intent = new Intent(FinanceManagerActivity.this, EntriesHistoryActivity.class);
+            intent.putExtra("ENTRY_TYPE", "EXPENSE");
             startActivity(intent);
         } else if (id == R.id.nav_accruals) {
-            Intent intent = new Intent(FinanceManagerActivity.this, AddEntryActivity.class);
-            intent.putExtra("currentAccountId", 1);
+            Intent intent = new Intent(FinanceManagerActivity.this, EntriesHistoryActivity.class);
+            intent.putExtra("ENTRY_TYPE", "ACCRUAL");
             startActivity(intent);
         } else if (id == R.id.nav_goals) {
-
+            Intent intent = new Intent(FinanceManagerActivity.this, GoalsHistoryActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_reminders) {
-
+            Intent intent = new Intent(FinanceManagerActivity.this, BillRemindersHistoryActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_constraints) {
-
+            Intent intent = new Intent(FinanceManagerActivity.this, ContraintsHistoryActivity.class);
+            startActivity(intent);
         }
 
-        // Выделяем выбранный пункт меню в шторке
+
         item.setChecked(true);
-        // Выводим выбранный пункт в заголовке
+
         setTitle(item.getTitle());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -186,13 +185,11 @@ public class FinanceManagerActivity extends AppCompatActivity
         //Создаем AlertDialog
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
 
-        //Настраиваем prompt.xml для нашего AlertDialog:
         mDialogBuilder.setView(promptsView);
 
-        //Настраиваем отображение поля для ввода текста в открытом диалоге:
         final EditText titleInput = (EditText) promptsView.findViewById(R.id.targetTitleInput);
         final EditText sumToReachInput = (EditText) promptsView.findViewById(R.id.sumToReachInput);
-        //Настраиваем сообщение в диалоговом окне:
+
         mDialogBuilder
                 .setCancelable(true)
                 .setPositiveButton("ADD GOAL",
@@ -326,7 +323,6 @@ public class FinanceManagerActivity extends AppCompatActivity
         selectDateEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Calendar now = Calendar.getInstance();
                 final Calendar c = Calendar.getInstance();
 
                 DatePickerDialog dpd = new DatePickerDialog(v.getContext(),
