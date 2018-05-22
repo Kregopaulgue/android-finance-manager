@@ -110,6 +110,8 @@ public class SqlQueries {
             "insert into categories(title) values('APPLIANCE');";
     public static final String SQL_INSERT_CATEGORY_CLOTH =
             "insert into categories(title) values('CLOTH');";
+    public static final String SQL_INSERT_CATEGORY_ACCRUAL =
+            "insert into categories(title) values('ACCRUAL');";
     public static final String SQL_INSERT_CATEGORY_OTHER =
             "insert into categories(title) values('OTHER');";
 }

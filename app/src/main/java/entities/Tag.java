@@ -1,6 +1,7 @@
 package entities;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -68,6 +69,25 @@ public class Tag implements DatabaseHelperFunctions, Serializable{
         readFromDatabase(dbHelper, this.tagId);
     }
 
+    public static ArrayList<Tag> readAllFromDatabaseWhereEntry(FinancialManagerDbHelper dbHelper, int entryId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT tag_id AS _id FROM tags WHERE tag_id IN" +
+                        "(SELECT tag_id FROM entry_tag_binders WHERE entry_id=?)",
+                new String[]{Integer.toString(entryId)});
+        int idIndex = cursor.getColumnIndex(FinancialManager.Tag._ID);
+
+        ArrayList<Tag> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int tagId = cursor.getInt(idIndex);
+            Tag tagToRead = new Tag();
+            tagToRead.readFromDatabase(dbHelper, tagId);
+            result.add(tagToRead);
+        }
+
+        return result;
+    }
     
     public static ArrayList<Tag> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

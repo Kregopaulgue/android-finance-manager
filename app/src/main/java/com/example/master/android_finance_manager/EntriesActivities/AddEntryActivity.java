@@ -165,7 +165,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
 
         EditText number = findViewById(R.id.editNumber);
         this.mEntry.setParentAccount(new Account());
-        this.mEntry.getParentAccount().readFromDatabase(dbHelper, 1);
+        this.mEntry.getParentAccount().readFromDatabase(dbHelper, parentAccountId);
         if(mEntry.getClass().equals(Expense.class)) {
             ((Expense)this.mEntry).setMoneySpent(Double.parseDouble(number.getText().toString()));
         } else {

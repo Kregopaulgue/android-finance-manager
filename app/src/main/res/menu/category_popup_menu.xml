@@ -13,7 +13,10 @@
             android:title="Appliance"/>
         <item
             android:id="@+id/clothMenuItem"
-            android:title="Food"/>
+            android:title="Cloth"/>
+        <item
+            android:id="@+id/accrualMenuItem"
+            android:title="Accrual"/>
         <item
             android:id="@+id/otherMenuItem"
             android:title="Other"/>

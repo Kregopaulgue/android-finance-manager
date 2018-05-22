@@ -2,9 +2,12 @@ package com.example.master.android_finance_manager.EntriesActivities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +33,7 @@ public class ClarifyEntryActivity extends AppCompatActivity{
 
     private String selectedDate;
     private int importance;
+    private ArrayList<Tag> tagList;
 
     private ArrayList<Tag> selectedTags;
 
@@ -46,11 +50,12 @@ public class ClarifyEntryActivity extends AppCompatActivity{
 
         setContentView(R.layout.clarify_entry);
 
-        tagView = (TagView) findViewById(R.id.tag_group);
+        tagView = findViewById(R.id.tag_group);
         currentTagsView = findViewById(R.id.currentTags);
 
         dbHelper = new FinancialManagerDbHelper(this);
         SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
+
         categories = Category.readAllFromDatabase(dbHelper, preferences.getInt(CURRENT_ACCOUNT_ID, 1));
 
         selectedTags = new ArrayList<>();
@@ -78,7 +83,19 @@ public class ClarifyEntryActivity extends AppCompatActivity{
             }
         });
 
+        EditText searchTagEdit = findViewById(R.id.searchTagEdit);
+        searchTagEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setTags(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
     }
 
     private void showPopupMenu(View view) {
@@ -94,18 +111,27 @@ public class ClarifyEntryActivity extends AppCompatActivity{
 
                             case R.id.foodMenuItem:
                                 selectedCategory = categories.get(0);
+                                loadTags();
                                 return true;
                             case R.id.serviceMenuItem:
                                 selectedCategory = categories.get(1);
+                                loadTags();
                                 return true;
                             case R.id.applianceMenuItem:
                                 selectedCategory = categories.get(2);
+                                loadTags();
                                 return true;
                             case R.id.clothMenuItem:
                                 selectedCategory = categories.get(3);
+                                loadTags();
+                                return true;
+                            case R.id.accrualMenuItem:
+                                selectedCategory = categories.get(4);
+                                loadTags();
                                 return true;
                             case R.id.otherMenuItem:
-                                selectedCategory = categories.get(4);
+                                selectedCategory = categories.get(5);
+                                loadTags();
                                 return true;
                             default:
                                 return false;
@@ -141,7 +167,6 @@ public class ClarifyEntryActivity extends AppCompatActivity{
 
         }
 
-
         answerIntent.putExtra("comment", this.comment);
         answerIntent.putExtra("date", this.selectedDate);
         answerIntent.putExtra("importance", this.importance);
@@ -154,15 +179,52 @@ public class ClarifyEntryActivity extends AppCompatActivity{
     }
 
     public void addTagGlobally(View view) {
-
         TextView tagText = findViewById(R.id.newTagEdit);
         Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
         addedTag.writeToDatabase(dbHelper);
         selectedTags.add(addedTag);
+        tagView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
         currentTagsView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+    }
+
+    public void loadTags() {
+        tagView.getTags().clear();
+        tagList = Tag.readAllFromDatabaseWhereCategory(dbHelper, selectedCategory.getCategoryId());
+        for(Tag tempTag : tagList) {
+            tagView.addTag(new com.cunoraz.tagview.Tag(tempTag.getTagTitle()));
+        }
+    }
+
+    private void setTags(CharSequence cs) {
+        /**
+         * for empty edittext
+         */
+        if (cs.toString().equals("")) {
+            tagView.getTags().clear();
+            loadTags();
+            return;
+        }
+
+        String text = cs.toString();
+        ArrayList<com.cunoraz.tagview.Tag> tags = new ArrayList<>();
+        com.cunoraz.tagview.Tag tag;
+
+        for (int i = 0; i < tagList.size(); i++) {
+            if (tagList.get(i).getTagTitle().toLowerCase().startsWith(text.toLowerCase())) {
+                tag = new com.cunoraz.tagview.Tag(tagList.get(i).getTagTitle());
+                tag.radius = 10f;
+                tag.layoutColor = Color.parseColor("GREEN");
+                tag.isDeletable = true;
+                tags.add(tag);
+            }
+        }
+        tagView.addTags(tags);
+
     }
 
     public void selectCategory(View view) {
         showPopupMenu(view);
     }
+
+
 }

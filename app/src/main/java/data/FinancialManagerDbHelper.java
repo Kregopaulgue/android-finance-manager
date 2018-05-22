@@ -43,6 +43,7 @@ public class FinancialManagerDbHelper extends SQLiteOpenHelper {
         db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_SERVICE);
         db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_APPLIANCE);
         db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_CLOTH);
+        db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_ACCRUAL);
         db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_OTHER);
     }
 

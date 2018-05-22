@@ -11,6 +11,7 @@ import com.example.master.android_finance_manager.R;
 
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.Expense;
 
 public class CurrentAccountActivity extends AppCompatActivity {
 
@@ -28,12 +29,23 @@ public class CurrentAccountActivity extends AppCompatActivity {
         mSharedPreferences = getSharedPreferences("com.example.app", MODE_PRIVATE);
         int currentAccountId = mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 1);
         mCurrentAccount = new Account();
+        setContentView(R.layout.current_account);
         try {
             this.mCurrentAccount.readFromDatabase(mFinancialManagerDbHelper, currentAccountId);
         } catch (Exception e) {
 
         }
-        setContentView(R.layout.current_account);
+        TextView title = findViewById(R.id.showingCurrentAccountTitle);
+        TextView currentSum = findViewById(R.id.showingCurrentAccountSumOfMoney);
+        TextView accountType = findViewById(R.id.showingCurrentAccountType);
+
+        try {
+            title.setText(mCurrentAccount.getAccountTitle());
+            currentSum.setText(mCurrentAccount.getAmountOfMoney().toString());
+            accountType.setText(mCurrentAccount.getAccountType());
+        } catch (Exception e) {
+
+        }
     }
 
     public void addAccount(View view) {

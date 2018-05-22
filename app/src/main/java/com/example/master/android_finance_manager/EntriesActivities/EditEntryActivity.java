@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -41,6 +42,7 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
     public FinancialEntry mEntry;
     private FinancialManagerDbHelper dbHelper;
 
+    private ArrayList<Tag> tagList;
     private String selectedDate;
 
     private ArrayList<Tag> selectedTags;
@@ -62,20 +64,18 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
             setContentView(R.layout.edit_accrual);
             mEntry = new Accrual();
         }
-        mEntry.setEntryType(getIntent().getStringExtra("ENTRY_TYPE"));
-        mEntry.setEntryId(getIntent().getIntExtra("ENTRY_ID", 1));
+        mEntry.readFromDatabase(dbHelper, getIntent().getIntExtra("ENTRY_ID", 1));
+        //mEntry.setEntryType(getIntent().getStringExtra("ENTRY_TYPE"));
+        //mEntry.setEntryId(getIntent().getIntExtra("ENTRY_ID", 1));
 
         tagView = findViewById(R.id.tag_group);
         currentTagsView = findViewById(R.id.currentTags);
 
         dbHelper = new FinancialManagerDbHelper(this);
-        SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
 
-        parentAccountId = preferences.getInt(CURRENT_ACCOUNT_ID, 1);
+        categories = Category.readAllFromDatabase(dbHelper, mEntry.getParentAccount().getAccountId());
+        selectedTags = Tag.readAllFromDatabaseWhereEntry(dbHelper, mEntry.getEntryId());
 
-        categories = Category.readAllFromDatabase(dbHelper, parentAccountId);
-
-        selectedTags = new ArrayList<>();
 
         tagView.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
@@ -99,6 +99,24 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
                 currentTags.remove(currentTags.getTags().indexOf(tag));
             }
         });
+
+        BubbleSeekBar currentBar = findViewById(R.id.importanceSeekBar);
+        EditText commentInput = findViewById(R.id.commentClarifyInput);
+        EditText sourceInput = findViewById(R.id.enterSource);
+        EditText titleInput = findViewById(R.id.clarifyTitleEdit);
+        EditText moneySpent = findViewById(R.id.setNewMoneyInput);
+
+        if(entryType.equals("EXPENSE")) {
+            Expense expense = (Expense) mEntry;
+            currentBar.setProgress(expense.getImportance());
+            moneySpent.setText(expense.getMoneySpent().toString());
+        } else {
+            Accrual accrual = (Accrual) mEntry;
+            sourceInput.setText(accrual.getSource());
+            moneySpent.setText(accrual.getMoneyGained().toString());
+        }
+        commentInput.setText(mEntry.getComment());
+        titleInput.setText(mEntry.getTitle());
     }
 
     private void showPopupMenu(View view) {
@@ -114,18 +132,27 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
 
                             case R.id.foodMenuItem:
                                 selectedCategory = categories.get(0);
+                                loadTags();
                                 return true;
                             case R.id.serviceMenuItem:
                                 selectedCategory = categories.get(1);
+                                loadTags();
                                 return true;
                             case R.id.applianceMenuItem:
                                 selectedCategory = categories.get(2);
+                                loadTags();
                                 return true;
                             case R.id.clothMenuItem:
                                 selectedCategory = categories.get(3);
+                                loadTags();
+                                return true;
+                            case R.id.accrualMenuItem:
+                                selectedCategory = categories.get(4);
+                                loadTags();
                                 return true;
                             case R.id.otherMenuItem:
-                                selectedCategory = categories.get(4);
+                                selectedCategory = categories.get(5);
+                                loadTags();
                                 return true;
                             default:
                                 return false;
@@ -162,7 +189,7 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
         mEntry.setTitle(titleInput.getText().toString());
 
         Account parentAccount = new Account();
-        parentAccount.readFromDatabase(dbHelper, parentAccountId);
+        parentAccount.readFromDatabase(dbHelper, mEntry.getParentAccount().getAccountId());
         mEntry.setParentAccount(parentAccount);
         mEntry.updateToDatabase(dbHelper, mEntry.getEntryId());
 
@@ -181,6 +208,52 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
 
     public void selectCategory(View view) {
         showPopupMenu(view);
+    }
+
+    public void loadTags() {
+        tagView.getTags().clear();
+        tagList = Tag.readAllFromDatabaseWhereCategory(dbHelper, selectedCategory.getCategoryId());
+        for(Tag tempTag : tagList) {
+            com.cunoraz.tagview.Tag tagToAdd = new com.cunoraz.tagview.Tag(tempTag.getTagTitle());
+            tagToAdd.isDeletable = true;
+            tagView.addTag(tagToAdd);
+
+        }
+    }
+
+    public void loadCurrentTags() {
+        for(Tag tempTag : selectedTags) {
+            com.cunoraz.tagview.Tag tagToAdd = new com.cunoraz.tagview.Tag(tempTag.getTagTitle());
+            tagToAdd.isDeletable = true;
+            currentTagsView.addTag(tagToAdd);
+        }
+    }
+
+    private void setTags(CharSequence cs) {
+        /**
+         * for empty edittext
+         */
+        if (cs.toString().equals("")) {
+            tagView.getTags().clear();
+            loadTags();
+            return;
+        }
+
+        String text = cs.toString();
+        ArrayList<com.cunoraz.tagview.Tag> tags = new ArrayList<>();
+        com.cunoraz.tagview.Tag tag;
+
+        for (int i = 0; i < tagList.size(); i++) {
+            if (tagList.get(i).getTagTitle().toLowerCase().startsWith(text.toLowerCase())) {
+                tag = new com.cunoraz.tagview.Tag(tagList.get(i).getTagTitle());
+                tag.radius = 10f;
+                tag.layoutColor = Color.parseColor("GREEN");
+                tag.isDeletable = true;
+                tags.add(tag);
+            }
+        }
+        tagView.addTags(tags);
+
     }
 
     public void selectDate(View view) {
