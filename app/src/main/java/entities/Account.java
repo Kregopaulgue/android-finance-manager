@@ -108,7 +108,13 @@ public class Account implements DatabaseHelperFunctions{
         cursor.close();
     }
 
-
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "account_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.accountId) };
+        db.delete(FinancialManager.Account.TABLE_NAME, whereClause, whereArgs);
+    }
 
     public int getAccountId() {
         return accountId;

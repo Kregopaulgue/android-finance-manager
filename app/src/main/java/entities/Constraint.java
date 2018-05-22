@@ -134,6 +134,14 @@ public class Constraint implements DatabaseHelperFunctions {
         cursor.close();
     }
 
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "constraint_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.constraintId) };
+        db.delete(FinancialManager.Constraint.TABLE_NAME, whereClause, whereArgs);
+    }
+
     public int getConstraintId() {
         return constraintId;
     }

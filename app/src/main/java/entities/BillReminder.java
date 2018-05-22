@@ -123,6 +123,14 @@ public class BillReminder implements DatabaseHelperFunctions{
         return result;
     }
 
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "bill_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.billReminderId) };
+        db.delete(FinancialManager.BillReminder.TABLE_NAME, whereClause, whereArgs);
+    }
+
     public String getIsPaid() {
         return isPaid;
     }

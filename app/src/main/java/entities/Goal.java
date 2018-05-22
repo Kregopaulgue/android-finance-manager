@@ -135,6 +135,14 @@ public class Goal implements DatabaseHelperFunctions{
         cursor.close();
     }
 
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "goal_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.goalId) };
+        db.delete(FinancialManager.Goal.TABLE_NAME, whereClause, whereArgs);
+    }
+
     public int getGoalId() {
         return goalId;
     }

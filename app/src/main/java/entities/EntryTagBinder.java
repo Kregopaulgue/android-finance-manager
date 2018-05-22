@@ -119,6 +119,14 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
         cursor.close();
     }
 
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "bind_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.bindId) };
+        db.delete(FinancialManager.EntryTagBinder.TABLE_NAME, whereClause, whereArgs);
+    }
+
     public int getBindId() {
         return bindId;
     }

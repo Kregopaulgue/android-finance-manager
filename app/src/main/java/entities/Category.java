@@ -91,6 +91,14 @@ public class Category implements DatabaseHelperFunctions, Serializable{
         cursor.close();
     }
 
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "category_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.categoryId) };
+        db.delete(FinancialManager.Category.TABLE_NAME, whereClause, whereArgs);
+    }
+
     public int getCategoryId() {
         return categoryId;
     }

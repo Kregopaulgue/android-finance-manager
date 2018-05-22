@@ -2,8 +2,6 @@ package com.example.master.android_finance_manager.EntriesActivities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,9 +30,6 @@ import entities.Category;
 import entities.Expense;
 import entities.FinancialEntry;
 import entities.Tag;
-
-import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
-import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_APP;
 
 public class EditEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -65,8 +60,6 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
             mEntry = new Accrual();
         }
         mEntry.readFromDatabase(dbHelper, getIntent().getIntExtra("ENTRY_ID", 1));
-        //mEntry.setEntryType(getIntent().getStringExtra("ENTRY_TYPE"));
-        //mEntry.setEntryId(getIntent().getIntExtra("ENTRY_ID", 1));
 
         tagView = findViewById(R.id.tag_group);
         currentTagsView = findViewById(R.id.currentTags);

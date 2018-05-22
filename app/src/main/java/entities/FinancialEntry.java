@@ -111,6 +111,14 @@ public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
         cursor.close();
     }
 
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "entry_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.entryId) };
+        db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
+    }
+
     public String getTitle() {
         return title;
     }
