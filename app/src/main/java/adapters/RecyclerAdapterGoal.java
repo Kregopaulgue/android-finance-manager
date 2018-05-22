@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.Accrual;
 import entities.Goal;
 
 import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
@@ -117,7 +118,10 @@ public class RecyclerAdapterGoal extends RecyclerView.Adapter<RecyclerAdapterGoa
                                     addGoalDialog(view);
                                     return true;
                                 case R.id.deleteMenuItem:
-
+                                    FinancialManagerDbHelper dbHelper = new FinancialManagerDbHelper(view.getContext());
+                                    Goal goal = new Goal();
+                                    goal.readFromDatabase(dbHelper, goalId);
+                                    goal.deleteFromDatabase(dbHelper);
                                     return true;
                                 default:
                                     return false;

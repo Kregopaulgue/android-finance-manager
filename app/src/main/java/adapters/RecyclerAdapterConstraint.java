@@ -26,6 +26,7 @@ import java.util.Calendar;
 
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.Accrual;
 import entities.BillReminder;
 import entities.Constraint;
 import entities.Goal;
@@ -128,7 +129,10 @@ public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdap
                                     addConstraintDialog(view);
                                     return true;
                                 case R.id.deleteMenuItem:
-
+                                    FinancialManagerDbHelper dbHelper = new FinancialManagerDbHelper(view.getContext());
+                                    Constraint constraint = new Constraint();
+                                    constraint.readFromDatabase(dbHelper, constraintId);
+                                    constraint.deleteFromDatabase(dbHelper);
                                     return true;
                                 default:
                                     return false;

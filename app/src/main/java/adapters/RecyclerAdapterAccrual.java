@@ -15,6 +15,8 @@ import com.example.master.android_finance_manager.R;
 
 import java.util.ArrayList;
 
+import data.FinancialManagerDbHelper;
+import entities.Account;
 import entities.Accrual;
 
 public class RecyclerAdapterAccrual extends RecyclerView.Adapter<RecyclerAdapterAccrual.AccrualViewHolder>{
@@ -105,7 +107,10 @@ public class RecyclerAdapterAccrual extends RecyclerView.Adapter<RecyclerAdapter
                                     view.getContext().startActivity(intent);
                                     return true;
                                 case R.id.deleteMenuItem:
-
+                                    FinancialManagerDbHelper dbHelper = new FinancialManagerDbHelper(view.getContext());
+                                    Accrual accrual = new Accrual();
+                                    accrual.readFromDatabase(dbHelper, accrualId);
+                                    accrual.deleteFromDatabase(dbHelper);
                                     return true;
                                 default:
                                     return false;

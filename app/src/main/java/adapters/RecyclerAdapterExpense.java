@@ -17,6 +17,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import data.FinancialManagerDbHelper;
+import entities.Accrual;
 import entities.Expense;
 
 public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapterExpense.ExpenseViewHolder>
@@ -113,7 +115,10 @@ public class RecyclerAdapterExpense extends RecyclerView.Adapter<RecyclerAdapter
                                     view.getContext().startActivity(intent);
                                     return true;
                                 case R.id.deleteMenuItem:
-
+                                    FinancialManagerDbHelper dbHelper = new FinancialManagerDbHelper(view.getContext());
+                                    Expense expense = new Expense();
+                                    expense.readFromDatabase(dbHelper, expenseId);
+                                    expense.deleteFromDatabase(dbHelper);
                                     return true;
                                 default:
                                     return false;

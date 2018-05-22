@@ -17,6 +17,7 @@ import com.example.master.android_finance_manager.R;
 
 import java.util.ArrayList;
 
+import data.FinancialManagerDbHelper;
 import entities.Account;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -111,7 +112,10 @@ public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapter
                                     ((Activity)view.getContext()).startActivityForResult(intent, 0);
                                     return true;
                                 case R.id.deleteMenuItem:
-
+                                    FinancialManagerDbHelper dbHelper = new FinancialManagerDbHelper(view.getContext());
+                                    Account accountToDelete = new Account();
+                                    accountToDelete.readFromDatabase(dbHelper, selectedAccountId);
+                                    accountToDelete.deleteFromDatabase(dbHelper);
                                     return true;
                                 default:
                                     return false;

@@ -26,6 +26,7 @@ import java.util.Calendar;
 
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.Accrual;
 import entities.BillReminder;
 
 import static com.example.master.android_finance_manager.FinanceManagerActivity.CURRENT_ACCOUNT_ID;
@@ -105,7 +106,7 @@ public class RecyclerAdapterBillReminder extends RecyclerView.Adapter<RecyclerAd
             return true;
         }
 
-        private void showPopupMenu(View view) {
+        private void showPopupMenu(final View view) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.inflate(R.menu.crud_popup_menu);
 
@@ -120,7 +121,10 @@ public class RecyclerAdapterBillReminder extends RecyclerView.Adapter<RecyclerAd
 
                                     return true;
                                 case R.id.deleteMenuItem:
-
+                                    FinancialManagerDbHelper dbHelper = new FinancialManagerDbHelper(view.getContext());
+                                    BillReminder billReminder = new BillReminder();
+                                    billReminder.readFromDatabase(dbHelper, billId);
+                                    billReminder.deleteFromDatabase(dbHelper);
                                     return true;
                                 default:
                                     return false;
