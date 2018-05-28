@@ -44,7 +44,7 @@ public class Accrual extends FinancialEntry implements Serializable{
         values.put(FinancialManager.Accrual.COLUMN_MONEY_GAINED, this.moneyGained);
         values.put(FinancialManager.Accrual.COLUMN_ENTRY_ID, this.entryId);
 
-        this.entryId = (int) db.insert(FinancialManager.Accrual.TABLE_NAME, null, values);
+        db.insert(FinancialManager.Accrual.TABLE_NAME, null, values);
 
     }
 
@@ -132,14 +132,21 @@ public class Accrual extends FinancialEntry implements Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
-    public static ArrayList<Accrual> searchAccrualsInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate) {
-        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDay(dbHelper, dayDate);
+    public static ArrayList<Accrual> searchAccrualsInDatabaseByCategoryAndDate(FinancialManagerDbHelper dbHelper, String firstDate,
+                                                                               String secondDate, int accountId, int categoryId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByCategoryAndDate(dbHelper, firstDate,
+                secondDate, accountId, categoryId);
+        return fromEntriesToAccruals(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Accrual> searchAccrualsInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate, int accountId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDay(dbHelper, dayDate, accountId);
         return fromEntriesToAccruals(dbHelper, resultEntries);
     }
 
     public static ArrayList<Accrual> searchAccrualsInDatabaseByDates(FinancialManagerDbHelper dbHelper,
-                                                                    String firstDate, String secondDate) {
-        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDates(dbHelper, firstDate, secondDate);
+                                                                    String firstDate, String secondDate, int accountId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDates(dbHelper, firstDate, secondDate, accountId);
         return fromEntriesToAccruals(dbHelper, resultEntries);
     }
 
@@ -148,8 +155,8 @@ public class Accrual extends FinancialEntry implements Serializable{
         return fromEntriesToAccruals(dbHelper, resultEntries);
     }
 
-    public static ArrayList<Accrual> searchAccrualsInDatabaseByTitle(FinancialManagerDbHelper dbHelper, String title) {
-        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTitle(dbHelper, title);
+    public static ArrayList<Accrual> searchAccrualsInDatabaseByTitle(FinancialManagerDbHelper dbHelper, String title, int accountId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTitle(dbHelper, title, accountId);
         return fromEntriesToAccruals(dbHelper, resultEntries);
     }
 

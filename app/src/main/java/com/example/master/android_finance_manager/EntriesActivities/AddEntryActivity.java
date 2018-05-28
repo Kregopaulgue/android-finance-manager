@@ -172,7 +172,26 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
             ((Accrual)this.mEntry).setMoneyGained(Double.parseDouble(number.getText().toString()));
         }
 
-        this.mEntry.writeToDatabase(dbHelper);
+        try {
+            this.mEntry.writeToDatabase(dbHelper);
+        } catch (Exception e) {
+            if(mEntry.getTitle() == null) {
+                showAlert("Title is not selected!");
+            }
+            else if(mEntry.getEntryDate() == null) {
+                showAlert("Date is not selected");
+            }
+
+            if(mEntry.getClass().equals(Expense.class)) {
+                if(((Expense) mEntry).getMoneySpent() == null) {
+                    showAlert("Money spent is not entered!");
+                }
+            } else {
+                if(((Accrual) mEntry).getMoneyGained() == null) {
+                    showAlert("Money gained is not entered!");
+                }
+            }
+        }
 
         if(selectedTags != null) {
             for(Tag tempTag : selectedTags) {
@@ -201,4 +220,16 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
         }
     }
 
+    private void showAlert(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
 }

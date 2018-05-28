@@ -1,10 +1,12 @@
 package com.example.master.android_finance_manager.AccountsActivities;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import com.example.master.android_finance_manager.R;
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import entities.Account;
+import entities.Expense;
 
 public class AddAccountActivity extends AppCompatActivity {
 
@@ -37,7 +40,6 @@ public class AddAccountActivity extends AppCompatActivity {
 
         EditText titleText = findViewById(R.id.titleEditText);
         EditText amountOfMoney = findViewById(R.id.amountOfMoneyEditText);
-        RadioGroup accountTypeGroup = findViewById(R.id.accountTypeRadioGroup);
         RadioButton walletRadio = findViewById(R.id.walletRadio);
         RadioButton cardRadio = findViewById(R.id.creditCardRadio);
 
@@ -57,12 +59,36 @@ public class AddAccountActivity extends AppCompatActivity {
         values.put(FinancialManager.Account.COLUMN_ACCOUNT_TYPE, mAccountType);
         values.put(FinancialManager.Account.COLUMN_AMOUNT_OF_MONEY, mAmountOfMoney);
 
-        int newRowId = (int) db.insert(FinancialManager.Account.TABLE_NAME, null, values);
-        Intent answerIntent = new Intent();
+        try {
+            int newRowId = (int) db.insert(FinancialManager.Account.TABLE_NAME, null, values);
+            Intent answerIntent = new Intent();
 
-        answerIntent.putExtra("new_account_id", newRowId);
-        setResult(RESULT_OK, answerIntent);
-        finish();
+            answerIntent.putExtra("new_account_id", newRowId);
+            setResult(RESULT_OK, answerIntent);
+            finish();
+        } catch (Exception e) {
+            if(!walletRadio.isSelected() && !cardRadio.isSelected()) {
+                showAlert("Account type is not selected!");
+            }
+            else if(mTitle == null) {
+                showAlert("Account title is not entered!");
+            } else if(mAmountOfMoney == null) {
+                showAlert("Amount of money is not entered!");
+            }
 
+        }
+    }
+
+    private void showAlert(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }
