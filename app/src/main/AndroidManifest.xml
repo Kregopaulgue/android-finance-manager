@@ -11,15 +11,60 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".FinanceManagerActivity"
-            android:label="@string/app_name"
+            android:label="Financial Manager"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddEntryActivity"
-            android:label="@string/about_title">
+        <activity android:name=".EntriesActivities.AddEntryActivity"
+            android:label="Add Entry">
+        </activity>
+        <activity android:name=".EntriesActivities.ClarifyEntryActivity"
+            android:label="Clarify Entry">
+        </activity>
+        <activity android:name=".AccountsActivities.AddAccountActivity"
+            android:label="Create Account">
+        </activity>
+        <activity android:name=".EntriesActivities.EntriesHistoryActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AccountsActivities.ChooseAccountActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AccountsActivities.CurrentAccountActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AccountsActivities.EditAccountActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".EntriesActivities.ClarifyAccrualActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AdditionalEntriesActivities.EditBillReminderActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AdditionalEntriesActivities.EditGoalActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AdditionalEntriesActivities.EditConstraintActivity"
+            android:label="Entries History">
+        </activity>
+        <activity android:name=".AdditionalEntriesHistories.GoalsHistoryActivity"
+            android:label="Goals">
+        </activity>
+        <activity android:name=".AdditionalEntriesHistories.BillRemindersHistoryActivity"
+            android:label="Bills">
+        </activity>
+        <activity android:name=".AdditionalEntriesHistories.ContraintsHistoryActivity"
+            android:label="Constraints">
+        </activity>
+        <activity android:name=".EntriesActivities.EditEntryActivity"
+            android:label="Edit Entry">
+        </activity>
+        <activity android:name=".StatisticsActivities.StatisticsActivity"
+            android:label="Edit Entry">
         </activity>
     </application>
 

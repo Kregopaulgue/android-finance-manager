@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="340dp"
+    android:layout_height="81dp"
+    android:background="@drawable/entry_background"
+    android:orientation="horizontal"
+    tools:layout_editor_absoluteX="9dp"
+    tools:layout_editor_absoluteY="8dp">
+
+    <LinearLayout
+        android:layout_width="147dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleGoalView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:gravity="center"
+            android:text="TARGET TITLE:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/targetSumEntryView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:gravity="center"
+            android:text="TARGET SUM:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/currentSumEntryView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:gravity="center"
+            android:text="CURRENT SUM:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/showingTargetTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/showingTargetSumOfMoneyView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/showingCurrentSumOfMoneyView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="12dp" />
+    </LinearLayout>
+</LinearLayout>

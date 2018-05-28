@@ -2,8 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/actionAddAccrual"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Add Accrual"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionAddGoal"
+        android:orderInCategory="100"
+        android:title="Add Goal"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionAddBillReminder"
+        android:orderInCategory="100"
+        android:title="Add Bill Reminder"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionAddConstraint"
+        android:orderInCategory="100"
+        android:title="Add Constraint"
         app:showAsAction="never" />
 </menu>

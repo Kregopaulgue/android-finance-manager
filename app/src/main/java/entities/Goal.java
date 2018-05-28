@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -13,19 +15,35 @@ public class Goal implements DatabaseHelperFunctions{
     private int goalId;
     private Double sumToReach;
     private Double currentSum;
-    private String targetDescription;
+    private String targetTitle;
     private String isReached;
     private Account parentAccount;
 
     public Goal() {
     }
 
-    public Goal(int goalId, Double sumToReach, Double currentSum, String targetDescription,
+    public Goal(Double sumToReach, Double currentSum, String targetTitle, String isReached, Account parentAccount) {
+        this.sumToReach = sumToReach;
+        if(currentSum == null) {
+            this.currentSum = 0.0;
+        } else {
+            this.currentSum = currentSum;
+        }
+        this.targetTitle = targetTitle;
+        this.isReached = isReached;
+        this.parentAccount = parentAccount;
+    }
+
+    public Goal(int goalId, Double sumToReach, Double currentSum, String targetTitle,
                 String isReached, Account parentAccount) {
         this.goalId = goalId;
         this.sumToReach = sumToReach;
-        this.currentSum = currentSum;
-        this.targetDescription = targetDescription;
+        if(currentSum == null) {
+            this.currentSum = 0.0;
+        } else {
+            this.currentSum = currentSum;
+        }
+        this.targetTitle = targetTitle;
         this.isReached = isReached;
         this.parentAccount = parentAccount;
     }
@@ -39,17 +57,53 @@ public class Goal implements DatabaseHelperFunctions{
 
         values.put(FinancialManager.Goal.COLUMN_SUM_TO_REACH, this.sumToReach);
         values.put(FinancialManager.Goal.COLUMN_CURRENT_SUM, this.currentSum);
-        values.put(FinancialManager.Goal.COLUMN_TARGET_DESCRIPTION, this.targetDescription);
+        values.put(FinancialManager.Goal.COLUMN_TARGET_TITLE, this.targetTitle);
         values.put(FinancialManager.Goal.COLUMN_IS_REACHED, this.isReached);
         values.put(FinancialManager.Goal.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
 
-        long newRowId = db.insert(FinancialManager.Goal.TABLE_NAME, null, values);
+        this.goalId = (int)db.insert(FinancialManager.Goal.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.Goal.COLUMN_SUM_TO_REACH, this.sumToReach);
+        values.put(FinancialManager.Goal.COLUMN_CURRENT_SUM, this.currentSum);
+        values.put(FinancialManager.Goal.COLUMN_TARGET_TITLE, this.targetTitle);
+        values.put(FinancialManager.Goal.COLUMN_IS_REACHED, this.isReached);
+        values.put(FinancialManager.Goal.COLUMN_ACCOUNT_ID, this.parentAccount.getAccountId());
+
+        long amountOfUpdated = db.update(FinancialManager.Goal.TABLE_NAME, values, "goal_id=?",
+                new String[] {Integer.toString(rowId)});
     }
 
     @Override
     public void updateFromDatabase(FinancialManagerDbHelper dbHelper) {
         readFromDatabase(dbHelper, this.goalId);
+    }
+
+    
+    public static ArrayList<Goal> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT goal_id AS _id FROM goals WHERE account_id=?",
+                new String[] {Integer.toString(accId)});
+        int idIndex = cursor.getColumnIndex(FinancialManager.Goal._ID);
+
+        ArrayList<Goal> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            Goal goalToRead = new Goal();
+            goalToRead.readFromDatabase(dbHelper, billId);
+            result.add(goalToRead);
+        }
+
+        return result;
     }
 
     @Override
@@ -61,14 +115,15 @@ public class Goal implements DatabaseHelperFunctions{
                 " WHERE goal_id = ?", new String[]{String.valueOf(entryId)});
 
         int currentSumIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_CURRENT_SUM);
-        int targetDescriptionIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_TARGET_DESCRIPTION);
+        int targetTitleIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_TARGET_TITLE);
         int isReachedIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_IS_REACHED);
         int accountIdIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_ACCOUNT_ID);
         int sumToReachIndex = cursor.getColumnIndex(FinancialManager.Goal.COLUMN_SUM_TO_REACH);
         int goalIdIndex = cursor.getColumnIndex(FinancialManager.Goal._ID);
 
+        cursor.moveToNext();
         this.currentSum = cursor.getDouble(currentSumIndex);
-        this.targetDescription = cursor.getString(targetDescriptionIndex);
+        this.targetTitle = cursor.getString(targetTitleIndex);
         this.sumToReach = cursor.getDouble(sumToReachIndex);
         this.isReached = cursor.getString(isReachedIndex);
 
@@ -78,6 +133,14 @@ public class Goal implements DatabaseHelperFunctions{
         this.goalId = cursor.getInt(goalIdIndex);
 
         cursor.close();
+    }
+
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "goal_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.goalId) };
+        db.delete(FinancialManager.Goal.TABLE_NAME, whereClause, whereArgs);
     }
 
     public int getGoalId() {
@@ -104,12 +167,12 @@ public class Goal implements DatabaseHelperFunctions{
         this.currentSum = currentSum;
     }
 
-    public String getTargetDescription() {
-        return targetDescription;
+    public String getTargetTitle() {
+        return targetTitle;
     }
 
-    public void setTargetDescription(String targetDescription) {
-        this.targetDescription = targetDescription;
+    public void setTargetTitle(String targetTitle) {
+        this.targetTitle = targetTitle;
     }
 
     public String isReached() {

@@ -19,10 +19,11 @@ public class FinancialManager {
 
     public static final class FinancialEntry implements BaseColumns {
 
-        public static final String TABLE_NAME = "finance_expenses";
+        public static final String TABLE_NAME = "finance_entries";
 
         public static final String _ID = BaseColumns._ID;
-        public final static String COLUMN_ENTRY_ID= "entry_id";
+        public final static String COLUMN_TITLE = "title";
+        public final static String COLUMN_ENTRY_ID = "entry_id";
         public final static String COLUMN_DATE_TIME = "date_time";
         public final static String COLUMN_ENTRY_TYPE = "entry_type";
         public final static String COLUMN_COMMENT = "comment";
@@ -64,6 +65,7 @@ public class FinancialManager {
         public final static String TABLE_NAME = "expenses";
 
         public final static String _ID = BaseColumns._ID;
+        public final static String COLUMN_IMPORTANCE = "importance";
         public final static String COLUMN_MONEY_SPENT = "money_spent";
         public final static String COLUMN_ENTRY_ID = "entry_id";
     }
@@ -75,9 +77,7 @@ public class FinancialManager {
         public final static String _ID = BaseColumns._ID;
         public final static String COLUMN_BIND_ID = "bind_id";
         public final static String COLUMN_ENTRY_ID = "entry_id";
-        public final static String COLUMN_ACCOUNT_ID = "account_id";
         public final static String COLUMN_TAG_ID = "tag_id";
-        public final static String COLUMN_CATEGORY_ID = "category_id";
     }
 
     public final static class BillReminder implements BaseColumns {
@@ -87,8 +87,9 @@ public class FinancialManager {
         public final static String _ID = BaseColumns._ID;
         public final static String COLUMN_BILL_ID = "bill_id";
         public final static String COLUMN_SUM_TO_PAY = "sum_to_pay";
-        public final static String COLUMN_BILL_DESCRIPTION = "bill_description";
+        public final static String COLUMN_BILL_TITLE = "bill_title";
         public final static String COLUMN_DATE_TIME_TO_PAY = "date_time_to_pay";
+        public final static String COLUMN_IS_PAID = "is_paid";
         public final static String COLUMN_ACCOUNT_ID = "account_id";
     }
 
@@ -102,7 +103,7 @@ public class FinancialManager {
         public final static String COLUMN_DATE_OF_BEGIN = "date_of_begin";
         public final static String COLUMN_DATE_OF_END = "date_of_end";
         public final static String COLUMN_WARNING_MONEY_BORDER = "warning_money_border";
-        public final static String COLUMN_IS_CRITICAL = "is_critical";
+        public final static String COLUMN_IS_FINISHED = "is_finished";
         public final static String COLUMN_ACCOUNT_ID = "account_id";
     }
 
@@ -114,7 +115,7 @@ public class FinancialManager {
         public final static String COLUMN_GOAL_ID = "goal_id";
         public final static String COLUMN_SUM_TO_REACH = "sum_to_reach";
         public final static String COLUMN_CURRENT_SUM = "current_sum";
-        public final static String COLUMN_TARGET_DESCRIPTION = "target_description";
+        public final static String COLUMN_TARGET_TITLE = "target_title";
         public final static String COLUMN_IS_REACHED = "is_reached";
         public final static String COLUMN_ACCOUNT_ID = "account_id";
     }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="340dp"
+    android:layout_height="81dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginEnd="45dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="15dp"
+    android:background="@drawable/entry_background"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0">
+
+    <LinearLayout
+        android:layout_width="147dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleEntryView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:gravity="center"
+            android:text="TITLE:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/moneyEntryView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:gravity="center"
+            android:text="SUM OF MONEY:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/dateEntryView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:gravity="center"
+            android:text="DATE:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/showingTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/showingSumOfMoneyView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/showingDateView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="12dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import interfaces.DatabaseHelperFunctions;
@@ -14,6 +16,11 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
     private FinancialEntry parentEntry;
 
     public EntryTagBinder() {}
+
+    public EntryTagBinder(Tag parentTag, FinancialEntry parentEntry) {
+        this.parentTag = parentTag;
+        this.parentEntry = parentEntry;
+    }
 
     public EntryTagBinder(int bindId, Tag parentTag, FinancialEntry parentEntry) {
         this.bindId = bindId;
@@ -30,11 +37,24 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
 
         values.put(FinancialManager.EntryTagBinder.COLUMN_TAG_ID, this.parentTag.getTagId());
         values.put(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID, this.parentEntry.getEntryId());
-        values.put(FinancialManager.EntryTagBinder.COLUMN_CATEGORY_ID, this.parentTag.getParentCategory().getCategoryId());
-        values.put(FinancialManager.EntryTagBinder.COLUMN_ACCOUNT_ID, this.parentEntry.getParentAccount().getAccountId());
+        //values.put(FinancialManager.EntryTagBinder.COLUMN_CATEGORY_ID, this.parentTag.getParentCategory().getCategoryId());
+        //values.put(FinancialManager.EntryTagBinder.COLUMN_ACCOUNT_ID, this.parentEntry.getParentAccount().getAccountId());
 
-        long newRowId = db.insert(FinancialManager.EntryTagBinder.TABLE_NAME, null, values);
+        this.bindId = (int)db.insert(FinancialManager.EntryTagBinder.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    public void updateToDatabase(FinancialManagerDbHelper dbHelper, int rowId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(FinancialManager.EntryTagBinder.COLUMN_TAG_ID, this.parentTag.getTagId());
+        values.put(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID, this.parentEntry.getEntryId());
+
+        long amountOfUpdated = db.update(FinancialManager.EntryTagBinder.TABLE_NAME, values, "bind_id=?",
+                new String[] {Integer.toString(rowId)});
     }
 
     @Override
@@ -42,13 +62,31 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
         readFromDatabase(dbHelper, this.bindId);
     }
 
+    
+    public static ArrayList<EntryTagBinder> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders;", null);
+        int idIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder._ID);
+
+        ArrayList<EntryTagBinder> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int billId = cursor.getInt(idIndex);
+            EntryTagBinder entryTagBinderToRead = new EntryTagBinder();
+            entryTagBinderToRead.readFromDatabase(dbHelper, billId);
+            result.add(entryTagBinderToRead);
+        }
+
+        return result;
+    }
+
     @Override
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT bind_id AS _id, * FROM entry_tag_binders " +
-                "WHERE bind_id=?", new String[]{String.valueOf(entryId)});
+        Cursor cursor = db.rawQuery("SELECT bind_id AS _id, * FROM entry_tag_binders;", null);
 
         int tagIdIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder.COLUMN_TAG_ID);
         int entryIdIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID);
@@ -57,7 +95,7 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
         this.parentTag = new Tag();
         this.parentTag.readFromDatabase(dbHelper, cursor.getInt(tagIdIndex));
 
-        //check how to change for accrual or expense
+        //check how to change for accrual or entryTagBinder
 
         this.parentEntry = new FinancialEntry();
         this.parentEntry.readFromDatabase(dbHelper, cursor.getInt(entryIdIndex));
@@ -75,9 +113,18 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
             //write code for some kind of exception
         }
 
+        cursor.moveToNext();
         this.bindId = cursor.getInt(bindIdIndex);
 
         cursor.close();
+    }
+
+    @Override
+    public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "bind_id=?";
+        String[] whereArgs = new String[] { String.valueOf(this.bindId) };
+        db.delete(FinancialManager.EntryTagBinder.TABLE_NAME, whereClause, whereArgs);
     }
 
     public int getBindId() {

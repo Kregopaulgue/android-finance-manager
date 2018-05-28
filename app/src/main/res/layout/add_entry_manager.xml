@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/editNumber"
@@ -47,18 +46,21 @@
                 android:id="@+id/oneButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="1" />
 
             <Button
                 android:id="@+id/fourButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="4" />
 
             <Button
                 android:id="@+id/sevenButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="7" />
         </LinearLayout>
 
@@ -71,18 +73,21 @@
                 android:id="@+id/twoButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="2" />
 
             <Button
                 android:id="@+id/fiveButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="5" />
 
             <Button
                 android:id="@+id/eightButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="8" />
         </LinearLayout>
 
@@ -95,11 +100,13 @@
                 android:id="@+id/threeButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="3" />
 
             <Button
                 android:id="@+id/sixButton"
                 android:layout_width="match_parent"
+                android:onClick="onNumberClick"
                 android:layout_height="90dp"
                 android:text="6" />
 
@@ -107,6 +114,7 @@
                 android:id="@+id/nineButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:onClick="onNumberClick"
                 android:text="9" />
         </LinearLayout>
 
@@ -119,11 +127,13 @@
                 android:id="@+id/plusButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:onClick="add"
                 android:src="@drawable/icons8_plus_math_50" />
 
             <ImageButton
                 android:id="@+id/minusButton"
                 android:layout_width="match_parent"
+                android:onClick="minus"
                 android:layout_height="60dp"
                 android:src="@drawable/icons8_subtract_52" />
 
@@ -131,12 +141,14 @@
                 android:id="@+id/multiplyButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:onClick="multiply"
                 android:src="@drawable/icons8_multiply_50" />
 
             <ImageButton
                 android:id="@+id/divideButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:onClick="divide"
                 android:src="@drawable/icons8_divide_52" />
         </LinearLayout>
     </LinearLayout>
@@ -185,6 +197,7 @@
                 android:id="@+id/defineButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:onClick="clarifyEntry"
                 android:src="@drawable/ic_menu_manage" />
         </LinearLayout>
 
@@ -204,6 +217,7 @@
                 android:id="@+id/createButton"
                 android:layout_width="match_parent"
                 android:layout_height="76dp"
+                android:onClick="saveEntry"
                 android:src="@drawable/ic_menu_send" />
         </LinearLayout>
     </LinearLayout>

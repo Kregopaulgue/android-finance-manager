@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group android:id="@+id/categoryMenu" >
+        <item
+            android:id="@+id/foodMenuItem"
+            android:title="Food"/>
+        <item
+            android:id="@+id/serviceMenuItem"
+            android:title="Service"/>
+        <item
+            android:id="@+id/applianceMenuItem"
+            android:title="Appliance"/>
+        <item
+            android:id="@+id/clothMenuItem"
+            android:title="Cloth"/>
+        <item
+            android:id="@+id/accrualMenuItem"
+            android:title="Accrual"/>
+        <item
+            android:id="@+id/otherMenuItem"
+            android:title="Other"/>
+    </group>
+
+</menu>
