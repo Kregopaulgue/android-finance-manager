@@ -132,6 +132,42 @@ public class Accrual extends FinancialEntry implements Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
+    public static ArrayList<Accrual> searchAccrualsInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDay(dbHelper, dayDate);
+        return fromEntriesToAccruals(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Accrual> searchAccrualsInDatabaseByDates(FinancialManagerDbHelper dbHelper,
+                                                                    String firstDate, String secondDate) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDates(dbHelper, firstDate, secondDate);
+        return fromEntriesToAccruals(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Accrual> searchAccrualsInDatabaseByTag(FinancialManagerDbHelper dbHelper, String tagToSearch) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTag(dbHelper, tagToSearch);
+        return fromEntriesToAccruals(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Accrual> searchAccrualsInDatabaseByTitle(FinancialManagerDbHelper dbHelper, String title) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTitle(dbHelper, title);
+        return fromEntriesToAccruals(dbHelper, resultEntries);
+    }
+
+    private static ArrayList<Accrual> fromEntriesToAccruals(FinancialManagerDbHelper dbHelper,
+                                                                   ArrayList<FinancialEntry> resultEntries) {
+        ArrayList<Accrual> resultAccruals = new ArrayList<>();
+        for(int i = 0; i < resultEntries.size(); i++) {
+            FinancialEntry financialEntry = resultEntries.get(i);
+            if(financialEntry.getEntryType().equals("ACCRUAL")) {
+                Accrual tempAccrual = new Accrual();
+                tempAccrual.readFromDatabase(dbHelper, financialEntry.entryId);
+                resultAccruals.add(tempAccrual);
+            }
+        }
+
+        return resultAccruals;
+    }
+
     public String getSource() {
         return source;
     }

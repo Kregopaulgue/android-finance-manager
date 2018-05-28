@@ -69,6 +69,9 @@ public class RecyclerAdapterAccrual extends RecyclerView.Adapter<RecyclerAdapter
 
         public AccrualViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+
             title = itemView.findViewById(R.id.titleAccrualView);
             sumOfMoney = itemView.findViewById(R.id.moneyGainedView);
             date = itemView.findViewById(R.id.dateAccrualView);
@@ -102,7 +105,7 @@ public class RecyclerAdapterAccrual extends RecyclerView.Adapter<RecyclerAdapter
 
                                 case R.id.editMenuItem:
                                     Intent intent = new Intent(view.getContext(), EditEntryActivity.class);
-                                    intent.putExtra("ENTRY_TYPE", "EXPENSE");
+                                    intent.putExtra("ENTRY_TYPE", "ACCRUAL");
                                     intent.putExtra("ENTRY_ID", accrualId);
                                     view.getContext().startActivity(intent);
                                     return true;

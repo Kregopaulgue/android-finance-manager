@@ -119,6 +119,61 @@ public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
+    public static ArrayList<FinancialEntry> searchInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE date_time=?",
+                new String[]{dayDate});
+        return searchInDatabase(dbHelper, cursor);
+    }
+
+    public static ArrayList<FinancialEntry> searchInDatabaseByDates(FinancialManagerDbHelper dbHelper,
+                                                                    String firstDate, String secondDate) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE date(?) <= date(date_time) AND date(date_time) <= date(?)",
+                new String[]{firstDate, secondDate});
+        return searchInDatabase(dbHelper, cursor);
+    }
+
+    public static ArrayList<FinancialEntry> searchInDatabaseByTag(FinancialManagerDbHelper dbHelper,
+                                                                    String searchTag) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id FROM entry_tag_binders WHERE tag_id " +
+                        "IN(SELECT tag_id FROM tags WHERE tags.title=?)",
+                new String[]{searchTag});
+        return searchInDatabase(dbHelper, cursor);
+    }
+
+    public static ArrayList<FinancialEntry> searchInDatabaseByTitle(FinancialManagerDbHelper dbHelper,
+                                                                  String searchTitle) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id FROM finance_entries WHERE title=?",
+                new String[]{searchTitle});
+        return searchInDatabase(dbHelper, cursor);
+    }
+
+    private static ArrayList<FinancialEntry> searchInDatabase(FinancialManagerDbHelper dbHelper, Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(FinancialManager.Expense._ID);
+
+        ArrayList<FinancialEntry> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int entryId = cursor.getInt(idIndex);
+            FinancialEntry entryToAdd = new FinancialEntry();
+            entryToAdd.readFromDatabase(dbHelper, entryId);
+            result.add(entryToAdd);
+        }
+
+        return result;
+    }
+
     public String getTitle() {
         return title;
     }

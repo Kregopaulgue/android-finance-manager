@@ -13,14 +13,14 @@ public class SqlQueries {
     public static final String SQL_CREATE_TABLE_CATEGORY = "create table categories\n" +
             "(\n" +
             "    category_id integer primary key autoincrement,\n" +
-            "    title text default null\n" +
+            "    title text not null\n" +
             ");\n";
     public static final String SQL_CREATE_TABLE_TAGS =
             "create table tags\n" +
             "(\n" +
             "    tag_id integer primary key autoincrement,\n" +
-            "    title text,\n" +
-            "    tag_type text,\n" +
+            "    title text not null,\n" +
+            "    tag_type text not null,\n" +
             "    category_id integer not null,\n" +
             "    foreign key(category_id) references categories(category_id)\n" +
             "    on delete cascade\n" +
@@ -69,9 +69,9 @@ public class SqlQueries {
             "create table bill_reminders\n" +
             "(\n" +
             "    bill_id integer primary key autoincrement,\n" +
-            "    sum_to_pay real,\n" +
-            "    bill_title text,\n" +
-            "    date_time_to_pay text,\n" +
+            "    sum_to_pay real not null,\n" +
+            "    bill_title text not null,\n" +
+            "    date_time_to_pay text not null,\n" +
             "    is_paid text,\n" +
             "    account_id integer not null,\n" +
             "    foreign key(account_id) references accounts(account_id)\n" +
@@ -96,7 +96,7 @@ public class SqlQueries {
             "    goal_id integer primary key autoincrement,\n" +
             "    sum_to_reach real not null,\n" +
             "    current_sum real not null,\n" +
-            "    target_title text,\n" +
+            "    target_title text not null,\n" +
             "    is_reached text,\n" +
             "    account_id integer not null,\n" +
             "    foreign key(account_id) references accounts(account_id)\n" +

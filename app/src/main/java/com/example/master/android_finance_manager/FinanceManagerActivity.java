@@ -30,9 +30,11 @@ import com.example.master.android_finance_manager.AdditionalEntriesHistories.Goa
 import com.example.master.android_finance_manager.EntriesActivities.AddEntryActivity;
 import com.example.master.android_finance_manager.AccountsActivities.CurrentAccountActivity;
 import com.example.master.android_finance_manager.EntriesActivities.EntriesHistoryActivity;
+import com.example.master.android_finance_manager.StatisticsActivities.StatisticsActivity;
 
 import java.util.Calendar;
 
+import data.FinancialManager;
 import data.FinancialManagerDbHelper;
 import entities.Account;
 import entities.Accrual;
@@ -77,13 +79,13 @@ public class FinanceManagerActivity extends AppCompatActivity
 
         mDbHelper = new FinancialManagerDbHelper(this);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         mDbHelper = new FinancialManagerDbHelper(this);
@@ -154,6 +156,9 @@ public class FinanceManagerActivity extends AppCompatActivity
         } else if (id == R.id.nav_accruals) {
             Intent intent = new Intent(FinanceManagerActivity.this, EntriesHistoryActivity.class);
             intent.putExtra("ENTRY_TYPE", "ACCRUAL");
+            startActivity(intent);
+        } else if(id == R.id.nav_statistics) {
+            Intent intent = new Intent(FinanceManagerActivity.this, StatisticsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_goals) {
             Intent intent = new Intent(FinanceManagerActivity.this, GoalsHistoryActivity.class);
@@ -286,16 +291,16 @@ public class FinanceManagerActivity extends AppCompatActivity
         constraint = new Constraint();
 
         LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.add_constraint, null);
+        View promptsView = li.inflate(R.layout.add_constr, null);
 
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
 
         mDialogBuilder.setView(promptsView);
 
-        final EditText constraintMoneyLimit = findViewById(R.id.sumConstraintInput);
-        final EditText firstBorder = findViewById(R.id.firstBorderInput);
-        final Button selectDateBegin = findViewById(R.id.selectBeginDateConstraint);
-        final Button selectDateEnd = findViewById(R.id.selectEndDateConstraint);
+        final EditText constraintMoneyLimit = promptsView.findViewById(R.id.constraintLimitInput);
+        final EditText firstBorder = promptsView.findViewById(R.id.firstConstraintBorderInput);
+        final Button selectDateBegin = promptsView.findViewById(R.id.selectBeginDateButt);
+        final Button selectDateEnd = promptsView.findViewById(R.id.selectEndDateButt);
 
         selectDateBegin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -352,6 +357,8 @@ public class FinanceManagerActivity extends AppCompatActivity
                                 constraint.setDateOfBegin(selectDateBegin.getText().toString());
                                 constraint.setDateOfEnd(selectDateEnd.getText().toString());
                                 constraint.setIsFinished("false");
+                                constraint.setParentAccount(mCurrentAccount);
+                                constraint.writeToDatabase(mDbHelper);
                             }
                         })
                 .setNegativeButton("Отмена",

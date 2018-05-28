@@ -132,7 +132,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
                     this.mEntry.setEntryDate(data.getStringExtra("date"));
                 }
                 this.mEntry.setComment(data.getStringExtra("comment"));
-                this.selectedTags = data.getParcelableExtra("tags");
+                this.selectedTags = (ArrayList<Tag>) data.getSerializableExtra("tags");
 
                 if(mEntry.getClass().equals(Expense.class)) {
                     ((Expense)this.mEntry).setImportance(data.getIntExtra("importance", 1));

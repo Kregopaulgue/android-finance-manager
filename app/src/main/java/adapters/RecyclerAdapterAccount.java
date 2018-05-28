@@ -30,9 +30,7 @@ public class RecyclerAdapterAccount extends RecyclerView.Adapter<RecyclerAdapter
     public final static String CURRENT_ACCOUNT_ID = "current_account_id";
 
     public RecyclerAdapterAccount(ArrayList<Account> accounts){
-
         this.accounts = accounts;
-
     }
 
     @Override

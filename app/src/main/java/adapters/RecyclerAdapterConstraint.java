@@ -153,16 +153,16 @@ public class RecyclerAdapterConstraint extends RecyclerView.Adapter<RecyclerAdap
         private void addConstraintDialog(final View view) {
 
             LayoutInflater li = LayoutInflater.from(view.getContext());
-            View promptsView = li.inflate(R.layout.add_constraint, null);
+            View promptsView = li.inflate(R.layout.add_constr, null);
 
             AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(view.getContext());
 
             mDialogBuilder.setView(promptsView);
 
-            final EditText constraintMoneyLimit = view.findViewById(R.id.sumConstraintInput);
-            final EditText firstBorder = view.findViewById(R.id.firstBorderInput);
-            final Button selectDateBegin = view.findViewById(R.id.selectBeginDateConstraint);
-            final Button selectDateEnd = view.findViewById(R.id.selectEndDateConstraint);
+            final EditText constraintMoneyLimit = promptsView.findViewById(R.id.constraintLimitInput);
+            final EditText firstBorder = promptsView.findViewById(R.id.firstConstraintBorderInput);
+            final Button selectDateBegin = promptsView.findViewById(R.id.selectBeginDateButt);
+            final Button selectDateEnd = promptsView.findViewById(R.id.selectEndDateButt);
 
             selectDateBegin.setOnClickListener(new View.OnClickListener() {
                 @Override

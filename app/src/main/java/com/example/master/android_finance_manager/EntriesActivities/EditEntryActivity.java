@@ -69,6 +69,9 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
         categories = Category.readAllFromDatabase(dbHelper, mEntry.getParentAccount().getAccountId());
         selectedTags = Tag.readAllFromDatabaseWhereEntry(dbHelper, mEntry.getEntryId());
 
+        for(Tag tempTag : selectedTags) {
+            currentTagsView.addTag(new com.cunoraz.tagview.Tag(tempTag.getTagTitle()));
+        }
 
         tagView.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override

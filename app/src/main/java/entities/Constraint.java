@@ -87,7 +87,7 @@ public class Constraint implements DatabaseHelperFunctions {
     public static ArrayList<Constraint> readAllFromDatabase(FinancialManagerDbHelper dbHelper, int accId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders WHERE account_id=?",
+        Cursor cursor = db.rawQuery("SELECT constraint_id AS _id, * FROM constraints WHERE account_id=?",
                 new String[] {Integer.toString(accId)});
         int idIndex = cursor.getColumnIndex(FinancialManager.Constraint._ID);
 

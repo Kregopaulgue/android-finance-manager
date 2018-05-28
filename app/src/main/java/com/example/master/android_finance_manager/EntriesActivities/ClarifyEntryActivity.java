@@ -64,6 +64,7 @@ public class ClarifyEntryActivity extends AppCompatActivity{
             @Override
             public void onTagClick(com.cunoraz.tagview.Tag tag, int i) {
                 currentTagsView.addTag(new com.cunoraz.tagview.Tag(tag.text));
+                selectedTags.add(tagList.get(i));
             }
         });
 

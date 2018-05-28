@@ -128,6 +128,45 @@ public class Expense extends FinancialEntry implements Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
+    public static ArrayList<Expense> searchExpensesInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDay(dbHelper, dayDate);
+        return fromEntriesToExpenses(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Expense> searchExpensesInDatabaseByDates(FinancialManagerDbHelper dbHelper,
+                                                                    String firstDate, String secondDate) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDates(dbHelper, firstDate, secondDate);
+        return fromEntriesToExpenses(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Expense> searchExpensesInDatabaseByTag(FinancialManagerDbHelper dbHelper, String tagToSearch) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTag(dbHelper, tagToSearch);
+        return fromEntriesToExpenses(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Expense> searchExpensesInDatabaseByTitle(FinancialManagerDbHelper dbHelper, String title) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTitle(dbHelper, title);
+        return fromEntriesToExpenses(dbHelper, resultEntries);
+    }
+
+    private static ArrayList<Expense> fromEntriesToExpenses(FinancialManagerDbHelper dbHelper,
+                                                    ArrayList<FinancialEntry> resultEntries) {
+        ArrayList<Expense> resultExpenses = new ArrayList<>();
+
+        for(int i = 0; i < resultEntries.size(); i++) {
+            FinancialEntry financialEntry = resultEntries.get(i);
+            if(financialEntry.getEntryType().equals("EXPENSE")) {
+                Expense tempExpense = new Expense();
+                tempExpense.readFromDatabase(dbHelper, financialEntry.entryId);
+                resultExpenses.add(tempExpense);
+            }
+        }
+
+        return resultExpenses;
+    }
+
+
+
     public Double getMoneySpent() {
         return moneySpent;
     }

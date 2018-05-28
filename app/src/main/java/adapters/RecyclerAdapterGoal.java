@@ -148,9 +148,9 @@ public class RecyclerAdapterGoal extends RecyclerView.Adapter<RecyclerAdapterGoa
 
             mDialogBuilder.setView(promptsView);
 
-            final EditText titleInput = (EditText) promptsView.findViewById(R.id.editTargetTitleInput);
-            final EditText sumToReachInput = (EditText) promptsView.findViewById(R.id.editSumToReachInput);
-            final EditText currentSumInput = (EditText) promptsView.findViewById(R.id.editCurrentSumInput);
+            final EditText titleInput = promptsView.findViewById(R.id.editTargetTitleInput);
+            final EditText sumToReachInput = promptsView.findViewById(R.id.editSumToReachInput);
+            final EditText currentSumInput = promptsView.findViewById(R.id.editCurrentSumInput);
 
             mDialogBuilder
                     .setCancelable(true)
