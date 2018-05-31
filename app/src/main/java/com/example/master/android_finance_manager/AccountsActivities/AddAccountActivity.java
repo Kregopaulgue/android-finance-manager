@@ -25,10 +25,6 @@ public class AddAccountActivity extends AppCompatActivity {
 
     private FinancialManagerDbHelper mFinancialManagerDbHelper;
 
-    private String mTitle;
-    private String mAccountType;
-    private Double mAmountOfMoney;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +33,9 @@ public class AddAccountActivity extends AppCompatActivity {
     }
 
     public void createAccount(View view) {
+        String mTitle;
+        String mAccountType;
+        Double mAmountOfMoney;
 
         EditText titleText = findViewById(R.id.titleEditText);
         EditText amountOfMoney = findViewById(R.id.amountOfMoneyEditText);
@@ -46,7 +45,12 @@ public class AddAccountActivity extends AppCompatActivity {
         mTitle = titleText.getText().toString();
         mAmountOfMoney = Double.parseDouble(amountOfMoney.getText().toString());
 
-        if(walletRadio.isSelected()) {
+        if(!walletRadio.isChecked() && !cardRadio.isChecked()) {
+            showAlert("Account type is not selected!");
+            return;
+        }
+
+        if(walletRadio.isChecked()) {
             mAccountType = "WALLET";
         } else {
             mAccountType = "CREDIT CARD";
@@ -67,10 +71,8 @@ public class AddAccountActivity extends AppCompatActivity {
             setResult(RESULT_OK, answerIntent);
             finish();
         } catch (Exception e) {
-            if(!walletRadio.isSelected() && !cardRadio.isSelected()) {
-                showAlert("Account type is not selected!");
-            }
-            else if(mTitle == null) {
+
+            if(mTitle == null) {
                 showAlert("Account title is not entered!");
             } else if(mAmountOfMoney == null) {
                 showAlert("Amount of money is not entered!");

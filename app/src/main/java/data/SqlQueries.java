@@ -102,6 +102,8 @@ public class SqlQueries {
             "    foreign key(account_id) references accounts(account_id)\n" +
             "    on delete cascade\n" +
             ");";
+
+
     public static final String SQL_INSERT_CATEGORY_FOOD =
             "insert into categories(title) values('FOOD');";
     public static final String SQL_INSERT_CATEGORY_SERVICE =

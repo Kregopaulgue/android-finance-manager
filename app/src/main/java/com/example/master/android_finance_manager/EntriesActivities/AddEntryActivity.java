@@ -44,10 +44,11 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEntry = new FinancialEntry();
+
         SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
         parentAccountId = preferences.getInt(CURRENT_ACCOUNT_ID, 1);
-        SharedPreferences sPref = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
+
+        mEntry = new FinancialEntry();
         String entryType = getIntent().getStringExtra("ENTRY_TYPE");
         if(entryType.equals("ACCRUAL")) {
             mEntry = new Accrual();
@@ -166,32 +167,27 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
         EditText number = findViewById(R.id.editNumber);
         this.mEntry.setParentAccount(new Account());
         this.mEntry.getParentAccount().readFromDatabase(dbHelper, parentAccountId);
-        if(mEntry.getClass().equals(Expense.class)) {
-            ((Expense)this.mEntry).setMoneySpent(Double.parseDouble(number.getText().toString()));
-        } else {
-            ((Accrual)this.mEntry).setMoneyGained(Double.parseDouble(number.getText().toString()));
-        }
-
         try {
-            this.mEntry.writeToDatabase(dbHelper);
-        } catch (Exception e) {
-            if(mEntry.getTitle() == null) {
-                showAlert("Title is not selected!");
-            }
-            else if(mEntry.getEntryDate() == null) {
-                showAlert("Date is not selected");
-            }
-
             if(mEntry.getClass().equals(Expense.class)) {
-                if(((Expense) mEntry).getMoneySpent() == null) {
-                    showAlert("Money spent is not entered!");
-                }
+                ((Expense)this.mEntry).setMoneySpent(Double.parseDouble(number.getText().toString()));
             } else {
-                if(((Accrual) mEntry).getMoneyGained() == null) {
-                    showAlert("Money gained is not entered!");
-                }
+                ((Accrual)this.mEntry).setMoneyGained(Double.parseDouble(number.getText().toString()));
             }
+        } catch (Exception e) {
+            showAlert("Money Is Not Set!");
+            return;
         }
+
+        if(mEntry.getTitle() == null) {
+            showAlert("Title is not selected!");
+            return;
+        }
+        else if(mEntry.getEntryDate() == null) {
+            showAlert("Date is not selected");
+            return;
+        }
+
+        mEntry.writeToDatabase(dbHelper);
 
         if(selectedTags != null) {
             for(Tag tempTag : selectedTags) {

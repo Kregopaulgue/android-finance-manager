@@ -136,6 +136,8 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
 
         final Button selectDateBegin = promptsView.findViewById(R.id.selectBeginButton);
         final Button selectDateEnd = promptsView.findViewById(R.id.selectEndButton);
+        final RadioButton accrualButton = promptsView.findViewById(R.id.chooseAccrual);
+        final RadioButton expenseButton = promptsView.findViewById(R.id.chooseExpense);
 
         selectDateBegin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,14 +190,11 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
                             public void onClick(DialogInterface dialog,int id) {
                                 String firstDate = selectDateBegin.getText().toString();
                                 String secondDate = selectDateEnd.getText().toString();
-                                RadioButton accrualButton = findViewById(R.id.chooseAccrual);
-                                RadioButton expenseButton = findViewById(R.id.chooseExpense);
-                                updateChart(Expense.searchExpensesInDatabaseByDates(dbHelper, firstDate, secondDate, currentAccountId));
-                                /*if(expenseButton.isSelected()) {
+                                if(expenseButton.isChecked()) {
                                     updateChart(Expense.searchExpensesInDatabaseByDates(dbHelper, firstDate, secondDate, currentAccountId));
-                                } else if(accrualButton.isSelected()) {
+                                } else if(accrualButton.isChecked()) {
                                     updateChart(Accrual.searchAccrualsInDatabaseByDates(dbHelper, firstDate, secondDate, currentAccountId));
-                                }*/
+                                }
                             }
                         })
                 .setNegativeButton("Отмена",
@@ -282,13 +281,14 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
                                 String firstDate = selectDateBegin.getText().toString();
                                 String secondDate = selectDateEnd.getText().toString();
                                 int categoryId = selectCategory.getId();
-                                ArrayList<Expense> results = Expense.searchExpensesInDatabaseByCategoryAndDate(dbHelper, firstDate,
-                                        secondDate, currentAccountId, categoryId);
-                                updateChart(results);
-                                if(expenseButton.isSelected()) {
-
-                                } else if(accrualButton.isSelected()) {
-
+                                if(expenseButton.isChecked()) {
+                                    ArrayList<Expense> results = Expense.searchExpensesInDatabaseByCategoryAndDate(dbHelper, firstDate,
+                                            secondDate, currentAccountId, categoryId);
+                                    updateChart(results);
+                                } else if(accrualButton.isChecked()) {
+                                    ArrayList<Accrual> results = Accrual.searchAccrualsInDatabaseByCategoryAndDate(dbHelper, firstDate,
+                                            secondDate, currentAccountId, categoryId);
+                                    updateChart(results);
                                 }
                             }
                         })
@@ -305,14 +305,19 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
     private void updateChart(ArrayList<? extends FinancialEntry> source) {
         LineChart chart = findViewById(R.id.chart);
         List<Entry> entries = new ArrayList<>();
-        if(source.get(0).getClass().equals(Expense.class)) {
-            for(int i = 0; i < source.size(); i++) {
-                entries.add(new Entry(i + 1, ((Expense)source.get(i)).getMoneySpent().floatValue()));
+        try  {
+            if(source.get(0).getClass().equals(Expense.class)) {
+                for(int i = 0; i < source.size(); i++) {
+                    entries.add(new Entry(i + 1, ((Expense)source.get(i)).getMoneySpent().floatValue()));
+                }
+            } else {
+                for(int i = 0; i < source.size(); i++) {
+                    entries.add(new Entry(i + 1, ((Accrual)source.get(i)).getMoneyGained().floatValue()));
+                }
             }
-        } else {
-            for(int i = 0; i < source.size(); i++) {
-                entries.add(new Entry(i + 1, ((Accrual)source.get(i)).getMoneyGained().floatValue()));
-            }
+        } catch (Exception e) {
+            showAlert("Nothing to show!");
+            return;
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Day Money Spent");
@@ -365,5 +370,18 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
             }
         });
         popupMenu.show();
+    }
+
+    private void showAlert(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }
