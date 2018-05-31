@@ -1,8 +1,10 @@
 package com.example.master.android_finance_manager.EntriesActivities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
@@ -102,8 +104,11 @@ public class ClarifyAccrualActivity extends AppCompatActivity{
                             case R.id.clothMenuItem:
                                 selectedCategory = categories.get(3);
                                 return true;
-                            case R.id.otherMenuItem:
+                            case R.id.accrualMenuItem:
                                 selectedCategory = categories.get(4);
+                                return true;
+                            case R.id.otherMenuItem:
+                                selectedCategory = categories.get(5);
                                 return true;
                             default:
                                 return false;
@@ -140,13 +145,30 @@ public class ClarifyAccrualActivity extends AppCompatActivity{
     public void addTagGlobally(View view) {
 
         TextView tagText = findViewById(R.id.newTagEdit);
-        Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
-        addedTag.writeToDatabase(dbHelper);
-        selectedTags.add(addedTag);
-        currentTagsView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+        try {
+            Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
+            addedTag.writeToDatabase(dbHelper);
+            selectedTags.add(addedTag);
+            currentTagsView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+        } catch (Exception e) {
+            showAlert("Category is not selected!");
+        }
     }
 
     public void selectCategory(View view) {
         showPopupMenu(view);
+    }
+
+    public void showAlert(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }

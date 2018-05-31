@@ -206,7 +206,11 @@ public class FinanceManagerActivity extends AppCompatActivity
                                 goal.setCurrentSum(0.0);
                                 goal.setParentAccount(mCurrentAccount);
                                 goal.setReached("false");
-                                goal.writeToDatabase(mDbHelper);
+                                try {
+                                    goal.writeToDatabase(mDbHelper);
+                                } catch (Exception e) {
+                                    showAlert("Some info is not entered!");
+                                }
                             }
                         })
                 .setNegativeButton("Отмена",
@@ -272,7 +276,11 @@ public class FinanceManagerActivity extends AppCompatActivity
                                 billReminder.setParentAccount(mCurrentAccount);
                                 billReminder.setIsPaid("false");
                                 billReminder.setDateTimeToPay(selectBillDate.getText().toString());
-                                billReminder.writeToDatabase(mDbHelper);
+                                try {
+                                    billReminder.writeToDatabase(mDbHelper);
+                                } catch (Exception e) {
+                                    showAlert("Some info is not set!");
+                                }
                             }
                         })
                 .setNegativeButton("Отмена",
@@ -358,7 +366,11 @@ public class FinanceManagerActivity extends AppCompatActivity
                                 constraint.setDateOfEnd(selectDateEnd.getText().toString());
                                 constraint.setIsFinished("false");
                                 constraint.setParentAccount(mCurrentAccount);
-                                constraint.writeToDatabase(mDbHelper);
+                                try {
+                                    constraint.writeToDatabase(mDbHelper);
+                                } catch (Exception e) {
+                                    showAlert("Some info is not set!");
+                                }
                             }
                         })
                 .setNegativeButton("Отмена",
@@ -370,5 +382,18 @@ public class FinanceManagerActivity extends AppCompatActivity
         AlertDialog alertDialog = mDialogBuilder.create();
         alertDialog.show();
 
+    }
+
+    public void showAlert(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }

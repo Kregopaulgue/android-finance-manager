@@ -54,7 +54,7 @@ public class Expense extends FinancialEntry implements Serializable{
         values.put(FinancialManager.Expense.COLUMN_MONEY_SPENT, this.moneySpent);
         values.put(FinancialManager.Expense.COLUMN_ENTRY_ID, this.entryId);
 
-        this.entryId = (int) db.insert(FinancialManager.Expense.TABLE_NAME, null, values);
+        db.insert(FinancialManager.Expense.TABLE_NAME, null, values);
 
     }
 
@@ -128,14 +128,21 @@ public class Expense extends FinancialEntry implements Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
-    public static ArrayList<Expense> searchExpensesInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate) {
-        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDay(dbHelper, dayDate);
+    public static ArrayList<Expense> searchExpensesInDatabaseByCategoryAndDate(FinancialManagerDbHelper dbHelper, String firstDate,
+                                                                               String secondDate, int accountId, int categoryId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByCategoryAndDate(dbHelper, firstDate,
+                secondDate, accountId, categoryId);
+        return fromEntriesToExpenses(dbHelper, resultEntries);
+    }
+
+    public static ArrayList<Expense> searchExpensesInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate, int accountId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDay(dbHelper, dayDate, accountId);
         return fromEntriesToExpenses(dbHelper, resultEntries);
     }
 
     public static ArrayList<Expense> searchExpensesInDatabaseByDates(FinancialManagerDbHelper dbHelper,
-                                                                    String firstDate, String secondDate) {
-        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDates(dbHelper, firstDate, secondDate);
+                                                                    String firstDate, String secondDate, int accountId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByDates(dbHelper, firstDate, secondDate, accountId);
         return fromEntriesToExpenses(dbHelper, resultEntries);
     }
 
@@ -144,8 +151,8 @@ public class Expense extends FinancialEntry implements Serializable{
         return fromEntriesToExpenses(dbHelper, resultEntries);
     }
 
-    public static ArrayList<Expense> searchExpensesInDatabaseByTitle(FinancialManagerDbHelper dbHelper, String title) {
-        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTitle(dbHelper, title);
+    public static ArrayList<Expense> searchExpensesInDatabaseByTitle(FinancialManagerDbHelper dbHelper, String title, int accountId) {
+        ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByTitle(dbHelper, title, accountId);
         return fromEntriesToExpenses(dbHelper, resultEntries);
     }
 

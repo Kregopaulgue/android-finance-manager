@@ -42,15 +42,6 @@
         <activity android:name=".EntriesActivities.ClarifyAccrualActivity"
             android:label="Entries History">
         </activity>
-        <activity android:name=".AdditionalEntriesActivities.EditBillReminderActivity"
-            android:label="Entries History">
-        </activity>
-        <activity android:name=".AdditionalEntriesActivities.EditGoalActivity"
-            android:label="Entries History">
-        </activity>
-        <activity android:name=".AdditionalEntriesActivities.EditConstraintActivity"
-            android:label="Entries History">
-        </activity>
         <activity android:name=".AdditionalEntriesHistories.GoalsHistoryActivity"
             android:label="Goals">
         </activity>

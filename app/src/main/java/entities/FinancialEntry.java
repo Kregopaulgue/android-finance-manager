@@ -119,22 +119,36 @@ public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
-    public static ArrayList<FinancialEntry> searchInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate) {
+    public static ArrayList<FinancialEntry> searchInDatabaseByCategoryAndDate(FinancialManagerDbHelper dbHelper, String firstDate,
+                                                                              String secondDate, int accountId, int categoryId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        /*Cursor cursor = db.rawQuery("SELECT entry_id as _id, * FROM entry_tag_binders WHERE tag_id IN" +
+                "(SELECT tag_id FROM tags WHERE category_id=?) AND entry_id IN" +
+                "(SELECT entry_id FROM finance_entries WHERE date(?) <= ? AND date(?) >= ? AND account_id=?)",
+                new String[]{Integer.toString(categoryId), firstDate, secondDate, Integer.toString(accountId)});*/
+
+        Cursor cursor = db.rawQuery("SELECT entry_id as _id, * FROM entry_tag_binders WHERE tag_id IN" +
+                "(SELECT tag_id FROM tags WHERE category_id=?)", new String[]{Integer.toString(categoryId)});
+        return searchInDatabase(dbHelper, cursor);
+    }
+
+    public static ArrayList<FinancialEntry> searchInDatabaseByDay(FinancialManagerDbHelper dbHelper, String dayDate, int accountId) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE date_time=?",
-                new String[]{dayDate});
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE date_time=? AND account_id=?",
+                new String[]{dayDate, Integer.toString(accountId)});
         return searchInDatabase(dbHelper, cursor);
     }
 
     public static ArrayList<FinancialEntry> searchInDatabaseByDates(FinancialManagerDbHelper dbHelper,
-                                                                    String firstDate, String secondDate) {
+                                                                    String firstDate, String secondDate, int accountId) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE date(?) <= date(date_time) AND date(date_time) <= date(?)",
-                new String[]{firstDate, secondDate});
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE date_time BETWEEN ? AND ? AND account_id=?",
+                new String[]{firstDate, secondDate, Integer.toString(accountId)});
         return searchInDatabase(dbHelper, cursor);
     }
 
@@ -150,12 +164,12 @@ public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
     }
 
     public static ArrayList<FinancialEntry> searchInDatabaseByTitle(FinancialManagerDbHelper dbHelper,
-                                                                  String searchTitle) {
+                                                                  String searchTitle, int accountId) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT entry_id AS _id FROM finance_entries WHERE title=?",
-                new String[]{searchTitle});
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id FROM finance_entries WHERE title=? AND account_id=?",
+                new String[]{searchTitle, Integer.toString(accountId)});
         return searchInDatabase(dbHelper, cursor);
     }
 

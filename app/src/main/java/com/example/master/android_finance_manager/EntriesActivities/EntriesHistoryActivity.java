@@ -43,12 +43,12 @@ import static com.example.master.android_finance_manager.FinanceManagerActivity.
 public class EntriesHistoryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private RecyclerView.Adapter adapter;
 
     private FinancialManagerDbHelper mFinancialManagerDbHelper;
     private boolean isExpense;
     private ArrayList resultEntries;
+    private Integer currentAccountId;
 
     private String dayToSearch;
     private String firstDate;
@@ -79,21 +79,20 @@ public class EntriesHistoryActivity extends AppCompatActivity implements DatePic
 
         recyclerView = findViewById(R.id.entriesRecyclerView);
         recyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        linearLayoutManager = new LinearLayoutManager(this);
-
         SharedPreferences preferences = getSharedPreferences(CURRENT_APP, MODE_PRIVATE);
+        currentAccountId = preferences.getInt(CURRENT_ACCOUNT_ID, 1);
         isExpense = getIntent().getStringExtra("ENTRY_TYPE").equals("EXPENSE");
         if(isExpense) {
             ArrayList<Expense> expenses =
-                    Expense.readAllFromDatabase(mFinancialManagerDbHelper, preferences.getInt(CURRENT_ACCOUNT_ID, 1));
+                    Expense.readAllFromDatabase(mFinancialManagerDbHelper, currentAccountId);
             adapter = new RecyclerAdapterExpense(expenses);
         } else {
             ArrayList<Accrual> accruals =
-                    Accrual.readAllFromDatabase(mFinancialManagerDbHelper, preferences.getInt(CURRENT_ACCOUNT_ID, 1));
+                    Accrual.readAllFromDatabase(mFinancialManagerDbHelper, currentAccountId);
             adapter = new RecyclerAdapterAccrual(accruals);
         }
 
@@ -132,17 +131,17 @@ public class EntriesHistoryActivity extends AppCompatActivity implements DatePic
 
         if(searchType.equals(SEARCH_DAY)) {
             if(isExpense) {
-                resultEntries = Expense.searchExpensesInDatabaseByDay(mFinancialManagerDbHelper, dayToSearch);
+                resultEntries = Expense.searchExpensesInDatabaseByDay(mFinancialManagerDbHelper, dayToSearch, currentAccountId);
             }
             else {
-                resultEntries = Accrual.searchAccrualsInDatabaseByDay(mFinancialManagerDbHelper, dayToSearch);
+                resultEntries = Accrual.searchAccrualsInDatabaseByDay(mFinancialManagerDbHelper, dayToSearch, currentAccountId);
             }
         } else if(searchType.equals(SEARCH_DATES)) {
             if(isExpense) {
-                resultEntries = Expense.searchExpensesInDatabaseByDates(mFinancialManagerDbHelper, firstDate, secondDate);
+                resultEntries = Expense.searchExpensesInDatabaseByDates(mFinancialManagerDbHelper, firstDate, secondDate, currentAccountId);
             }
             else {
-                resultEntries = Accrual.searchAccrualsInDatabaseByDates(mFinancialManagerDbHelper, firstDate, secondDate);
+                resultEntries = Accrual.searchAccrualsInDatabaseByDates(mFinancialManagerDbHelper, firstDate, secondDate, currentAccountId);
             }
         } else if(searchType.equals(SEARCH_TAG)) {
 
@@ -155,10 +154,10 @@ public class EntriesHistoryActivity extends AppCompatActivity implements DatePic
 
         } else if(searchType.equals(SEARCH_TITLE)) {
             if(isExpense) {
-                resultEntries = Expense.searchExpensesInDatabaseByTitle(mFinancialManagerDbHelper, titleToSearch);
+                resultEntries = Expense.searchExpensesInDatabaseByTitle(mFinancialManagerDbHelper, titleToSearch, currentAccountId);
             }
             else {
-                resultEntries = Accrual.searchAccrualsInDatabaseByTitle(mFinancialManagerDbHelper, titleToSearch);
+                resultEntries = Accrual.searchAccrualsInDatabaseByTitle(mFinancialManagerDbHelper, titleToSearch, currentAccountId);
             }
         }
 
@@ -289,7 +288,7 @@ public class EntriesHistoryActivity extends AppCompatActivity implements DatePic
 
         mDialogBuilder
                 .setCancelable(true)
-                .setPositiveButton("ADD CONSTRAINT",
+                .setPositiveButton("SEARCH",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 firstDate = selectDateBegin.getText().toString();

@@ -1,9 +1,11 @@
 package com.example.master.android_finance_manager.EntriesActivities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
@@ -181,11 +183,15 @@ public class ClarifyEntryActivity extends AppCompatActivity{
 
     public void addTagGlobally(View view) {
         TextView tagText = findViewById(R.id.newTagEdit);
-        Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
-        addedTag.writeToDatabase(dbHelper);
-        selectedTags.add(addedTag);
-        tagView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
-        currentTagsView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+        try {
+            Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
+            addedTag.writeToDatabase(dbHelper);
+            selectedTags.add(addedTag);
+            tagView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+            currentTagsView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+        } catch (Exception e) {
+            showAlert("Category is not selected!");
+        }
     }
 
     public void loadTags() {
@@ -227,5 +233,17 @@ public class ClarifyEntryActivity extends AppCompatActivity{
         showPopupMenu(view);
     }
 
+    public void showAlert(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
 
 }

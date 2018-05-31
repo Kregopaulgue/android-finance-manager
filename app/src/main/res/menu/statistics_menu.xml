@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionStatisticByDay"
+        android:orderInCategory="100"
+        android:title="Statistics On Day:"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionStatisticByDates"
+        android:orderInCategory="100"
+        android:title="Statistics On Dates:"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionStatisticByCategories"
+        android:orderInCategory="100"
+        android:title="Statistics On Categories:"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionStatisticByTags"
+        android:orderInCategory="100"
+        android:title="Statistics On Tags:"
+        app:showAsAction="never" />
+</menu>
