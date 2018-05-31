@@ -45,6 +45,11 @@ public class FinancialManagerDbHelper extends SQLiteOpenHelper {
         db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_CLOTH);
         db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_ACCRUAL);
         db.execSQL(SqlQueries.SQL_INSERT_CATEGORY_OTHER);
+
+        db.execSQL(SqlQueries.SQL_TRIGGER_INSERT_EXPENSE);
+        db.execSQL(SqlQueries.SQL_TRIGGER_INSERT_ACCRUAL);
+        db.execSQL(SqlQueries.SQL_TRIGGER_DELETE_EXPENSE);
+        db.execSQL(SqlQueries.SQL_TRIGGER_DELETE_ACCRUAL);
     }
 
     //is called during updating database
