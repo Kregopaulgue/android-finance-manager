@@ -70,8 +70,8 @@ public class ClarifyAccrualActivity extends AppCompatActivity{
         tagView.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
             @Override
             public void onTagDeleted(TagView tagView, com.cunoraz.tagview.Tag tag, int i) {
-                Tag tagToDelete = selectedTags.get(tagView.getTags().indexOf(tag));
-                tagToDelete.deleteFromDatabase(dbHelper);
+                String tagToDelete = tag.text;
+                Tag.deleteFromDatabaseWhereTitle(dbHelper, tagToDelete);
                 tagView.remove(tagView.getTags().indexOf(tag));
             }
         });
@@ -80,6 +80,7 @@ public class ClarifyAccrualActivity extends AppCompatActivity{
             @Override
             public void onTagDeleted(TagView tagView, com.cunoraz.tagview.Tag tag, int i) {
                 TagView currentTags = findViewById(R.id.currentTags);
+                selectedTags.remove(currentTags.getTags().indexOf(tag));
                 currentTags.remove(currentTags.getTags().indexOf(tag));
             }
         });

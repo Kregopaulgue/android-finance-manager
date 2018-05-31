@@ -157,6 +157,13 @@ public class Tag implements DatabaseHelperFunctions, Serializable{
         db.delete(FinancialManager.Tag.TABLE_NAME, whereClause, whereArgs);
     }
 
+    public static void deleteFromDatabaseWhereTitle(FinancialManagerDbHelper dbHelper, String title) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = "title=?";
+        String[] whereArgs = new String[] { title };
+        db.delete(FinancialManager.Tag.TABLE_NAME, whereClause, whereArgs);
+    }
+
     public int getTagId() {
         return tagId;
     }
