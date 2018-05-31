@@ -125,6 +125,7 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
         fragment.show(getSupportFragmentManager(),"Pick Date");
     }
 
+
     private void selectDatesDialog() {
 
         LayoutInflater li = LayoutInflater.from(this);
@@ -150,8 +151,9 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                selectDateBegin.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
+                                Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                                final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+                                selectDateBegin.setText(dateFormat.format(cal.getTime()));
 
                             }
                         }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));
@@ -172,8 +174,9 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                selectDateEnd.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
+                                Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                                final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+                                selectDateEnd.setText(dateFormat.format(cal.getTime()));
 
                             }
                         }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));
@@ -233,8 +236,9 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                selectDateBegin.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
+                                Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                                final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+                                selectDateBegin.setText(dateFormat.format(cal.getTime()));
 
                             }
                         }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));
@@ -255,8 +259,9 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                selectDateEnd.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
+                                Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                                final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+                                selectDateEnd.setText(dateFormat.format(cal.getTime()));
 
                             }
                         }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));

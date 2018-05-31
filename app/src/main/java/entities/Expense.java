@@ -128,6 +128,25 @@ public class Expense extends FinancialEntry implements Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
+    public void readLastFromDatabase(FinancialManagerDbHelper dbHelper, int accountId) {
+        readLastExpenseFromDatabase(dbHelper, accountId);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM expenses WHERE entry_id=?",
+                new String[] {Integer.toString(entryId)});
+
+        int moneySpentIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_MONEY_SPENT);
+        int importanceIndex = cursor.getColumnIndex(FinancialManager.Expense.COLUMN_IMPORTANCE);
+
+        while(cursor.moveToNext()) {
+            this.moneySpent = cursor.getDouble(moneySpentIndex);
+            this.importance = cursor.getInt(importanceIndex);
+        }
+
+        cursor.close();
+    }
+
     public static ArrayList<Expense> searchExpensesInDatabaseByCategoryAndDate(FinancialManagerDbHelper dbHelper, String firstDate,
                                                                                String secondDate, int accountId, int categoryId) {
         ArrayList<FinancialEntry> resultEntries = FinancialEntry.searchInDatabaseByCategoryAndDate(dbHelper, firstDate,

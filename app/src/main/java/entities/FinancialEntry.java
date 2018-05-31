@@ -119,6 +119,28 @@ public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
+    protected void readLastExpenseFromDatabase(FinancialManagerDbHelper dbHelper, int accountId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE " +
+                        "entry_id = (SELECT MAX(entry_id) FROM finance_entries WHERE account_id=? AND entry_type=?)",
+                new String[]{Integer.toString(accountId), "EXPENSE"});
+
+        FinancialEntry entry = searchInDatabase(dbHelper, cursor).get(0);
+        setFinancialEntry(entry);
+    }
+
+    protected void readLastAccrualFromDatabase(FinancialManagerDbHelper dbHelper, int accountId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM finance_entries WHERE " +
+                        "entry_id = (SELECT MAX(entry_id) FROM finance_entries WHERE account_id=? AND entry_type=?)",
+                new String[]{Integer.toString(accountId), "ACCRUAL"});
+
+        FinancialEntry entry = searchInDatabase(dbHelper, cursor).get(0);
+        setFinancialEntry(entry);
+    }
+
     public static ArrayList<FinancialEntry> searchInDatabaseByCategoryAndDate(FinancialManagerDbHelper dbHelper, String firstDate,
                                                                               String secondDate, int accountId, int categoryId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -186,6 +208,15 @@ public class FinancialEntry implements DatabaseHelperFunctions, Serializable{
         }
 
         return result;
+    }
+
+    public void setFinancialEntry(FinancialEntry entry) {
+        this.setEntryId(entry.getEntryId());
+        this.setParentAccount(entry.getParentAccount());
+        this.setEntryDate(entry.getEntryDate());
+        this.setTitle(entry.getTitle());
+        this.setEntryType(entry.getEntryType());
+        this.setComment(entry.getComment());
     }
 
     public String getTitle() {

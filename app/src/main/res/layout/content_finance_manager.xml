@@ -22,31 +22,178 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/latestEntryCard"
-            android:layout_width="386dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="5dp">
+        <TextView
+            android:id="@+id/lastExpenseView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="Recent Expense"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
 
-            <TextView
-                android:id="@+id/testInfoView"
-                android:layout_width="367dp"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="340dp"
+            android:layout_height="81dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/entry_background"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:layout_width="147dp"
                 android:layout_height="match_parent"
-                android:text="TextView" />
-        </android.support.v7.widget.CardView>
+                android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/latestAccrual"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginTop="@dimen/activity_horizontal_margin" />
+                <TextView
+                    android:id="@+id/titleEntryView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:gravity="center"
+                    android:text="TITLE:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="18dp" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/latestGoal"
+                <TextView
+                    android:id="@+id/moneyEntryView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:gravity="center"
+                    android:text="SUM OF MONEY:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/dateEntryView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:gravity="center"
+                    android:text="DATE:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/showingTitleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/showingSumOfMoneyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/showingDateView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/lastAccrualView"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginTop="15dp" />
+            android:layout_height="27dp"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:text="RECENT ACCRUAL"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="18dp" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="340dp"
+            android:layout_height="81dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/entry_background"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <LinearLayout
+                android:layout_width="147dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/titleAccrualView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:gravity="center"
+                    android:text="ACCRUAL:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/moneyGainedView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:gravity="center"
+                    android:text="MONEY GAINED:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/dateAccrualView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:gravity="center"
+                    android:text="DATE:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/showingTitleAccrualView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/showingMoneyGainedView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/showingDateAccrualView"
+                    android:layout_width="match_parent"
+                    android:layout_height="27dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
-
-
 </android.support.constraint.ConstraintLayout>

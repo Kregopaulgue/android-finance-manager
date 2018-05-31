@@ -65,7 +65,9 @@ public class ClarifyEntryActivity extends AppCompatActivity{
         tagView.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(com.cunoraz.tagview.Tag tag, int i) {
-                currentTagsView.addTag(new com.cunoraz.tagview.Tag(tag.text));
+                com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(tag.text);
+                newTag.isDeletable = true;
+                currentTagsView.addTag(newTag);
                 selectedTags.add(tagList.get(i));
             }
         });
@@ -74,7 +76,9 @@ public class ClarifyEntryActivity extends AppCompatActivity{
         tagView.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
             @Override
             public void onTagDeleted(TagView tagView, com.cunoraz.tagview.Tag tag, int i) {
-
+                Tag tagToDelete = selectedTags.get(tagView.getTags().indexOf(tag));
+                tagToDelete.deleteFromDatabase(dbHelper);
+                tagView.remove(tagView.getTags().indexOf(tag));
             }
         });
 
@@ -187,8 +191,10 @@ public class ClarifyEntryActivity extends AppCompatActivity{
             Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
             addedTag.writeToDatabase(dbHelper);
             selectedTags.add(addedTag);
-            tagView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
-            currentTagsView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+            com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(addedTag.getTagTitle());
+            newTag.isDeletable = true;
+            tagView.addTag(newTag);
+            currentTagsView.addTag(newTag);
         } catch (Exception e) {
             showAlert("Category is not selected!");
         }
@@ -198,7 +204,9 @@ public class ClarifyEntryActivity extends AppCompatActivity{
         tagView.getTags().clear();
         tagList = Tag.readAllFromDatabaseWhereCategory(dbHelper, selectedCategory.getCategoryId());
         for(Tag tempTag : tagList) {
-            tagView.addTag(new com.cunoraz.tagview.Tag(tempTag.getTagTitle()));
+            com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(tempTag.getTagTitle());
+            newTag.isDeletable = true;
+            tagView.addTag(newTag);
         }
     }
 
