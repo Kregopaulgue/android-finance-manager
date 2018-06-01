@@ -2,10 +2,12 @@ package com.example.master.android_finance_manager.EntriesActivities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
@@ -70,28 +72,37 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
         selectedTags = Tag.readAllFromDatabaseWhereEntry(dbHelper, mEntry.getEntryId());
 
         for(Tag tempTag : selectedTags) {
-            currentTagsView.addTag(new com.cunoraz.tagview.Tag(tempTag.getTagTitle()));
+            com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(tempTag.getTagTitle());
+            newTag.isDeletable = true;
+            currentTagsView.addTag(newTag);
         }
 
         tagView.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(com.cunoraz.tagview.Tag tag, int i) {
-                currentTagsView.addTag(new com.cunoraz.tagview.Tag(tag.text));
+                com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(tag.text);
+                newTag.isDeletable = true;
+                currentTagsView.addTag(newTag);
+                selectedTags.add(tagList.get(i));
             }
         });
 
-        //set delete listener
         tagView.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
             @Override
             public void onTagDeleted(TagView tagView, com.cunoraz.tagview.Tag tag, int i) {
-
+                String tagToDelete = tag.text;
+                Tag.deleteFromDatabaseWhereTitle(dbHelper, tagToDelete);
+                tagView.remove(tagView.getTags().indexOf(tag));
             }
+
+
         });
 
         currentTagsView.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
             @Override
             public void onTagDeleted(TagView tagView, com.cunoraz.tagview.Tag tag, int i) {
                 TagView currentTags = findViewById(R.id.currentTags);
+                selectedTags.remove(currentTags.getTags().indexOf(tag));
                 currentTags.remove(currentTags.getTags().indexOf(tag));
             }
         });
@@ -196,10 +207,17 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
     public void addTagGlobally(View view) {
 
         TextView tagText = findViewById(R.id.newTagEdit);
-        Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
-        addedTag.writeToDatabase(dbHelper);
-        selectedTags.add(addedTag);
-        currentTagsView.addTag(new com.cunoraz.tagview.Tag(addedTag.getTagTitle()));
+        try {
+            Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
+            addedTag.writeToDatabase(dbHelper);
+            selectedTags.add(addedTag);
+            com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(addedTag.getTagTitle());
+            newTag.isDeletable = true;
+            tagView.addTag(newTag);
+            currentTagsView.addTag(newTag);
+        } catch (Exception e) {
+            showAlert("Category is not selected!");
+        }
     }
 
     public void selectCategory(View view) {
@@ -210,10 +228,9 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
         tagView.getTags().clear();
         tagList = Tag.readAllFromDatabaseWhereCategory(dbHelper, selectedCategory.getCategoryId());
         for(Tag tempTag : tagList) {
-            com.cunoraz.tagview.Tag tagToAdd = new com.cunoraz.tagview.Tag(tempTag.getTagTitle());
-            tagToAdd.isDeletable = true;
-            tagView.addTag(tagToAdd);
-
+            com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(tempTag.getTagTitle());
+            newTag.isDeletable = true;
+            tagView.addTag(newTag);
         }
     }
 
@@ -286,5 +303,17 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
         }
     }
 
+    public void showAlert(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
 
 }

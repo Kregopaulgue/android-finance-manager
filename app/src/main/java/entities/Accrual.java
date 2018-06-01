@@ -124,11 +124,30 @@ public class Accrual extends FinancialEntry implements Serializable{
         cursor.close();
     }
 
+    public void readLastFromDatabase(FinancialManagerDbHelper dbHelper, int accountId) {
+        readLastAccrualFromDatabase(dbHelper, accountId);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT entry_id AS _id, * FROM accruals WHERE entry_id=?",
+                new String[]{String.valueOf(entryId)});
+
+        int moneyGainedIndex = cursor.getColumnIndex(FinancialManager.Accrual.COLUMN_MONEY_GAINED);
+        int sourceIndex = cursor.getColumnIndex(FinancialManager.Accrual.COLUMN_SOURCE);
+
+        cursor.moveToNext();
+        this.moneyGained = cursor.getDouble(moneyGainedIndex);
+        this.source = cursor.getString(sourceIndex);
+
+        cursor.close();
+    }
+
     @Override
     public void deleteFromDatabase(FinancialManagerDbHelper dbHelper) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String whereClause = "entry_id=?";
         String[] whereArgs = new String[] { String.valueOf(this.entryId) };
+        db.delete(FinancialManager.Accrual.TABLE_NAME, whereClause, whereArgs);
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 

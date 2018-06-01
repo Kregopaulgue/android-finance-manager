@@ -116,4 +116,25 @@ public class SqlQueries {
             "insert into categories(title) values('ACCRUAL');";
     public static final String SQL_INSERT_CATEGORY_OTHER =
             "insert into categories(title) values('OTHER');";
+
+    public static final String SQL_TRIGGER_INSERT_EXPENSE =
+            "create trigger deduct_amount_of_money after insert on expenses " +
+                    "begin" +
+                    "   UPDATE accounts SET amount_of_money = (amount_of_money - new.money_spent) WHERE account_id IN(SELECT account_id FROM finance_entries WHERE entry_id = new.entry_id);" +
+                    "end;";
+    public static final String SQL_TRIGGER_INSERT_ACCRUAL =
+            "create trigger add_amount_of_money after insert on accruals " +
+                    "begin" +
+                    "   UPDATE accounts SET amount_of_money = (amount_of_money + new.money_gained) WHERE account_id IN(SELECT account_id FROM finance_entries WHERE entry_id = new.entry_id);" +
+                    "end;";
+    public static final String SQL_TRIGGER_DELETE_EXPENSE =
+            "create trigger add_amount_of_money_del after delete on expenses " +
+                    "begin" +
+                    "   UPDATE accounts SET amount_of_money = (amount_of_money + old.money_spent) WHERE account_id IN(SELECT account_id FROM finance_entries WHERE entry_id = old.entry_id);" +
+                    "end;";
+    public static final String SQL_TRIGGER_DELETE_ACCRUAL =
+            "create trigger deduct_amount_of_money_del after delete on accruals " +
+                    "begin" +
+                    "   UPDATE accounts SET amount_of_money = (amount_of_money - old.money_gained) WHERE account_id IN(SELECT account_id FROM finance_entries WHERE entry_id = old.entry_id);" +
+                    "end;";
 }

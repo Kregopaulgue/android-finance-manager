@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.master.android_finance_manager.AdditionalEntriesHistories.BillRemindersHistoryActivity;
 import com.example.master.android_finance_manager.AdditionalEntriesHistories.ContraintsHistoryActivity;
@@ -40,6 +41,7 @@ import entities.Account;
 import entities.Accrual;
 import entities.BillReminder;
 import entities.Constraint;
+import entities.Expense;
 import entities.Goal;
 
 public class FinanceManagerActivity extends AppCompatActivity
@@ -61,13 +63,17 @@ public class FinanceManagerActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finance_manager);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab =  findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(mCurrentAccount.getAccountTitle() == null) {
+                    showAlert("No account is chosen!");
+                    return;
+                }
                 Snackbar.make(view, "Add Expense", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
                 Intent intent = new Intent(FinanceManagerActivity.this, AddEntryActivity.class);
@@ -92,7 +98,15 @@ public class FinanceManagerActivity extends AppCompatActivity
         mCurrentAccount = new Account();
         this.mSharedPreferences = this.getSharedPreferences("com.example.app", MODE_PRIVATE);
 
-        mCurrentAccount.readFromDatabase(mDbHelper, mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 1));
+        mCurrentAccount.readFromDatabase(mDbHelper, mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 0));
+        updateMainScreen();
+    }
+
+    @Override
+    protected void onResume() {
+        mCurrentAccount.readFromDatabase(mDbHelper, mSharedPreferences.getInt(CURRENT_ACCOUNT_ID, 0));
+        updateMainScreen();
+        super.onResume();
     }
 
     @Override
@@ -117,19 +131,34 @@ public class FinanceManagerActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-
         if (id == R.id.actionAddGoal) {
+            if(mCurrentAccount.getAccountTitle() == null) {
+                showAlert("No account is chosen!");
+                return true;
+            }
             addGoalDialog();
             return true;
         } else if(id == R.id.actionAddAccrual) {
+            if(mCurrentAccount.getAccountTitle() == null) {
+                showAlert("No account is chosen!");
+                return true;
+            }
             Intent intent = new Intent(FinanceManagerActivity.this, AddEntryActivity.class);
             intent.putExtra("ENTRY_TYPE", "ACCRUAL");
             startActivity(intent);
             return true;
         } else if(id == R.id.actionAddBillReminder) {
+            if(mCurrentAccount.getAccountTitle() == null) {
+                showAlert("No account is chosen!");
+                return true;
+            }
             addBillReminderDialog();
             return true;
         } else if(id == R.id.actionAddConstraint) {
+            if(mCurrentAccount.getAccountTitle() == null) {
+                showAlert("No account is chosen!");
+                return true;
+            }
             addConstraintDialog();
             return true;
         }
@@ -245,7 +274,6 @@ public class FinanceManagerActivity extends AppCompatActivity
         selectBillDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Calendar now = Calendar.getInstance();
                 final Calendar c = Calendar.getInstance();
 
                 DatePickerDialog dpd = new DatePickerDialog(v.getContext(),
@@ -313,7 +341,6 @@ public class FinanceManagerActivity extends AppCompatActivity
         selectDateBegin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Calendar now = Calendar.getInstance();
                 final Calendar c = Calendar.getInstance();
 
                 DatePickerDialog dpd = new DatePickerDialog(v.getContext(),
@@ -395,5 +422,35 @@ public class FinanceManagerActivity extends AppCompatActivity
                     }
                 });
         alertDialog.show();
+    }
+
+    private void updateMainScreen() {
+        Expense recentExpense = new Expense();
+        Accrual recentAccrual = new Accrual();
+
+        try {
+            recentExpense.readLastFromDatabase(mDbHelper, mCurrentAccount.getAccountId());
+            TextView title = findViewById(R.id.showingTitleView);
+            TextView sumOfMoney = findViewById(R.id.showingSumOfMoneyView);
+            TextView date = findViewById(R.id.showingDateView);
+
+            title.setText(recentExpense.getTitle());
+            sumOfMoney.setText(recentExpense.getMoneySpent().toString());
+            date.setText(recentExpense.getEntryDate());
+        } catch (Exception e){
+
+        }
+        try {
+            recentAccrual.readLastFromDatabase(mDbHelper, mCurrentAccount.getAccountId());
+            TextView title = findViewById(R.id.showingTitleAccrualView);
+            TextView sumOfMoney = findViewById(R.id.showingMoneyGainedView);
+            TextView date = findViewById(R.id.showingDateAccrualView);
+
+            title.setText(recentAccrual.getTitle());
+            sumOfMoney.setText(recentAccrual.getMoneyGained().toString());
+            date.setText(recentAccrual.getEntryDate());
+        } catch (Exception e){
+
+        }
     }
 }
