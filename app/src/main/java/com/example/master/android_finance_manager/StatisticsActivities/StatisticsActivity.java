@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.example.master.android_finance_manager.EntriesActivities.AddEntryActivity;
 import com.example.master.android_finance_manager.R;
@@ -300,20 +301,35 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
     private void updateChart(ArrayList<? extends FinancialEntry> source) {
         LineChart chart = findViewById(R.id.chart);
         List<Entry> entries = new ArrayList<>();
+        int amountOfEntries = source.size();
+        Double avrMoneySpent = 0.0;
+        Double totalMoneySpent = 0.0;
         try  {
             if(source.get(0).getClass().equals(Expense.class)) {
                 for(int i = 0; i < source.size(); i++) {
                     entries.add(new Entry(i + 1, ((Expense)source.get(i)).getMoneySpent().floatValue()));
+                    totalMoneySpent += ((Expense)source.get(i)).getMoneySpent();
                 }
             } else {
                 for(int i = 0; i < source.size(); i++) {
                     entries.add(new Entry(i + 1, ((Accrual)source.get(i)).getMoneyGained().floatValue()));
+                    totalMoneySpent += ((Accrual)source.get(i)).getMoneyGained();
                 }
             }
         } catch (Exception e) {
             showAlert("Nothing to show!");
             return;
         }
+
+        avrMoneySpent = totalMoneySpent / source.size();
+
+        TextView amOfEntr = findViewById(R.id.showingAmountEntriesView);
+        TextView totalSum = findViewById(R.id.showingTotalSumView);
+        TextView avrSum = findViewById(R.id.showingAvrView);
+
+        amOfEntr.setText(Integer.toString(amountOfEntries));
+        totalSum.setText(Double.toString(totalMoneySpent));
+        avrSum.setText(Double.toString(avrMoneySpent));
 
         LineDataSet dataSet = new LineDataSet(entries, "Day Money Spent");
         dataSet.setColor(Color.GREEN);

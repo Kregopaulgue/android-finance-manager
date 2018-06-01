@@ -18,18 +18,105 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_scrollFlags="scroll|enterAlways" />
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="359dp"
-        android:layout_height="484dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:layout_width="359dp"
+                android:layout_height="484dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.555"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="340dp"
+                android:layout_height="76dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/entry_background"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chart">
+
+                <LinearLayout
+                    android:layout_width="170dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/titleEntryView"
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:text="AMOUNT OF ENTRIES:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/moneyEntryView"
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:text="TOTAL SUM OF MONEY:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/dateEntryView"
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:text="AVERAGE MONEY SPENT:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/showingAmountEntriesView"
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/showingTotalSumView"
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/showingAvrView"
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
