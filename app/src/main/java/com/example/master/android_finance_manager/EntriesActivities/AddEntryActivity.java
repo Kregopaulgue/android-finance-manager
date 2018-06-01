@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,8 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     public FinancialEntry mEntry;
     private FinancialManagerDbHelper dbHelper;
     private ArrayList<Tag> selectedTags;
+    private Double operand;
+    private String lastOperation = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +150,93 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     public void onNumberClick(View view) {
         Button button = (Button) view;
         EditText number = findViewById(R.id.editNumber);
-        number.setText(number.getText().toString() + button.getText().toString());
+        number.append(number.getText().toString() + button.getText().toString());
+
+        if(lastOperation.equals("=") && operand!=null){
+            operand = null;
+        }
+    }
+
+    public void onOperationClick(View view){
+
+        EditText number = findViewById(R.id.editNumber);
+        AppCompatImageButton button = (AppCompatImageButton)view;
+        String op;
+        if(button.getId() == R.id.plusButton) {
+            op = "+";
+        } else if(button.getId() == R.id.minusButton) {
+            op = "-";
+        } else if(button.getId() == R.id.divideButton) {
+            op = "/";
+        } else if(button.getId() == R.id.equalButton) {
+            op = "=";
+        }
+        else {
+            op = "*";
+        }
+        String strNumber = number.getText().toString();
+        if(strNumber.length()>0){
+            strNumber = strNumber.replace(',', '.');
+            try{
+                performOperation(Double.valueOf(strNumber), op);
+            }catch (NumberFormatException ex){
+                number.setText("");
+            }
+        }
+        lastOperation = op;
+    }
+
+    private void performOperation(Double number, String operation){
+
+        EditText numberField = findViewById(R.id.editNumber);
+        if(operand ==null){
+            operand = number;
+        }
+        else{
+            if(lastOperation.equals("=")){
+                lastOperation = operation;
+            }
+            switch(lastOperation){
+                case "=":
+                    operand =number;
+                    break;
+                case "/":
+                    if(number==0){
+                        operand =0.0;
+                    }
+                    else{
+                        operand /=number;
+                    }
+                    break;
+                case "*":
+                    operand *=number;
+                    break;
+                case "+":
+                    operand +=number;
+                    break;
+                case "-":
+                    operand -=number;
+                    break;
+            }
+        }
+        numberField.setText(operand.toString().replace('.', ','));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("OPERATION", lastOperation);
+        if(operand!=null)
+            outState.putDouble("OPERAND", operand);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        lastOperation = savedInstanceState.getString("OPERATION");
+        operand= savedInstanceState.getDouble("OPERAND");
+        EditText numberField = findViewById(R.id.editNumber);
+        numberField.setText(operand.toString());
     }
 
     public void add(View view) {

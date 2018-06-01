@@ -126,30 +126,42 @@
             <ImageButton
                 android:id="@+id/plusButton"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:onClick="add"
+                android:layout_height="50dp"
+                android:onClick="onOperationClick"
+                android:text="+"
                 android:src="@drawable/icons8_plus_math_50" />
 
             <ImageButton
                 android:id="@+id/minusButton"
                 android:layout_width="match_parent"
-                android:onClick="minus"
-                android:layout_height="60dp"
+                android:onClick="onOperationClick"
+                android:layout_height="50dp"
+                android:text="-"
                 android:src="@drawable/icons8_subtract_52" />
 
             <ImageButton
                 android:id="@+id/multiplyButton"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:onClick="multiply"
+                android:layout_height="50dp"
+                android:onClick="onOperationClick"
+                android:text="*"
                 android:src="@drawable/icons8_multiply_50" />
 
             <ImageButton
                 android:id="@+id/divideButton"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:onClick="divide"
+                android:layout_height="50dp"
+                android:onClick="onOperationClick"
+                android:text="/"
                 android:src="@drawable/icons8_divide_52" />
+
+            <ImageButton
+                android:id="@+id/equalButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="onOperationClick"
+                android:src="@drawable/sign"
+                android:text="/" />
         </LinearLayout>
     </LinearLayout>
 
@@ -190,6 +202,7 @@
                     android:layout_width="22dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:onClick="onNumberClick"
                     android:text="0" />
             </LinearLayout>
 
