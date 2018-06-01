@@ -57,9 +57,9 @@ public class SqlQueries {
     public static final String SQL_CREATE_TABLES_ENTRY_TAG_BINDERS =
             "create table entry_tag_binders\n" +
             "(\n" +
-            "    bind_id  integer primary key autoincrement,\n" +
             "    entry_id  integer not null,\n" +
             "    tag_id  integer not null,\n" +
+            "    PRIMARY KEY(entry_id, tag_id),\n" +
             "    foreign key(tag_id) references tags(tag_id)\n" +
             "    on delete cascade,\n" +
             "    foreign key(entry_id) references finance_entries(entry_id)\n" +

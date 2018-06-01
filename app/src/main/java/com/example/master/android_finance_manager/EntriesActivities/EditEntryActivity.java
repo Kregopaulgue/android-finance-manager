@@ -209,6 +209,9 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
         TextView tagText = findViewById(R.id.newTagEdit);
         try {
             Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
+            if(addedTag.getTagTitle().equals("")) {
+                throw new Exception();
+            }
             addedTag.writeToDatabase(dbHelper);
             selectedTags.add(addedTag);
             com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(addedTag.getTagTitle());

@@ -85,58 +85,9 @@ public class ClarifyAccrualActivity extends AppCompatActivity{
             }
         });
 
+        selectedCategory = categories.get(4);
+        loadTags();
 
-    }
-
-    private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-        popupMenu.inflate(R.menu.category_popup_menu);
-
-        popupMenu
-                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.foodMenuItem:
-                                selectedCategory = categories.get(0);
-                                loadTags();
-                                return true;
-                            case R.id.serviceMenuItem:
-                                selectedCategory = categories.get(1);
-                                loadTags();
-                                return true;
-                            case R.id.applianceMenuItem:
-                                selectedCategory = categories.get(2);
-                                loadTags();
-                                return true;
-                            case R.id.clothMenuItem:
-                                selectedCategory = categories.get(3);
-                                loadTags();
-                                return true;
-                            case R.id.accrualMenuItem:
-                                selectedCategory = categories.get(4);
-                                loadTags();
-                                return true;
-                            case R.id.otherMenuItem:
-                                selectedCategory = categories.get(5);
-                                loadTags();
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-
-            @Override
-            public void onDismiss(PopupMenu menu) {
-
-            }
-        });
-        popupMenu.show();
     }
 
     public void loadTags() {
@@ -195,6 +146,9 @@ public class ClarifyAccrualActivity extends AppCompatActivity{
         TextView tagText = findViewById(R.id.newTagEdit);
         try {
             Tag addedTag = new Tag(tagText.getText().toString(), "true", selectedCategory);
+            if(addedTag.getTagTitle().equals("")) {
+                throw new Exception();
+            }
             addedTag.writeToDatabase(dbHelper);
             selectedTags.add(addedTag);
             com.cunoraz.tagview.Tag newTag = new com.cunoraz.tagview.Tag(addedTag.getTagTitle());
@@ -202,24 +156,6 @@ public class ClarifyAccrualActivity extends AppCompatActivity{
             tagView.addTag(newTag);
             currentTagsView.addTag(newTag);
         } catch (Exception e) {
-            showAlert("Category is not selected!");
         }
-    }
-
-    public void selectCategory(View view) {
-        showPopupMenu(view);
-    }
-
-    public void showAlert(String message) {
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
     }
 }

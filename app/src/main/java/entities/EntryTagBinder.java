@@ -37,8 +37,6 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
 
         values.put(FinancialManager.EntryTagBinder.COLUMN_TAG_ID, this.parentTag.getTagId());
         values.put(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID, this.parentEntry.getEntryId());
-        //values.put(FinancialManager.EntryTagBinder.COLUMN_CATEGORY_ID, this.parentTag.getParentCategory().getCategoryId());
-        //values.put(FinancialManager.EntryTagBinder.COLUMN_ACCOUNT_ID, this.parentEntry.getParentAccount().getAccountId());
 
         this.bindId = (int)db.insert(FinancialManager.EntryTagBinder.TABLE_NAME, null, values);
 
@@ -62,31 +60,12 @@ public class EntryTagBinder implements DatabaseHelperFunctions{
         readFromDatabase(dbHelper, this.bindId);
     }
 
-    
-    public static ArrayList<EntryTagBinder> readAllFromDatabase(FinancialManagerDbHelper dbHelper) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT bill_reminder_id AS _id, * FROM bill_reminders;", null);
-        int idIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder._ID);
-
-        ArrayList<EntryTagBinder> result = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            int billId = cursor.getInt(idIndex);
-            EntryTagBinder entryTagBinderToRead = new EntryTagBinder();
-            entryTagBinderToRead.readFromDatabase(dbHelper, billId);
-            result.add(entryTagBinderToRead);
-        }
-
-        return result;
-    }
-
     @Override
     public void readFromDatabase(FinancialManagerDbHelper dbHelper, int entryId) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT bind_id AS _id, * FROM entry_tag_binders;", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM entry_tag_binders WHERE _id=?", new String[]{Integer.toBinaryString(entryId)});
 
         int tagIdIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder.COLUMN_TAG_ID);
         int entryIdIndex = cursor.getColumnIndex(FinancialManager.EntryTagBinder.COLUMN_ENTRY_ID);

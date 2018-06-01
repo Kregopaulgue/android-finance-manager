@@ -35,21 +35,11 @@
                 android:layout_marginTop="25dp"
                 android:text="SELECT DATE:" />
 
-            <Button
-                android:id="@+id/selectCategoryButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:onClick="selectCategory"
-                android:text="Select Category:"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
-
             <TextView
                 android:id="@+id/importanceLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="SET SOURCE:"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button" />
