@@ -11,14 +11,5 @@
         android:orderInCategory="100"
         android:title="Statistics On Dates:"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/actionStatisticByCategories"
-        android:orderInCategory="100"
-        android:title="Statistics On Categories:"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/actionStatisticByTags"
-        android:orderInCategory="100"
-        android:title="Statistics On Tags:"
-        app:showAsAction="never" />
+
 </menu>

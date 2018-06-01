@@ -150,7 +150,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     public void onNumberClick(View view) {
         Button button = (Button) view;
         EditText number = findViewById(R.id.editNumber);
-        number.append(number.getText().toString() + button.getText().toString());
+        number.append(button.getText().toString());
 
         if(lastOperation.equals("=") && operand!=null){
             operand = null;
@@ -179,6 +179,9 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
             strNumber = strNumber.replace(',', '.');
             try{
                 performOperation(Double.valueOf(strNumber), op);
+                if(!op.equals("=")) {
+                    number.setText("");
+                }
             }catch (NumberFormatException ex){
                 number.setText("");
             }

@@ -98,17 +98,7 @@ public class StatisticsActivity extends AppCompatActivity implements DatePickerD
 
             }
             return true;
-        } else if(id == R.id.actionStatisticByCategories) {
-            try {
-                selectCategoriesAndDates();
-            } catch (Exception e) {
-
-            }
-            return true;
-        } else if(id == R.id.actionSearchByTags) {
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

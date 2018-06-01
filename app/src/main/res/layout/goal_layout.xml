@@ -7,6 +7,10 @@
     android:layout_height="81dp"
     android:background="@drawable/entry_background"
     android:orientation="horizontal"
+    android:layout_marginBottom="15dp"
+    android:layout_marginEnd="45dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="15dp"
     tools:layout_editor_absoluteX="9dp"
     tools:layout_editor_absoluteY="8dp">
 
