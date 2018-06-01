@@ -128,12 +128,12 @@ public class SqlQueries {
                     "   UPDATE accounts SET amount_of_money = (amount_of_money + new.money_gained) WHERE account_id IN(SELECT account_id FROM finance_entries WHERE entry_id = new.entry_id);" +
                     "end;";
     public static final String SQL_TRIGGER_DELETE_EXPENSE =
-            "create trigger add_amount_of_money_del before delete on expenses " +
+            "create trigger add_amount_of_money_del after delete on expenses " +
                     "begin" +
                     "   UPDATE accounts SET amount_of_money = (amount_of_money + old.money_spent) WHERE account_id IN(SELECT account_id FROM finance_entries WHERE entry_id = old.entry_id);" +
                     "end;";
     public static final String SQL_TRIGGER_DELETE_ACCRUAL =
-            "create trigger deduct_amount_of_money_del before delete on accruals " +
+            "create trigger deduct_amount_of_money_del after delete on accruals " +
                     "begin" +
                     "   UPDATE accounts SET amount_of_money = (amount_of_money - old.money_gained) WHERE account_id IN(SELECT account_id FROM finance_entries WHERE entry_id = old.entry_id);" +
                     "end;";

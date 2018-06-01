@@ -125,6 +125,7 @@ public class Expense extends FinancialEntry implements Serializable{
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String whereClause = "entry_id=?";
         String[] whereArgs = new String[] { String.valueOf(this.entryId) };
+        db.delete(FinancialManager.Expense.TABLE_NAME, whereClause, whereArgs);
         db.delete(FinancialManager.FinancialEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
